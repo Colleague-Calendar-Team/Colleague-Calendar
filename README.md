@@ -1,4 +1,8 @@
 # Colleague Calendar
+
+<img src="https://github.com/Colleague-Calendar-Team/Colleague-Calendar/blob/main/docs/eng/img/callendar_logo.png" align="right"
+     alt="Colleague Calendar" width="120" height="178">
+
 ![][golang-shield] ![][js-shield] ![][typescript-shield] ![][ansible-shield] ![][react-shield] ![][nginx-shield]
 
 
@@ -11,9 +15,6 @@ Scheduler app in a form of a calendar. With colleague callendar you can:
     * sms
 * Set up time before notification - 15min/30min/1hr
 * Lookup colleague's free time for event or meeting
-
-
-
 
 
 
