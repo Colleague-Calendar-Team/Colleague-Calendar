@@ -1,0 +1,5 @@
+bot:
+  token: "001386"
+  botApiUrl: "https"
+  debug: "false"
+httpTimeout: 10
