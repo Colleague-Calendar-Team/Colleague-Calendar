@@ -1,5 +1,8 @@
 bot:
-  token: "001386"
+  token: ""
   botApiUrl: "https"
   debug: "false"
-httpTimeout: 10
+httpServer:
+  endpoint: "127.0.0.1:4000"
+  writeTimeout: 15
+  readTimeout: 15

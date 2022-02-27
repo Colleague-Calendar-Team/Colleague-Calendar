@@ -1,0 +1,7 @@
+notificationServiceEndpoint: "127.0.0.1:4000"
+telegramNotificationServiceEndpoints:
+  - "127.0.0.1:5000"
+emailNotificationServiceEndpoint:
+  - "127.0.0.1:6000"
+smsNotificationServiceEndpoint:
+  - "127.0.0.1:7000"
