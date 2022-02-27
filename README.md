@@ -1,7 +1,7 @@
 # Colleague Calendar
 
 <img src="https://github.com/Colleague-Calendar-Team/Colleague-Calendar/blob/main/docs/eng/img/callendar_logo.png" align="right"
-     alt="Colleague Calendar" width="120" height="178">
+     alt="Colleague Calendar" width="160" height="160">
 
 ![][golang-shield] ![][js-shield] ![][typescript-shield] ![][ansible-shield] ![][react-shield] ![][nginx-shield]
 
@@ -37,4 +37,3 @@ Scheduler app in a form of a calendar. With colleague callendar you can:
 [ansible-shield]:https://img.shields.io/badge/Deploy-ansible-informational?style=flat&logo=ansible&logoColor=white&color=2bbc8a
 
 [nginx-shield]:https://img.shields.io/badge/webserver-nginx-informational?style=flat&logo=nginx&logoColor=white&color=2bbc8a
-
