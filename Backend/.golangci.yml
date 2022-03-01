@@ -1,0 +1,37 @@
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+    - deadcode
+    - dogsled
+    - durationcheck
+    - exportloopref
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gofmt
+    - goimports
+    - gomoddirectives
+    - gomodguard
+    - goprintffuncname
+    - govet
+    - importas
+    - ineffassign
+    - misspell
+    - nakedret
+    - nilerr
+    - prealloc
+    - rowserrcheck
+    - sqlclosecheck
+    - unconvert
+    - unparam
+    - varcheck
+    - staticcheck
+    - errcheck
+    - lll
+    - forbidigo
+    - wsl
+    - revive
+    - gocyclo
+  fast: false
