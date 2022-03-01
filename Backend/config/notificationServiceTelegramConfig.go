@@ -1,14 +1,20 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"github.com/spf13/viper"
+)
 
 type BotConfig struct {
 	Bot struct {
-		Token     string `mapstructure:"token"`
-		BotAPIURL string `mapstructure:"botApiUrl"`
-		Debug     string `mapstructure:"debug"`
+		Token     string `yaml:"token"`
+		BotAPIURL string `yaml:"botApiUrl"`
+		Debug     string `yaml:"debug"`
 	} `yaml:"bot"`
-	HTTPTimeout int `mapstructure:"httpTimeout"`
+	HTTPServer struct {
+		Endpoint     string `yaml:"endpoint"`
+		WriteTimeout int    `yaml:"writeTimeout"`
+		ReadTimeout  int    `yaml:"readTimeout"`
+	} `yaml:"httpServer"`
 }
 
 func ParseBotConfig() (BotConfig, error) {
