@@ -59,7 +59,7 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/notify/telegram/{chatId}",
+	r.HandleFunc("/notify/telegram/{chatID}",
 		func(w http.ResponseWriter, r *http.Request) {
 			defer r.Body.Close()
 
@@ -75,6 +75,7 @@ func main() {
 			bodyBytes, err := io.ReadAll(r.Body)
 			if err != nil {
 				logger.Error("reading request body", zap.Error(err))
+				return
 			}
 			bodyString := string(bodyBytes)
 
@@ -85,6 +86,7 @@ func main() {
 
 			if _, err := fmt.Fprintf(w, "chatID: %v\n", vars["chatID"]); err != nil {
 				logger.Error("error writing http answer", zap.Error(err))
+				return
 			}
 		},
 	)
