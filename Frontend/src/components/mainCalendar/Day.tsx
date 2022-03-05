@@ -2,11 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import { Box } from "@mui/material";
 import theme from "../../styles/theme";
-
-export interface DayState {
-  day: dayjs.Dayjs;
-  hour: number;
-}
+import { DayState } from "../../types/day";
 
 const Day: React.FC<DayState> = ({ day, hour }) => {
   function getCellStyle(day:dayjs.Dayjs, hour:number) {

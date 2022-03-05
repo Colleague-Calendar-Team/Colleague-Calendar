@@ -1,25 +1,26 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import Logo from '../../assets/logo';
 import useButtonStyles from '../../styles/button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import GlobalContext from '../../context/globalContext';
 
 export default function Header() {
-  const [monthId, setMonthId] = useState(dayjs().month());
+  const {day, setDay} = useContext(GlobalContext);
   const classes = useButtonStyles();
 
-  function clickPrevMonth() {
-    setMonthId(monthId - 1);
+  function clickPrevWeek() {
+    setDay(dayjs(new Date(day.year(), day.month(), day.day() - 7)));
+    console.log("day: ", day.day())
   };
-  function clickNextMonth() {
-    setMonthId(monthId + 1);
+  function clickNextWeek() {
+    setDay(dayjs(new Date(day.year(), day.month(), day.day() + 7)));
   };
   function clickToday() {
-    setMonthId(monthId === dayjs().month() 
-    ? monthId + Math.random()
-    : dayjs().month());
+    setDay(day === dayjs()
+    ? day : dayjs());
   };
 
   return (
@@ -31,9 +32,12 @@ export default function Header() {
               Colleague Calendar
           </Typography>
           <Button className={classes.root} onClick={clickToday}>Сегодня</Button>
-          <ChevronLeftIcon onClick={clickPrevMonth}/>
-              <div className="fs-5 mb-1">{dayjs(new Date(dayjs().year(), monthId)).format("MMMM YYYY")}</div>
-          <ChevronRightIcon onClick={clickNextMonth}/>
+          <ChevronLeftIcon onClick={clickPrevWeek}/>
+            <Typography variant="h6" component="h2" sx={{m: 1}}>
+              {dayjs(new Date(dayjs().year(), day.month())).format("MMMM YYYY ")}
+              {day.day() + 1} - {day.day() + 7}
+            </Typography>
+          <ChevronRightIcon onClick={clickNextWeek}/>
         </Box>
       </Toolbar>
   </AppBar>
