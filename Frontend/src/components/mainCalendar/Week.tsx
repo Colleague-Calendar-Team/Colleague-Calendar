@@ -2,10 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import Day from './Day';
 import { Grid, Typography } from '@mui/material';
-
-export interface WeekState {
-  week: dayjs.Dayjs[];
-}
+import { WeekState } from '../../types/week';
 
 const Week:React.FC<WeekState> = ({week}) => {
   function getHours(): number[] {

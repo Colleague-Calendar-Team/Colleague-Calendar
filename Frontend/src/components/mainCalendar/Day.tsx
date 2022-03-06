@@ -7,7 +7,7 @@ import { DayState } from "../../types/day";
 const Day: React.FC<DayState> = ({ day, hour }) => {
   function getCellStyle(day:dayjs.Dayjs, hour:number) {
     return {
-      color: 'transparent',
+      // color: 'transparent',
       textAlign: "center", 
       borderLeft: 1,
       borderTop: hour === 0 ? 1 : 0,
@@ -22,7 +22,7 @@ const Day: React.FC<DayState> = ({ day, hour }) => {
       sx={{ display: "flex", flexDirection: "column" }}
     >
       <Box sx={getCellStyle(day, hour)}>
-        {day.format("DD")}
+          {day.format("DD")}
       </Box>
     </Box>
   );

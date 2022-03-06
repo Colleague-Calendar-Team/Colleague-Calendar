@@ -9,12 +9,7 @@ import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import { ThemeProvider } from '@mui/material/styles';
 
 export default function NavigateCalendar() {
-  const [curMonthId, setCurMonthId] = useState(dayjs().month());
-  const { day, setNavigateCalendarMonth, daySelected, setDaySelected } = useContext(GlobalContext);
-
-  useEffect(() => {
-    setCurMonthId(day.month());
-  }, [day]);
+  const { setDay, daySelected, setDaySelected } = useContext(GlobalContext);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column'}}>
@@ -26,20 +21,20 @@ export default function NavigateCalendar() {
             onChange={(day) => {
               if (day !== null) {
                 setDaySelected(day);
-                setNavigateCalendarMonth(curMonthId);
+                setDay(day);
                 console.log("selected day:", day);
               } else {
                 setDaySelected(dayjs());
               }
             }}
-            onMonthChange={(day) => {
-              const selectDay = dayjs(day).month();
-              if (selectDay !== null) {
-                setCurMonthId(selectDay);
-              } else {
-                setCurMonthId(0);
-              }
-            }}
+            // onMonthChange={(day) => {
+            //   const selectDay = dayjs(day).month();
+            //   if (selectDay !== null) {
+            //     setCurMonthId(selectDay);
+            //   } else {
+            //     setCurMonthId(0);
+            //   }
+            // }}
             renderInput={(params) => <TextField {...params} 
             />}
           />

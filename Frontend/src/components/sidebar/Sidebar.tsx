@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
-import AddEventBtn from './addEventBtn';
+import AddEventBtn from './AddEventBtn';
+
 import NavigateCalendar from './NavigateCalendar';
 
 export default function Sidebar() {

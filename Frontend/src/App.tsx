@@ -11,19 +11,20 @@ import { getWeek } from './utils/getWeek';
 import GlobalContext from './context/globalContext';
 
 function App() {
-  const [curWeek, setCurWeek] = useState(getWeek());
   const {day} = useContext(GlobalContext);
+  const [week, setWeek] = useState((getWeek()));
 
   useEffect(() => {
-    setCurWeek(getWeek(day));
+    setWeek(getWeek(day));
+    console.log("cur week: " + week);
   }, [day]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main }}>
-      <Header/>
+      <Header week={week}/>
       <Box sx={{ display: 'flex', backgroundColor: theme.palette.primary.main}}>
         <Sidebar/>
-        <Week week={curWeek}/>
+        <Week week={week}/>
       </Box>
     </Box>
   );

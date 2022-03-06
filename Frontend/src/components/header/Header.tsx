@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import Logo from '../../assets/logo';
@@ -6,21 +6,23 @@ import useButtonStyles from '../../styles/button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import GlobalContext from '../../context/globalContext';
+import { getWeek } from '../../utils/getWeek';
+import { WeekState } from '../../types/week';
 
-export default function Header() {
-  const {day, setDay} = useContext(GlobalContext);
+const Header:React.FC<WeekState> = ({week}) => {
   const classes = useButtonStyles();
+  const {day, setDay} = useContext(GlobalContext);
+  const firstDate = dayjs(new Date(week[0].year(), week[0].month()));
+  const secondDate = dayjs(new Date(week[6].year(), week[6].month()));
 
   function clickPrevWeek() {
-    setDay(dayjs(new Date(day.year(), day.month(), day.day() - 7)));
-    console.log("day: ", day.day())
+    setDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
   };
   function clickNextWeek() {
-    setDay(dayjs(new Date(day.year(), day.month(), day.day() + 7)));
+    setDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() + 7)));
   };
   function clickToday() {
-    setDay(day === dayjs()
-    ? day : dayjs());
+    setDay(day === dayjs() ? day : dayjs());
   };
 
   return (
@@ -34,8 +36,11 @@ export default function Header() {
           <Button className={classes.root} onClick={clickToday}>Сегодня</Button>
           <ChevronLeftIcon onClick={clickPrevWeek}/>
             <Typography variant="h6" component="h2" sx={{m: 1}}>
-              {dayjs(new Date(dayjs().year(), day.month())).format("MMMM YYYY ")}
-              {day.day() + 1} - {day.day() + 7}
+              {firstDate.format("MMMM")}
+              {week[0].year() !== week[6].year() && firstDate.format(" YYYY")}
+              {week[0].month() !== week[6].month() && secondDate.format(" - MMMM")}
+              {secondDate.format(" YYYY ")}
+              {week[0].date()} - {week[6].date()}
             </Typography>
           <ChevronRightIcon onClick={clickNextWeek}/>
         </Box>
@@ -43,3 +48,5 @@ export default function Header() {
   </AppBar>
   )
 }
+
+export default Header;
