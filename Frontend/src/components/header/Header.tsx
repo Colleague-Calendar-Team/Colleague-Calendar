@@ -1,12 +1,16 @@
 import { useContext, useState } from 'react';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import dayjs from 'dayjs';
 import Logo from '../../assets/logo';
 import useButtonStyles from '../../styles/button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import GlobalContext from '../../context/globalContext';
-import { getWeek } from '../../utils/getWeek';
 import { WeekState } from '../../types/week';
 import theme from '../../styles/theme';
 
@@ -15,6 +19,8 @@ const Header:React.FC<WeekState> = ({week}) => {
   const {daySelected, setDaySelected} = useContext(GlobalContext);
   const firstDate = dayjs(new Date(week[0].year(), week[0].month()));
   const secondDate = dayjs(new Date(week[6].year(), week[6].month()));
+  const settings = ['Настройки', 'Выход'];
+  const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
 
   function clickPrevWeek() {
     setDaySelected(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
@@ -24,6 +30,9 @@ const Header:React.FC<WeekState> = ({week}) => {
   };
   function clickToday() {
     setDaySelected(daySelected === dayjs() ? daySelected : dayjs());
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
   return (
@@ -45,6 +54,35 @@ const Header:React.FC<WeekState> = ({week}) => {
             </Typography>
           <ChevronRightIcon onClick={clickNextWeek}/>
         </Box>
+        <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Настройки пользователя">
+              <IconButton onClick={(event) => setAnchorElUser(event.currentTarget)} sx={{ mr: 1 }}>
+                <Avatar alt="Пользователь" src="/defaultAvatar.jpg" sx={{borderColor: theme.palette.primary.dark, border: 2}} />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
       </Toolbar>
   </AppBar>
   )
