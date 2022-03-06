@@ -9,18 +9,19 @@ import Week from './components/mainCalendar/Week';
 import Header from './components/header/Header';
 import { getWeek } from './utils/getWeek';
 import GlobalContext from './context/globalContext';
+import EventWindow from './windows/EventWindow';
 
 function App() {
-  const {day} = useContext(GlobalContext);
+  const {daySelected} = useContext(GlobalContext);
   const [week, setWeek] = useState((getWeek()));
 
   useEffect(() => {
-    setWeek(getWeek(day));
-    console.log("cur week: " + week);
-  }, [day]);
+    setWeek(getWeek(daySelected));
+  }, [daySelected]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
+      <EventWindow/>
       <Header week={week}/>
       <Box sx={{ display: 'flex', backgroundColor: theme.palette.primary.main}}>
         <Sidebar/>

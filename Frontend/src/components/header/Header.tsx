@@ -8,21 +8,22 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import GlobalContext from '../../context/globalContext';
 import { getWeek } from '../../utils/getWeek';
 import { WeekState } from '../../types/week';
+import theme from '../../styles/theme';
 
 const Header:React.FC<WeekState> = ({week}) => {
   const classes = useButtonStyles();
-  const {day, setDay} = useContext(GlobalContext);
+  const {daySelected, setDaySelected} = useContext(GlobalContext);
   const firstDate = dayjs(new Date(week[0].year(), week[0].month()));
   const secondDate = dayjs(new Date(week[6].year(), week[6].month()));
 
   function clickPrevWeek() {
-    setDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
+    setDaySelected(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
   };
   function clickNextWeek() {
-    setDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() + 7)));
+    setDaySelected(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() + 7)));
   };
   function clickToday() {
-    setDay(day === dayjs() ? day : dayjs());
+    setDaySelected(daySelected === dayjs() ? daySelected : dayjs());
   };
 
   return (

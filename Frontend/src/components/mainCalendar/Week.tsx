@@ -21,7 +21,7 @@ const Week:React.FC<WeekState> = ({week}) => {
     {week.map((day, dayId) => 
       <Grid item xs={1} key={dayId}>
         <Typography sx={{textAlign: 'center'}}>
-          {day.format('ddd')}
+          {day.format('ddd')} {day.format('DD')}
         </Typography>
       </Grid>
     )}

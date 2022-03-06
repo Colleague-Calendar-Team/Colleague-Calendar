@@ -9,7 +9,7 @@ import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import { ThemeProvider } from '@mui/material/styles';
 
 export default function NavigateCalendar() {
-  const { setDay, daySelected, setDaySelected } = useContext(GlobalContext);
+  const { daySelected, setDaySelected } = useContext(GlobalContext);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column'}}>
@@ -21,8 +21,6 @@ export default function NavigateCalendar() {
             onChange={(day) => {
               if (day !== null) {
                 setDaySelected(day);
-                setDay(day);
-                console.log("selected day:", day);
               } else {
                 setDaySelected(dayjs());
               }
