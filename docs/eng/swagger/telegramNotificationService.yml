@@ -3,14 +3,21 @@ info:
 
   version: "1.0"
 
-  title: "Telegram notification API"
+  title: "Calendar API"
 
 tags:
 - name: "notify"
-  description: "send notification"
+  description: "send notifications"
   externalDocs:
     description: "Find out more"
     url: "http://swagger.io"
+
+- name: "event"
+  description: "work with calendar events data"
+  
+- name: "user"
+  description: "work with user data"
+
 
 paths:
 
@@ -70,6 +77,7 @@ paths:
         
           description: Error reading request body
  
+
           
   /confirm/telegram/{chatID}:
 
@@ -116,6 +124,7 @@ paths:
             type: integer
 
  
+# ----------------------------------EVENT--------------------------------------------------------------------------
   
   /event/add/{eventID}:
 
@@ -238,7 +247,7 @@ paths:
       tags: 
       - "event"
 
-      description: Get all events
+      description: Get all of user
 
 
       parameters:
@@ -288,14 +297,16 @@ paths:
         
           description: Error reading request body
           
-          
+       
+       
+#------------------------------USER DATA---------------------------------------------------       
   /user/getLoad/{userID}:
 
     get:
       tags: 
       - "user"
 
-      description: Get all events
+      description: Get interval of free and occupied user time
 
 
       parameters:
@@ -352,7 +363,7 @@ paths:
       tags: 
       - "user"
 
-      description: Get all events
+      description: Register new user
 
 
       parameters:
@@ -401,7 +412,7 @@ paths:
       tags: 
       - "user"
 
-      description: Get all events
+      description: User login
 
 
       parameters:
@@ -440,4 +451,75 @@ paths:
         
         500:
         
-          description: Error reading request body        
+          description: Error reading request body
+          
+
+# ------------------Models--------------------------------------------------
+
+definitions:
+
+  User:
+    type: "object"
+    properties:
+      userID:
+        type: "integer"
+        format: "int64"
+      passwordHash:
+        type: "string"
+      email:
+        type: "string"
+      phoneNumber:
+        type: "string"
+      telegramID:
+        type: "integer"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      avatar:
+        type: "string"
+  
+        
+  Event:
+    type: "object"
+    properties:
+      eventID:
+        type: "integer"
+        format: "int64"
+      beginTime:
+        type: "string"
+        format: "datetime"
+      endTime:
+        type: "string"
+        format: "datetime" 
+      description:
+        type: "string"
+        format: "TEXT"
+      meetingLink:
+        type: "string"
+        format: "link"
+      isRepeating:
+        type: "boolean"
+        
+  EventParticipant:
+    type: "object"
+    properties:
+      eventParticipantID:
+        type: "integer"
+        format: "int64"
+      eventID:
+        type: "integer"
+        format: "int64"
+      userID:
+        type: "integer"
+        format: "int64"
+      isGoing:
+        type: "boolean"
+      notificationTime:
+        type: "string"
+      notificationInTelegram:
+        type: "boolean"
+      notificationInEmail:
+        type: "boolean"
+      notificationInSMS:
+        type: "boolean"
