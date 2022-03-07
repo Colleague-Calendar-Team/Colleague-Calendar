@@ -37,10 +37,6 @@ func main() {
 		logger.Fatal("Cannot initiate viper", zap.Error(err))
 	}
 
-	if err := config.InitViper(*configDir); err != nil {
-		logger.Fatal("Cannot initiate viper", zap.Error(err))
-	}
-
 	logger.Info("Viper initiated")
 
 	configData, err := config.ParseBotConfig()
@@ -62,9 +58,7 @@ func main() {
 	r.HandleFunc("/notify/telegram/{chatID}",
 		func(w http.ResponseWriter, r *http.Request) {
 			defer r.Body.Close()
-
 			vars := mux.Vars(r)
-			w.WriteHeader(http.StatusOK)
 			chatID, err := strconv.ParseInt(vars["chatID"], 10, 64)
 
 			if err != nil {
@@ -83,6 +77,8 @@ func main() {
 				logger.Error("sending telegram message", zap.Error(err))
 				return
 			}
+
+			w.WriteHeader(http.StatusOK)
 
 			if _, err := fmt.Fprintf(w, "chatID: %v\n", vars["chatID"]); err != nil {
 				logger.Error("error writing http answer", zap.Error(err))

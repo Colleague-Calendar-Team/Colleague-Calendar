@@ -1,0 +1,443 @@
+swagger: "2.0"
+info:
+
+  version: "1.0"
+
+  title: "Telegram notification API"
+
+tags:
+- name: "notify"
+  description: "send notification"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+
+paths:
+
+
+  /notify/telegram/{chatID}:
+
+    get:
+      tags: 
+      - "notify"
+     
+      description: Sends event notification to telegram chat
+
+      parameters:
+
+        - name: chatID
+
+          in: path
+
+          type: integer
+
+          required: true
+
+          description: id of telegram chat where to send message.
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+        400:
+
+          description: Invalid characters in "chatID" were provided.
+        
+        502:
+          
+          description: Couldn't get answer from telegram API
+        
+        500:
+        
+          description: Error reading request body
+ 
+          
+  /confirm/telegram/{chatID}:
+
+    get:
+      tags: 
+      - "notify"
+
+      description: Returns a greeting to the user!
+
+
+      parameters:
+
+        - name: chatID
+
+          in: path
+
+          type: integer
+
+          required: true
+
+          description: id of telegram chat where to send message.
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+ 
+  
+  /event/add/{eventID}:
+
+    post:
+      tags: 
+      - "event"
+
+      description: Add event
+
+
+      parameters:
+
+        - name: eventID
+
+          in: path
+
+          type: integer
+
+          required: true
+
+          description: id of telegram chat where to send message.
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+        400:
+
+          description: Invalid characters in "chatID" were provided.
+        
+        502:
+          
+          description: Couldn't get answer from telegram API
+        
+        500:
+        
+          description: Error reading request body
+          
+
+  
+  /event/delete/{eventID}:
+
+    patch:
+      tags: 
+      - "event"
+
+      description: Delete event
+
+
+      parameters:
+
+        - name: eventID
+
+          in: path
+
+          type: integer
+
+          required: true
+
+          description: id of telegram chat where to send message.
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+        400:
+
+          description: Invalid characters in "chatID" were provided.
+        
+        502:
+          
+          description: Couldn't get answer from telegram API
+        
+        500:
+        
+          description: Error reading request body
+          
+
+  /event/getAll/{userID}:
+
+    get:
+      tags: 
+      - "event"
+
+      description: Get all events
+
+
+      parameters:
+
+        - name: userID
+
+          in: path
+
+          type: integer
+
+          required: true
+
+          description: id of user
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+        400:
+
+          description: Invalid characters in "chatID" were provided.
+        
+        502:
+          
+          description: Couldn't get answer from telegram API
+        
+        500:
+        
+          description: Error reading request body
+          
+          
+  /user/getLoad/{userID}:
+
+    get:
+      tags: 
+      - "user"
+
+      description: Get all events
+
+
+      parameters:
+
+        - name: userID
+
+          in: path
+
+          type: integer
+
+          required: true
+
+          description: id of user
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+        400:
+
+          description: Invalid characters in "chatID" were provided.
+        
+        502:
+          
+          description: Couldn't get answer from telegram API
+        
+        500:
+        
+          description: Error reading request body        
+
+
+  /user/register:
+
+    get:
+      tags: 
+      - "user"
+
+      description: Get all events
+
+
+      parameters:
+
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+        400:
+
+          description: Invalid characters in "chatID" were provided.
+        
+        502:
+          
+          description: Couldn't get answer from telegram API
+        
+        500:
+        
+          description: Error reading request body        
+
+
+
+  /user/login:
+
+    get:
+      tags: 
+      - "user"
+
+      description: Get all events
+
+
+      parameters:
+
+        
+        - name: notification text
+          
+          in: body
+          
+          schema: 
+            
+            type: string
+          
+          required: true
+          
+          description: text of notification telegram message
+          
+
+      responses:
+
+        200:
+
+          description: Returns chat where message has been sent.
+
+          schema:
+
+            type: integer
+
+        400:
+
+          description: Invalid characters in "chatID" were provided.
+        
+        502:
+          
+          description: Couldn't get answer from telegram API
+        
+        500:
+        
+          description: Error reading request body        
