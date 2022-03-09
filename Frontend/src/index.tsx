@@ -4,12 +4,16 @@ import App from './App';
 import theme from './styles/theme';
 import { ThemeProvider } from '@mui/material/styles';
 import ContextWrapper from './context/contextWrapper';
+import { Provider } from 'react-redux';
+import {store} from './store';
 
 ReactDOM.render(
   <React.StrictMode>
       <ThemeProvider theme={theme}>
           <ContextWrapper>
-            <App />
+            <Provider store={store}>
+              <App />
+            </Provider>
           </ContextWrapper>
       </ThemeProvider>
   </React.StrictMode>,
