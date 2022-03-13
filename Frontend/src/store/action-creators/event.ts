@@ -1,23 +1,24 @@
 import { Dispatch } from 'redux';
 import { EventState, EventAction, EventActionTypes } from '../../types/event';
-import urls from './urls';
+import urls from '../../ajax/urls';
+import ajax from '../../ajax/ajax';
 
 export const saveEvent = (event: EventState) => {
-  return async (dispatch: Dispatch<EventAction>) => {
+  return (dispatch: Dispatch<EventAction>) => {
     try {
       console.log('EVENT:', event)
       dispatch({type: EventActionTypes.SAVE_EVENT, payload: event});
-      fetch(urls.url, {
-        method: 'POST',
-      }).then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        console.log('Save event:', response)
-        return {response};
-      })
-    } catch {
-      console.log('Error of saving event');
+
+      const requestParams: RequestInit = {
+        body: Object(event),
+      }
+      ajax.post(urls.eventAdd(), requestParams).then((response) => {
+        console.log("EVENT response:");
+        console.log(response);
+      });
+    }
+    catch {
+      console.log('ERROR in Save Event:', event)
     }
   }
 }
