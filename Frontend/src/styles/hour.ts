@@ -3,8 +3,8 @@ import theme from './theme';
 
 const useHourStyles = makeStyles({
   root: {
-    color: 'transparent',
-    height: '2em',
+    position: 'relative',
+    height: '3em',
     cursor: 'pointer',
     textAlign: "center",
     borderColor: theme.palette.primary.dark,

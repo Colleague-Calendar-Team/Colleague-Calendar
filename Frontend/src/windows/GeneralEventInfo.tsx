@@ -20,10 +20,12 @@ const GeneralEventInfo = () => {
 
   const classes = useButtonStyles();
   const {saveEvent} = useActions();
+  const {setShowModalWindow} = useContext(GlobalContext);
 
   function eventSubmit() {
     const event: EventState = {title, description, beginTime, endTime, meetingLink, isRepeating};
     saveEvent(event);
+    setShowModalWindow(false);
   }
 
   return (
