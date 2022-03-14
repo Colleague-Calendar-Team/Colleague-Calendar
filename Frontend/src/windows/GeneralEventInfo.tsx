@@ -10,7 +10,7 @@ import { useActions } from "../hooks/useActions";
 import { EventState } from "../types/event";
 
 const GeneralEventInfo = () => {
-  const { daySelected } = useContext(GlobalContext);
+  const { daySelected, setModalPage } = useContext(GlobalContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [beginTime, setBeginTime] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
@@ -28,11 +28,15 @@ const GeneralEventInfo = () => {
     setShowModalWindow(false);
   }
 
+  function Next() {
+    setModalPage('Участники');
+  }
+
   return (
     <Box
       component="form"
       sx={{
-        "& > :not(style)": { m: 1, width: "90%" },
+        "& > :not(style)": { m: 1, width: "95%" },
       }}
       noValidate
       autoComplete="off"
@@ -91,9 +95,11 @@ const GeneralEventInfo = () => {
         defaultValue={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <Button className={classes.root} onClick={eventSubmit}>
-        Сохранить
+      <Box sx={{ display: 'flex', justifyContent: 'end'}}>
+      <Button className={classes.root} onClick={Next}>
+        Далее
       </Button>
+      </Box>
     </Box>
   );
 };

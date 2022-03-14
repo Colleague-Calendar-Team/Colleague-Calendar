@@ -1,13 +1,7 @@
 import ModalWindow from "../components/modal/Modal";
 import GeneralEventInfo from "./GeneralEventInfo";
-
-const MembersEventInfo = () => {
-  return <div>Участники</div>;
-};
-
-const NotificationsEventInfo = () => {
-  return <div>Уведомления</div>;
-};
+import MembersEventInfo from "./MembersEvenInfo";
+import NotificationsEventInfo from "./NotificationsEventInfo";
 
 export default function EventWindow() {
   return (

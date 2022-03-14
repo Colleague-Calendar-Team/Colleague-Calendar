@@ -7,6 +7,7 @@ export default function ContextWrapper(props: any) {
   const [week, setWeek] = useState(getWeek(dayjs()));
   const [daySelected, setDaySelected] = useState<dayjs.Dayjs>(dayjs());
   const [showModalWindow, setShowModalWindow] = useState(false);
+  const [modalPage, setModalPage] = useState('');
 
   return (
     <GlobalContext.Provider value={{
@@ -16,6 +17,8 @@ export default function ContextWrapper(props: any) {
       setDaySelected,
       showModalWindow,
       setShowModalWindow,
+      modalPage,
+      setModalPage,
       }}>
       {props.children}
     </GlobalContext.Provider>

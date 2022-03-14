@@ -1,5 +1,5 @@
 import { Box, Modal, ThemeProvider, Typography } from "@mui/material";
-import React, { SyntheticEvent, useContext, useState } from "react";
+import React, { SyntheticEvent, useContext, useEffect, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import GlobalContext from "../../context/globalContext";
 import theme from "../../styles/theme";
@@ -23,9 +23,12 @@ const style = {
 
 const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
   // console.log('pagesContent 0:', pagesContent[0])
-  const { showModalWindow, setShowModalWindow } = useContext(GlobalContext);
+  const { showModalWindow, setShowModalWindow, modalPage, setModalPage} = useContext(GlobalContext);
   const handleClose = () => setShowModalWindow(false);
-  const [modalPage, setModalPage] = useState(pagesNames[0]);
+  
+  useEffect(() => {
+    setModalPage(pagesNames[0]);
+  }, []);
 
   const handleChangePage = (
     event: React.SyntheticEvent<Element, Event>,

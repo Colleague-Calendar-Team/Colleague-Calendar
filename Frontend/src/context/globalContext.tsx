@@ -9,6 +9,8 @@ const GlobalContext = React.createContext({
   setDaySelected: (day: dayjs.Dayjs) => {},
   showModalWindow: false,
   setShowModalWindow: (open: boolean) => {},
+  modalPage: '',
+  setModalPage: (page: string) => {},
 })
 
 export default GlobalContext;
