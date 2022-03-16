@@ -1,56 +1,17 @@
 import { useContext, useState } from "react";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import MessageIcon from "@mui/icons-material/Message";
-import Switch from "@mui/material/Switch";
 import { Box, Button } from "@mui/material";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import NotificationItem from './../components/notifications/NotificationItem';
 import useButtonStyles from "../styles/button";
 import theme from "../styles/theme";
-import { NotificationItemState } from "../types/notificationItem";
 import GlobalContext from "../context/globalContext";
-
-const NotificationItem: React.FC<NotificationItemState> = ({
-  ntfName,
-  ntfLabel,
-  selectedNotifications,
-  setSelectedNotifications,
-  children,
-}) => {
-  const handleToggle = (value: string) => () => {
-    const currentIndex = selectedNotifications.indexOf(value);
-    const newChecked = [...selectedNotifications];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setSelectedNotifications(newChecked);
-  };
-
-  return (
-    <ListItem>
-      <ListItemIcon>{children}</ListItemIcon>
-      <ListItemText
-        id={`switch-list-label-{${ntfName}}`}
-        primary={`${ntfLabel}`}
-      />
-      <Switch
-        edge="end"
-        onChange={handleToggle(ntfName)}
-        checked={selectedNotifications.indexOf(ntfName) !== -1}
-        inputProps={{
-          "aria-labelledby": `switch-list-label-{${ntfName}}`,
-        }}
-      />
-    </ListItem>
-  );
-};
 
 export default function NotificationsEventInfo() {
   const { setModalPage, setShowModalWindow } = useContext(GlobalContext);
@@ -58,6 +19,9 @@ export default function NotificationsEventInfo() {
   const [selectedNotifications, setSelectedNotifications] = useState([
     "email",
   ]);
+  const [timeBeforeNtf, setTimeBeforeNtf] = useState(5);
+  const timeIntervals = [5, 10, 15];
+
   const ntfItems = [
     { ntfName: "email", ntfLabel: "Почта" },
     { ntfName: "telegram", ntfLabel: "Телеграм" },
@@ -67,10 +31,12 @@ export default function NotificationsEventInfo() {
   function Back() {
     setModalPage('Участники');
   }
-
   function Submit() {
     setShowModalWindow(false);
   }
+  const handleChange = (event: SelectChangeEvent<number>) => {
+    setTimeBeforeNtf(Number(event.target.value));
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -106,6 +72,24 @@ export default function NotificationsEventInfo() {
           <MessageIcon />
         </NotificationItem>
       </List>
+      <Box sx={{display: 'flex', alignItems: 'center'}}>
+        <span>Напомнить мне за </span>
+        <Box sx={{display: 'flex', m: 1}}>
+          <FormControl>
+            <Select
+              id="minutes-interval-select"
+              value={timeBeforeNtf}
+              onChange={handleChange}
+              size="small"
+            >
+              {timeIntervals.map((interval) =>
+                <MenuItem value={interval}>{interval}</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+        </Box>
+        <span> минут до события</span>
+      </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button className={classes.root} onClick={Back}>
           Назад
