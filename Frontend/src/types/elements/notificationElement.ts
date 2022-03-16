@@ -1,4 +1,4 @@
-export interface NotificationItemState {
+export interface NotificationElementState {
   ntfName: string;
   ntfLabel: string;
   selectedNotifications: string[];

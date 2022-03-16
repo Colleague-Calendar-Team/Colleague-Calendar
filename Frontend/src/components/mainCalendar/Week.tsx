@@ -1,10 +1,10 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import Day from './Day';
+import Hour from './Hour';
 import { Grid, Typography } from '@mui/material';
-import { WeekState } from '../../types/week';
+import { WeekElementState } from '../../types/elements/weekElement';
 
-const Week:React.FC<WeekState> = ({week}) => {
+const Week:React.FC<WeekElementState> = ({week}) => {
   function getHours(): number[] {
     let hours: number[] = [];
     for (let i: number = 0; i < 24; i++) {
@@ -34,7 +34,7 @@ const Week:React.FC<WeekState> = ({week}) => {
         </Grid>
         {week.map((day, dayId) => (
         <Grid item xs={1} key={dayId}>
-          <Day day={day} hour={hour} key={dayId}/>
+          <Hour day={day} hour={hour} key={dayId}/>
         </Grid>         
         ))}
       </React.Fragment>

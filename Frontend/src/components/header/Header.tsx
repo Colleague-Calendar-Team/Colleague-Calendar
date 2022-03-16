@@ -11,10 +11,10 @@ import useButtonStyles from '../../styles/button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import GlobalContext from '../../context/globalContext';
-import { WeekState } from '../../types/week';
+import { WeekElementState } from '../../types/elements/weekElement';
 import theme from '../../styles/theme';
 
-const Header:React.FC<WeekState> = ({week}) => {
+const Header:React.FC<WeekElementState> = ({week}) => {
   const classes = useButtonStyles();
   const {daySelected, setDaySelected} = useContext(GlobalContext);
   const firstDate = dayjs(new Date(week[0].year(), week[0].month()));

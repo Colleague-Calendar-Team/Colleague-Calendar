@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { Box } from "@mui/material";
 import useEventStyles from "../../styles/event";
 import { EventState } from "../../types/event";
-import { EventElementState } from "../../types/eventElement";
+import { EventElementState } from "../../types/elements/eventElement";
 
 const Event: React.FC<EventElementState> =({event, day, hour, eventId}) => {
   const eventClasses = useEventStyles();

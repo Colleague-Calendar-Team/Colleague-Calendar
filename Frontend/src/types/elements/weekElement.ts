@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
 
-export interface WeekState {
+export interface WeekElementState {
   week: dayjs.Dayjs[];
 }

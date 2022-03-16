@@ -1,16 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { Box } from "@mui/material";
-import theme from "../../styles/theme";
-import { DayState } from "../../types/day";
+import { HourElementState } from "../../types/elements/hourElement";
 import GlobalContext from "../../context/globalContext";
 import useHourStyles from "../../styles/hour";
-import useEventStyles from "../../styles/event";
 import { EventState } from "../../types/event";
 import Event from './Event';
 
-const Day: React.FC<DayState> = ({ day, hour }) => {
-  const [dayEvents, setDayEvents] = useState<EventState[]>([]);
+const Hour: React.FC<HourElementState> = ({ day, hour }) => {
+  const [hourEvents, setHourEvents] = useState<EventState[]>([]);
   const hourClasses = useHourStyles();
   const { setDaySelected, setShowModalWindow } = useContext(GlobalContext);
 
@@ -23,7 +21,7 @@ const Day: React.FC<DayState> = ({ day, hour }) => {
       meetingLink: "meeting link",
       isRepeating: false,
     };
-    setDayEvents([event]);
+    setHourEvents([event]);
   }, []);
 
   function getCellStyle(day: dayjs.Dayjs, hour: number) {
@@ -54,7 +52,7 @@ const Day: React.FC<DayState> = ({ day, hour }) => {
     >
       <Box className={hourClasses.root} sx={getCellStyle(day, hour)}>
         {/* {day.format("DD")} */}
-        {dayEvents.map((event, id) => (
+        {hourEvents.map((event, id) => (
           <Event event={event} day={day} hour={hour} eventId={id}></Event>
         ))}
       </Box>
@@ -62,4 +60,4 @@ const Day: React.FC<DayState> = ({ day, hour }) => {
   );
 };
 
-export default Day;
+export default Hour;

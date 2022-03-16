@@ -4,11 +4,10 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import MessageIcon from "@mui/icons-material/Message";
 import { Box, Button } from "@mui/material";
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import NotificationItem from './../components/notifications/NotificationItem';
+import NotificationElement from '../components/notifications/NotificationElement';
 import useButtonStyles from "../styles/button";
 import theme from "../styles/theme";
 import GlobalContext from "../context/globalContext";
@@ -47,30 +46,30 @@ export default function NotificationsEventInfo() {
           bgcolor: theme.palette.primary.main,
         }}
       >
-        <NotificationItem
+        <NotificationElement
           ntfName={ntfItems[0].ntfName}
           ntfLabel={ntfItems[0].ntfLabel}
           selectedNotifications={selectedNotifications}
           setSelectedNotifications={setSelectedNotifications}
         >
           <AlternateEmailIcon />
-        </NotificationItem>
-        <NotificationItem
+        </NotificationElement>
+        <NotificationElement
           ntfName={ntfItems[1].ntfName}
           ntfLabel={ntfItems[1].ntfLabel}
           selectedNotifications={selectedNotifications}
           setSelectedNotifications={setSelectedNotifications}
         >
           <TelegramIcon />
-        </NotificationItem>
-        <NotificationItem
+        </NotificationElement>
+        <NotificationElement
           ntfName={ntfItems[2].ntfName}
           ntfLabel={ntfItems[2].ntfLabel}
           selectedNotifications={selectedNotifications}
           setSelectedNotifications={setSelectedNotifications}
         >
           <MessageIcon />
-        </NotificationItem>
+        </NotificationElement>
       </List>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
         <span>Напомнить мне за </span>

@@ -2,9 +2,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Switch from "@mui/material/Switch";
-import { NotificationItemState } from "../../types/notificationItem";
+import { NotificationElementState } from "../../types/elements/notificationElement";
 
-const NotificationItem: React.FC<NotificationItemState> = ({
+const NotificationElement: React.FC<NotificationElementState> = ({
   ntfName,
   ntfLabel,
   selectedNotifications,
@@ -43,4 +43,4 @@ const NotificationItem: React.FC<NotificationItemState> = ({
   );
 };
 
-export default NotificationItem;
+export default NotificationElement;
