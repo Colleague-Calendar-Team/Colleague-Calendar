@@ -8,21 +8,9 @@ import { EventState } from "../../types/event";
 import Event from './Event';
 
 const Hour: React.FC<HourElementState> = ({ day, hour }) => {
-  const [hourEvents, setHourEvents] = useState<EventState[]>([]);
+  // const [hourEvents, setHourEvents] = useState<EventState[]>([]);
   const hourClasses = useHourStyles();
   const { setDaySelected, setShowModalWindow } = useContext(GlobalContext);
-
-  useEffect(() => {
-    const event: EventState = {
-      title: "Пример события",
-      beginTime: "2022-03-13T9:00",
-      endTime: "2022-03-13T14:00",
-      description: "description",
-      meetingLink: "meeting link",
-      isRepeating: false,
-    };
-    setHourEvents([event]);
-  }, []);
 
   function getCellStyle(day: dayjs.Dayjs, hour: number) {
     return {
@@ -50,11 +38,17 @@ const Hour: React.FC<HourElementState> = ({ day, hour }) => {
         setShowModalWindow(true);
       }}
     >
-      <Box className={hourClasses.root} sx={getCellStyle(day, hour)}>
+      <Box id={dayjs(
+            new Date(
+              dayjs(day).year(),
+              dayjs(day).month(),
+              dayjs(day).date(),
+              hour
+            )).format('YYYY-MM-DDTHH:mm')} className={hourClasses.root} sx={getCellStyle(day, hour)}>
         {/* {day.format("DD")} */}
-        {hourEvents.map((event, id) => (
-          <Event event={event} day={day} hour={hour} eventId={id}></Event>
-        ))}
+        {/* {hourEvents.map((event, id) => ( */}
+          {/* <Event event={event} day={day} hour={hour} eventId={id}></Event> */}
+        {/* ))} */}
       </Box>
     </Box>
   );
