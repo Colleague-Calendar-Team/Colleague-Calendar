@@ -6,7 +6,7 @@ import { getWeek } from '../utils/getWeek';
 export default function ContextWrapper(props: any) {
   const [week, setWeek] = useState(getWeek(dayjs()));
   const [daySelected, setDaySelected] = useState<dayjs.Dayjs>(dayjs());
-  const [showModalWindow, setShowModalWindow] = useState(false);
+  const [showModalWindow, setShowModalWindow] = useState<string>('');
   const [modalPage, setModalPage] = useState('');
 
   return (

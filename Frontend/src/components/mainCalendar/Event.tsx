@@ -8,20 +8,6 @@ import { EventElementState } from "../../types/elements/eventElement";
 const Event: React.FC<EventElementState> =({event, day, hour, eventId}) => {
   const eventClasses = useEventStyles();
 
-  function hourHasEvent(event: EventState, day: dayjs.Dayjs, hour: number) {
-    const begin = dayjs(event.beginTime, "YYYY-MM-DDTHH:mm");
-
-    if (
-      dayjs(begin).year() === dayjs(day).year() &&
-      dayjs(begin).month() === dayjs(day).month() &&
-      dayjs(begin).date() === dayjs(day).date() &&
-      hour === dayjs(begin).hour()
-    ) {
-      return true;
-    }
-
-    return false;
-  }
   function getEventStyle(event: EventState) {
     const begin = dayjs(event.beginTime, "YYYY-MM-DDTHH:mm");
     const end = dayjs(event.endTime, "YYYY-MM-DDTHH:mm");
@@ -32,9 +18,24 @@ const Event: React.FC<EventElementState> =({event, day, hour, eventId}) => {
     };
   }
 
-  if (!hourHasEvent(event, day, hour)) {
-    return <></>;
-  }
+  // function hourHasEvent(event: EventState, day: dayjs.Dayjs, hour: number) {
+  //   const begin = dayjs(event.beginTime, "YYYY-MM-DDTHH:mm");
+
+  //   if (
+  //     dayjs(begin).year() === dayjs(day).year() &&
+  //     dayjs(begin).month() === dayjs(day).month() &&
+  //     dayjs(begin).date() === dayjs(day).date() &&
+  //     hour === dayjs(begin).hour()
+  //   ) {
+  //     return true;
+  //   }
+
+  //   return false;
+  // }
+
+  // if (!hourHasEvent(event, day, hour)) {
+  //   return <></>;
+  // }
 
   return (
     <Box

@@ -7,8 +7,8 @@ const GlobalContext = React.createContext({
   setWeek: (week: dayjs.Dayjs[]) => {},
   daySelected: dayjs(),
   setDaySelected: (day: dayjs.Dayjs) => {},
-  showModalWindow: false,
-  setShowModalWindow: (open: boolean) => {},
+  showModalWindow: '',
+  setShowModalWindow: (open: string) => {},
   modalPage: '',
   setModalPage: (page: string) => {},
 })

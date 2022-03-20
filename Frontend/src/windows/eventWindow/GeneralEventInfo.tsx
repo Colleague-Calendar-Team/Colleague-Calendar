@@ -4,10 +4,10 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import dayjs from "dayjs";
-import GlobalContext from "../context/globalContext";
-import useButtonStyles from "../styles/button";
-import { useActions } from "../hooks/useActions";
-import { EventState } from "../types/event";
+import GlobalContext from "../../context/globalContext";
+import useButtonStyles from "../../styles/button";
+import { useActions } from "../../hooks/useActions";
+import { EventState } from "../../types/event";
 
 const GeneralEventInfo = () => {
   const { daySelected, setModalPage } = useContext(GlobalContext);
@@ -25,7 +25,7 @@ const GeneralEventInfo = () => {
   function eventSubmit() {
     const event: EventState = {title, description, beginTime, endTime, meetingLink, isRepeating};
     saveEvent(event);
-    setShowModalWindow(false);
+    setShowModalWindow('');
   }
 
   function Next() {

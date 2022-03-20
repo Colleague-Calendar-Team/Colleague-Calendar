@@ -24,7 +24,7 @@ const style = {
 const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
   // console.log('pagesContent 0:', pagesContent[0])
   const { showModalWindow, setShowModalWindow, modalPage, setModalPage} = useContext(GlobalContext);
-  const handleClose = () => setShowModalWindow(false);
+  const handleClose = () => setShowModalWindow('');
   
   useEffect(() => {
     setModalPage(pagesNames[0]);
@@ -38,7 +38,7 @@ const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
   };
 
   return (
-    <Modal open={showModalWindow} onClose={handleClose}>
+    <Modal open={showModalWindow !== ''} onClose={handleClose}>
       <Box sx={style}>
         <Typography id="modal-title" variant="h6" component="h2" sx={{ p: 1 }}>
           {title}

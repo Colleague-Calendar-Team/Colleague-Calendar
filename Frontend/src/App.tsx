@@ -9,10 +9,11 @@ import Week from './components/mainCalendar/Week';
 import Header from './components/header/Header';
 import { getWeek } from './utils/getWeek';
 import GlobalContext from './context/globalContext';
-import EventWindow from './windows/EventWindow';
+import EventWindow from './windows/eventWindow/EventWindow';
+import SettingsWindow from './windows/settingsWindow/SettingsWindow';
 
 function App() {
-  const {daySelected} = useContext(GlobalContext);
+  const {daySelected, showModalWindow} = useContext(GlobalContext);
   const [week, setWeek] = useState((getWeek()));
 
   useEffect(() => {
@@ -21,7 +22,9 @@ function App() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
-      <EventWindow/>
+      {showModalWindow === 'event' && <EventWindow/>}
+      {showModalWindow === 'settings' && <SettingsWindow/>}
+      
       <Header week={week}/>
       <Box sx={{ display: 'flex', backgroundColor: theme.palette.primary.main}}>
         <Sidebar/>

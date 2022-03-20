@@ -8,7 +8,7 @@ export default function AddEventBtn() {
   const {setShowModalWindow} = useContext(GlobalContext);
   
   return (
-    <Button onClick={()=> setShowModalWindow(true)} className={classes.root} sx={{ml:1}}>
+    <Button onClick={()=> setShowModalWindow('event')} className={classes.root} sx={{ml:1}}>
       Создать мероприятие
     </Button>
   );

@@ -16,10 +16,9 @@ import theme from '../../styles/theme';
 
 const Header:React.FC<WeekElementState> = ({week}) => {
   const classes = useButtonStyles();
-  const {daySelected, setDaySelected} = useContext(GlobalContext);
+  const {daySelected, setDaySelected, setShowModalWindow} = useContext(GlobalContext);
   const firstDate = dayjs(new Date(week[0].year(), week[0].month()));
   const secondDate = dayjs(new Date(week[6].year(), week[6].month()));
-  const settings = ['Настройки', 'Выход'];
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
 
   function clickPrevWeek() {
@@ -32,6 +31,13 @@ const Header:React.FC<WeekElementState> = ({week}) => {
     setDaySelected(daySelected === dayjs() ? daySelected : dayjs());
   };
   const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  const openSettings = () => {
+    setShowModalWindow('settings');
+    setAnchorElUser(null);
+  };
+  const onExit = () => {
     setAnchorElUser(null);
   };
 
@@ -76,11 +82,19 @@ const Header:React.FC<WeekElementState> = ({week}) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', mb: 1}}>
+                <IconButton sx={{ mr: 1 }}>
+                  <Avatar alt="Пользователь" src="/defaultAvatar.jpg" sx={{borderColor: theme.palette.primary.dark, border: 2, width: 60, height: 60}} />
+                </IconButton>
+                <Typography textAlign="center" sx={{fontSize: 12, fontWeight: 'bold'}}>Иван Иванов</Typography>
+                <Typography textAlign="center" sx={{fontSize: 12}}>ivanov@mail.ru</Typography>
+              </Box>
+              <MenuItem key={0} onClick={openSettings}>
+                <Typography textAlign="center">Настройки</Typography>
+              </MenuItem>
+              <MenuItem key={1} onClick={onExit}>
+                <Typography textAlign="center">Выход</Typography>
+              </MenuItem>
             </Menu>
           </Box>
       </Toolbar>

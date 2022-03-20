@@ -7,10 +7,10 @@ import { Box, Button } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import NotificationElement from '../components/notifications/NotificationElement';
-import useButtonStyles from "../styles/button";
-import theme from "../styles/theme";
-import GlobalContext from "../context/globalContext";
+import NotificationElement from '../../components/notifications/NotificationElement';
+import useButtonStyles from "../../styles/button";
+import theme from "../../styles/theme";
+import GlobalContext from "../../context/globalContext";
 
 export default function NotificationsEventInfo() {
   const { setModalPage, setShowModalWindow } = useContext(GlobalContext);
@@ -31,7 +31,7 @@ export default function NotificationsEventInfo() {
     setModalPage('Участники');
   }
   function Submit() {
-    setShowModalWindow(false);
+    setShowModalWindow('');
   }
   const handleChange = (event: SelectChangeEvent<number>) => {
     setTimeBeforeNtf(Number(event.target.value));
@@ -81,8 +81,8 @@ export default function NotificationsEventInfo() {
               onChange={handleChange}
               size="small"
             >
-              {timeIntervals.map((interval) =>
-                <MenuItem value={interval}>{interval}</MenuItem>
+              {timeIntervals.map((interval, id) =>
+                <MenuItem value={interval} key={id}>{interval}</MenuItem>
               )}
             </Select>
           </FormControl>

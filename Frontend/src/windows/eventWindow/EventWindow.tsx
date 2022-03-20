@@ -1,4 +1,4 @@
-import ModalWindow from "../components/modal/Modal";
+import ModalWindow from "../../components/modal/Modal";
 import GeneralEventInfo from "./GeneralEventInfo";
 import MembersEventInfo from "./MembersEvenInfo";
 import NotificationsEventInfo from "./NotificationsEventInfo";

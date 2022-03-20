@@ -35,7 +35,7 @@ const Hour: React.FC<HourElementState> = ({ day, hour }) => {
             )
           )
         );
-        setShowModalWindow(true);
+        setShowModalWindow('event');
       }}
     >
       <Box id={dayjs(

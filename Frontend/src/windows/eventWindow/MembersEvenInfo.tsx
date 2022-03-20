@@ -6,13 +6,13 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
-import theme from '../styles/theme';
+import theme from '../../styles/theme';
 import { Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { Search, SearchIconWrapper, StyledInputBase } from '../components/search/search';
+import { Search, SearchIconWrapper, StyledInputBase } from '../../components/search/search';
 import { Button } from '@mui/material';
-import useButtonStyles from "../styles/button";
-import GlobalContext from "../context/globalContext";
+import useButtonStyles from "../../styles/button";
+import GlobalContext from "../../context/globalContext";
 
 const MembersEventInfo = () => {
   const classes = useButtonStyles();
