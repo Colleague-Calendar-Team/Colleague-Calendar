@@ -6,4 +6,6 @@ export interface EventElementState {
   day: dayjs.Dayjs;
   hour: number;
   eventId: number;
+  setShowModalWindow: (open: string) => void,
+  setSelectedEvent: (event: EventState) => void,
 }

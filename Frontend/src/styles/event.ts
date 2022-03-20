@@ -3,8 +3,10 @@ import theme from './theme';
 
 const useEventStyles = makeStyles({
   root: {
+    display: 'flex',
+    justifyContent: 'space-between',
     position: 'absolute',
-    color: theme.palette.primary.dark,
+    color: theme.palette.secondary.main,
     backgroundColor: theme.palette.primary.light,
     width: '100%',
     zIndex: 1,

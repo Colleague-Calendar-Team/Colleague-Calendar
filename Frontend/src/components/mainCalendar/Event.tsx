@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import useEventStyles from "../../styles/event";
 import { EventState } from "../../types/event";
 import { EventElementState } from "../../types/elements/eventElement";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-const Event: React.FC<EventElementState> =({event, day, hour, eventId}) => {
+const Event: React.FC<EventElementState> =({event, day, hour, eventId, setShowModalWindow, setSelectedEvent}) => {
   const eventClasses = useEventStyles();
 
   function getEventStyle(event: EventState) {
@@ -42,8 +43,16 @@ const Event: React.FC<EventElementState> =({event, day, hour, eventId}) => {
       key={eventId}
       className={eventClasses.root}
       sx={getEventStyle(event)}
+      onClick={() => {
+        setSelectedEvent(event);
+        setShowModalWindow('event');
+      }}
     >
-      {event.title}
+      <Box sx={{display: 'flex', flexDirection: 'column', textAlign: 'start', ml: 1}}>
+        <Typography sx={{fontWeight: 'bold'}}>{event.title}</Typography>
+        <Typography >{dayjs(event.beginTime).hour()}:00 - {dayjs(event.endTime).hour()}:00</Typography>
+      </Box>
+      <DeleteOutlineIcon />
     </Box>
   );
 }

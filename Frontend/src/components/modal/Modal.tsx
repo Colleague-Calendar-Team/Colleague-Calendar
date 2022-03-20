@@ -9,6 +9,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import themeModalTab from "../../styles/modalTab";
+import { EventInit } from "../../context/initialState";
 
 const style = {
   position: "absolute",
@@ -23,8 +24,11 @@ const style = {
 
 const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
   // console.log('pagesContent 0:', pagesContent[0])
-  const { showModalWindow, setShowModalWindow, modalPage, setModalPage} = useContext(GlobalContext);
-  const handleClose = () => setShowModalWindow('');
+  const { showModalWindow, setShowModalWindow, modalPage, setModalPage, setSelectedEvent} = useContext(GlobalContext);
+  const handleClose = () => {
+    setShowModalWindow('');
+    setSelectedEvent(EventInit);
+  }
   
   useEffect(() => {
     setModalPage(pagesNames[0]);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import dayjs from "dayjs";
 import Hour from "./Hour";
 import { Grid, Typography } from "@mui/material";
@@ -7,8 +7,11 @@ import { EventState } from "../../types/event";
 import Event from "./Event";
 import ReactDOMServer from "react-dom/server";
 import ReactDOM from "react-dom";
+import GlobalContext from "../../context/globalContext";
 
 const Week: React.FC<WeekElementState> = ({ week }) => {
+  const {setShowModalWindow, setSelectedEvent} = useContext(GlobalContext);
+
   function getHours(): number[] {
     let hours: number[] = [];
     for (let i: number = 0; i < 24; i++) {
@@ -53,6 +56,8 @@ const Week: React.FC<WeekElementState> = ({ week }) => {
           day={dayjs(event.beginTime)}
           hour={dayjs(event.beginTime).hour()}
           eventId={id}
+          setShowModalWindow={setShowModalWindow}
+          setSelectedEvent={setSelectedEvent}
         ></Event>
       );
       ReactDOM.render(eventElement, document.getElementById(event.beginTime));
@@ -90,3 +95,4 @@ const Week: React.FC<WeekElementState> = ({ week }) => {
 };
 
 export default Week;
+

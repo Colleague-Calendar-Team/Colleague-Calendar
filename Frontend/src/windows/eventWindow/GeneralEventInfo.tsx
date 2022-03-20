@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -10,21 +10,25 @@ import { useActions } from "../../hooks/useActions";
 import { EventState } from "../../types/event";
 
 const GeneralEventInfo = () => {
-  const { daySelected, setModalPage } = useContext(GlobalContext);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [beginTime, setBeginTime] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
-  const [endTime, setEndTime] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
-  const [meetingLink, setMeetingLink] = useState("");
-  const [isRepeating, setIsRepeating] = useState(false);
+  const { setModalPage, selectedEvent } = useContext(GlobalContext);
+  const [event, setEvent] = useState(selectedEvent);
+  // const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [beginTime, setBeginTime] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
+  // const [endTime, setEndTime] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
+  // const [meetingLink, setMeetingLink] = useState("");
+  // const [isRepeating, setIsRepeating] = useState(false);
+
+  useEffect(() => {
+    console.log('selectedEvent: ', selectedEvent);
+  }, []);
 
   const classes = useButtonStyles();
-  const {saveEvent} = useActions();
+  // const {saveEvent} = useActions();
   const {setShowModalWindow} = useContext(GlobalContext);
 
   function eventSubmit() {
-    const event: EventState = {title, description, beginTime, endTime, meetingLink, isRepeating};
-    saveEvent(event);
+    // saveEvent(event);
     setShowModalWindow('');
   }
 
@@ -46,29 +50,23 @@ const GeneralEventInfo = () => {
         label="Название мероприятия"
         variant="outlined"
         size="small"
-        defaultValue={title}
-        onChange={(e) => setTitle(e.target.value)}
+        defaultValue={event.title}
+        onChange={(e) => setEvent({...event, 'title': e.target.value})}
       />
       <TextField
         id="date-begin"
         label="Дата и время начала"
         type="datetime-local"
-        defaultValue={
-          daySelected
-            ? dayjs(daySelected).format("YYYY-MM-DDTHH:mm")
-            : beginTime
-        }
-        onChange={(e) => setBeginTime(e.target.value)}
+        defaultValue={event.beginTime}
+        onChange={(e) => setEvent({...event, 'beginTime': e.target.value})}
         size="small"
       />
       <TextField
         id="date-end"
         label="Дата и время окончания"
         type="datetime-local"
-        defaultValue={
-          daySelected ? dayjs(daySelected).format("YYYY-MM-DDTHH:mm") : endTime
-        }
-        onChange={(e) => setEndTime(e.target.value)}
+        defaultValue={event.endTime}
+        onChange={(e) => setEvent({...event, 'endTime': e.target.value})}
         size="small"
       />
       <TextField
@@ -76,12 +74,12 @@ const GeneralEventInfo = () => {
         label="Местоположение"
         variant="outlined"
         size="small"
-        defaultValue={meetingLink}
-        onChange={(e) => setMeetingLink(e.target.value)}
+        defaultValue={event.meetingLink}
+        onChange={(e) => setEvent({...event, 'meetingLink': e.target.value})}
       />
       <FormGroup>
         <FormControlLabel
-          control={<Checkbox id="repeated" checked={isRepeating} onChange={(e) => setIsRepeating(!isRepeating)}/>}
+          control={<Checkbox id="repeated" checked={event.isRepeating} onChange={(e) => setEvent({...event, 'isRepeating': Boolean(e.target.value)})}/>}
           label="Повторяющееся мероприятие"
         />
       </FormGroup>
@@ -92,8 +90,8 @@ const GeneralEventInfo = () => {
         multiline
         maxRows={4}
         size="small"
-        defaultValue={description}
-        onChange={(e) => setDescription(e.target.value)}
+        defaultValue={event.description}
+        onChange={(e) => setEvent({...event, 'description': e.target.value})}
       />
       <Box sx={{ display: 'flex', justifyContent: 'end'}}>
       <Button className={classes.root} onClick={Next}>
