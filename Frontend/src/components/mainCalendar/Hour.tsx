@@ -6,11 +6,12 @@ import GlobalContext from "../../context/globalContext";
 import useHourStyles from "../../styles/hour";
 import { EventState } from "../../types/event";
 import Event from './Event';
+import { EventInit } from "../../context/initialState";
 
 const Hour: React.FC<HourElementState> = ({ day, hour }) => {
   // const [hourEvents, setHourEvents] = useState<EventState[]>([]);
   const hourClasses = useHourStyles();
-  const { setDaySelected, setShowModalWindow } = useContext(GlobalContext);
+  const { setDaySelected, setShowModalWindow, setSelectedEvent } = useContext(GlobalContext);
 
   function getCellStyle(day: dayjs.Dayjs, hour: number) {
     return {
@@ -35,6 +36,7 @@ const Hour: React.FC<HourElementState> = ({ day, hour }) => {
             )
           )
         );
+        setSelectedEvent(EventInit);
         setShowModalWindow('event');
       }}
     >

@@ -10,25 +10,12 @@ import { useActions } from "../../hooks/useActions";
 import { EventState } from "../../types/event";
 
 const GeneralEventInfo = () => {
-  const { setModalPage, selectedEvent } = useContext(GlobalContext);
-  const [event, setEvent] = useState(selectedEvent);
-  // const [title, setTitle] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [beginTime, setBeginTime] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
-  // const [endTime, setEndTime] = useState(dayjs().format("YYYY-MM-DDTHH:mm"));
-  // const [meetingLink, setMeetingLink] = useState("");
-  // const [isRepeating, setIsRepeating] = useState(false);
-
-  useEffect(() => {
-    console.log('selectedEvent: ', selectedEvent);
-  }, []);
-
   const classes = useButtonStyles();
-  // const {saveEvent} = useActions();
-  const {setShowModalWindow} = useContext(GlobalContext);
+  
+  const { setModalPage, selectedEvent, setShowModalWindow } = useContext(GlobalContext);
+  const [event, setEvent] = useState(selectedEvent);
 
   function eventSubmit() {
-    // saveEvent(event);
     setShowModalWindow('');
   }
 

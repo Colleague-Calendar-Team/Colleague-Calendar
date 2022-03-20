@@ -15,6 +15,8 @@ const GlobalContext = React.createContext({
   setShowModalWindow: (open: string) => {},
   modalPage: '',
   setModalPage: (page: string) => {},
+  isAuthenticated: true,
+  setIsAuthenticated: (auth: boolean) => {},
 })
 
 export default GlobalContext;

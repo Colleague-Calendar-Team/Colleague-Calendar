@@ -11,6 +11,7 @@ export default function ContextWrapper(props: any) {
   const [showModalWindow, setShowModalWindow] = useState<string>('');
   const [modalPage, setModalPage] = useState('');
   const [selectedEvent, setSelectedEvent] = useState<EventState>(EventInit);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   return (
     <GlobalContext.Provider value={{
@@ -24,6 +25,8 @@ export default function ContextWrapper(props: any) {
       setShowModalWindow,
       modalPage,
       setModalPage,
+      isAuthenticated,
+      setIsAuthenticated,
       }}>
       {props.children}
     </GlobalContext.Provider>

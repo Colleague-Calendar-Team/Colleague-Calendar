@@ -12,18 +12,25 @@ import GlobalContext from './context/globalContext';
 import EventWindow from './windows/eventWindow/EventWindow';
 import SettingsWindow from './windows/settingsWindow/SettingsWindow';
 import { useActions } from './hooks/useActions';
+import { useTypedSelector } from './hooks/useTypedSelector';
+import AuthWindow from './windows/authWindow/Auth';
 
 function App() {
-  const {daySelected, showModalWindow} = useContext(GlobalContext);
+  const {daySelected, showModalWindow, isAuthenticated} = useContext(GlobalContext);
   const [week, setWeek] = useState((getWeek()));
   const {loadUser} = useActions();
 
   useEffect(() => {
-    setWeek(getWeek(daySelected));
     loadUser();
+  }, []);
+
+  useEffect(() => {
+    setWeek(getWeek(daySelected));
   }, [daySelected]);
 
   return (
+    <>
+    {isAuthenticated &&
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
       {showModalWindow === 'event' && <EventWindow/>}
       {showModalWindow === 'settings' && <SettingsWindow/>}
@@ -33,7 +40,13 @@ function App() {
         <Sidebar/>
         <Week week={week}/>
       </Box>
-    </Box>
+    </Box>}
+    {!isAuthenticated &&
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.secondary.main, color: theme.palette.primary.main}}>
+        <AuthWindow/>
+      </Box>
+    }
+    </>
   );
 }
 

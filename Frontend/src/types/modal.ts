@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface ModalState {
-  title: string;
+  title?: string;
   pagesNames: string[];
   children: ReactNode[];
 }

@@ -11,7 +11,7 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 export default function UserBlock() {
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
-  const {setShowModalWindow} = useContext(GlobalContext);
+  const {setShowModalWindow, setIsAuthenticated} = useContext(GlobalContext);
   const user = useTypedSelector(state=>state.user);
 
   const handleCloseUserMenu = () => {
@@ -22,6 +22,8 @@ export default function UserBlock() {
     setAnchorElUser(null);
   };
   const onExit = () => {
+    setShowModalWindow('auth');
+    setIsAuthenticated(false);
     setAnchorElUser(null);
   };
 

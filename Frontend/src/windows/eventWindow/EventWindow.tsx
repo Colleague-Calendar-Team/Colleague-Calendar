@@ -3,7 +3,7 @@ import GeneralEventInfo from "./GeneralEventInfo";
 import MembersEventInfo from "./MembersEvenInfo";
 import NotificationsEventInfo from "./NotificationsEventInfo";
 
-export default function EventWindow() {
+const EventWindow = () => {
   return (
     <ModalWindow
       title="Создание мероприятия"
@@ -15,3 +15,7 @@ export default function EventWindow() {
     </ModalWindow>
   );
 }
+
+export default EventWindow;
+
+
