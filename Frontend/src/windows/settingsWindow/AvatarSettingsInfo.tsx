@@ -4,10 +4,12 @@ import GlobalContext from "../../context/globalContext";
 import useButtonStyles from "../../styles/button";
 import theme from "../../styles/theme";
 import Avatar from '@mui/material/Avatar';
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 const AvatarSettingsInfo = () => {
   const [avatarUrl, setAvatarUrl] = useState("defaultAvatar.jpg");
   const classes = useButtonStyles();
+  const user = useTypedSelector(state=>state.user);
 
   function onSubmit() {
   }

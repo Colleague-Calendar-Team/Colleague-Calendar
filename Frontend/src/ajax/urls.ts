@@ -4,6 +4,9 @@ class Urls {
   eventAdd() {
     return this.url + 'event-processing/event/add';
   }
+  getUser() {
+    return this.url + 'user';
+  }
 }
 
 const urls = new Urls();

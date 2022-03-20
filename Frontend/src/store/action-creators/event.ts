@@ -18,7 +18,7 @@ export const saveEvent = (event: EventState) => {
       });
     }
     catch {
-      console.log('ERROR in Save Event:', event)
+      console.error('ERROR in Save Event:', event)
     }
   }
 }

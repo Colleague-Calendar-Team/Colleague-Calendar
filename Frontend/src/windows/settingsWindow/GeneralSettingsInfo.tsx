@@ -3,13 +3,15 @@ import { useContext, useState } from "react";
 import MuiPhoneNumber from 'material-ui-phone-number';
 import GlobalContext from "../../context/globalContext";
 import useButtonStyles from "../../styles/button";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 const GeneralSettingsInfo = () => {
-  const [name, setName] = useState("Неизвестно");
-  const [surname, setSurname] = useState("Неизвестно");
-  const [email, setEmail] = useState("unknown@mail.ru");
-  const [telegram, setTelegram] = useState("unknown");
-  const [phoneNumber, setPhoneNumber] = useState("+79161234567");
+  // const [name, setName] = useState("Неизвестно");
+  // const [surname, setSurname] = useState("Неизвестно");
+  // const [email, setEmail] = useState("unknown@mail.ru");
+  // const [telegram, setTelegram] = useState("unknown");
+  // const [phoneNumber, setPhoneNumber] = useState("+79161234567");
+  const [user, setUser] = useState(useTypedSelector(state=>state.user));
 
   const classes = useButtonStyles();
 
@@ -31,16 +33,16 @@ const GeneralSettingsInfo = () => {
           label="Имя"
           variant="outlined"
           size="small"
-          defaultValue={name}
-          onChange={(e) => setName(e.target.value)}
+          defaultValue={user.name}
+          onChange={(e) => setUser({...user, 'name': e.target.value})}
         />
         <TextField
           id="surname"
           label="Фамилия"
           variant="outlined"
           size="small"
-          defaultValue={surname}
-          onChange={(e) => setSurname(e.target.value)}
+          defaultValue={user.surname}
+          onChange={(e) => setUser({...user, 'surname': e.target.value})}
           sx={{ml: 1}}
         />
       </Box>
@@ -48,8 +50,8 @@ const GeneralSettingsInfo = () => {
         id="email"
         label="Почта"
         type="email"
-        defaultValue={email}
-        onChange={(e) => setEmail(e.target.value)}
+        defaultValue={user.email}
+        onChange={(e) => setUser({...user, 'email': e.target.value})}
         size="small"
       />
       <TextField
@@ -57,22 +59,14 @@ const GeneralSettingsInfo = () => {
         label="Телеграм"
         variant="outlined"
         size="small"
-        defaultValue={telegram}
-        onChange={(e) => setTelegram(e.target.value)}
+        defaultValue={user.telegramID}
+        onChange={(e) => setUser({...user, 'telegramID': e.target.value})}
       />
-      <TextField
-        id="phoneNumber"
-        label="Номер телефона"
-        variant="outlined"
-        size="small"
-        defaultValue={phoneNumber}
-        onChange={(e) => setTelegram(e.target.value)}
-      />
-      <MuiPhoneNumber defaultCountry={'ru'} onChange={(e) => {
+      <MuiPhoneNumber defaultCountry={'ru'} value={user.phoneNumber} onChange={(e) => {
         if (typeof(e) === 'string') {
-          setPhoneNumber(e);
+          setUser({...user, 'phoneNumber': e})
         } else {
-          setPhoneNumber(e.target.value);
+          setUser({...user, 'phoneNumber': e.target.value})
         }
       }}/>
       <Box sx={{ display: 'flex', justifyContent: 'end'}}>

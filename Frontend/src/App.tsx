@@ -11,13 +11,16 @@ import { getWeek } from './utils/getWeek';
 import GlobalContext from './context/globalContext';
 import EventWindow from './windows/eventWindow/EventWindow';
 import SettingsWindow from './windows/settingsWindow/SettingsWindow';
+import { useActions } from './hooks/useActions';
 
 function App() {
   const {daySelected, showModalWindow} = useContext(GlobalContext);
   const [week, setWeek] = useState((getWeek()));
+  const {loadUser} = useActions();
 
   useEffect(() => {
     setWeek(getWeek(daySelected));
+    loadUser();
   }, [daySelected]);
 
   return (
