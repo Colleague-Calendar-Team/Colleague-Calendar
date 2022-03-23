@@ -2,11 +2,16 @@ package main
 
 import (
 	"Backend/internal/serverApiRegistration"
+	"Backend/internal/store"
 	"flag"
+	"net/http"
+	"time"
 
-	"log"
 	"Backend/config"
 	"Backend/internal/logging"
+	"log"
+
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
@@ -42,9 +47,37 @@ func main() {
 		logger.Fatal("Cannot Unmarshal config file", zap.Error(err))
 	}
 
-	s := serverApiRegistration.New(configData, logger)
-	if err := s.Start(); err != nil {
-		logger.Fatal("Cannot run server", zap.Error(err))
+	if err := config.InitViper(configData.StorePath); err != nil {
+		logger.Fatal("Cannot initiate viper", zap.Error(err))
 	}
+
+	logger.Info("Viper initiated")
+
+	configStore, err := config.ParseStoreConfig()
+
+	if err != nil {
+		logger.Fatal("Cannot Unmarshal store config file", zap.Error(err))
+	}
+
+	st := store.New(configStore)
+	if err := st.Open(); err != nil {
+		logger.Fatal("Cannot open the storage", zap.Error(err))
+	}
+	s := serverApiRegistration.New(st)
+
+	r := mux.NewRouter()
+
+	r.HandleFunc("/test", s.HandleTest())
+
+	http.Handle("/", r)
+
+	srv := &http.Server{
+		Handler: r,
+		Addr: configData.HTTPServer.Endpoint,
+		WriteTimeout: time.Duration(configData.HTTPServer.WriteTimeout * int(time.Second)),
+		ReadTimeout: time.Duration(configData.HTTPServer.ReadTimeout * int(time.Second)),
+	}
+
+	logger.Fatal("http listen and serve: ", zap.Error(srv.ListenAndServe()))
 
 }
