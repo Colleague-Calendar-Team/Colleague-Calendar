@@ -4,6 +4,7 @@ import (
 	"Backend/config"
 	"database/sql"
 	"fmt"
+	"regexp"
 
 	_ "github.com/lib/pq" // ...
 )
@@ -23,9 +24,10 @@ func New(config *config.StoreConfig) *Store {
 }
 
 // Open ...
-func (s *Store) Open() error { // TODO: format input from config.yml
-	//dburl := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", s.config.DatabaseURL.Host, s.config.DatabaseURL.Port, s.config.DatabaseURL.User, s.config.DatabaseURL.Password, s.config.DatabaseURL.DBname, s.config.DatabaseURL.SSLmode)
-	dburl := fmt.Sprintf("host=%s dbname=%s sslmode=%s", s.config.DatabaseURL.Host, s.config.DatabaseURL.DBname, s.config.DatabaseURL.SSLmode)
+func (s *Store) Open() error {
+	dburl := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", s.config.DatabaseURL.Host, s.config.DatabaseURL.Port, s.config.DatabaseURL.User, s.config.DatabaseURL.Password, s.config.DatabaseURL.DBname, s.config.DatabaseURL.SSLmode)
+	re := regexp.MustCompile(`[a-z]*= `)
+	dburl = re.ReplaceAllString(dburl, "")
 	db, err := sql.Open("postgres", dburl)
 	if err != nil {
 		return err

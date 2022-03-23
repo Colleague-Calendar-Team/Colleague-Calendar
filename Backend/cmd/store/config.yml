@@ -1,6 +1,6 @@
 databaseURL:
         host: "localhost"
-        port: 
+        port: ""
         user: ""
         password: ""
         dbname: "restapi_dev"
