@@ -5,11 +5,13 @@ export interface UserState {
   telegramID: string;
   name: string;
   surname: string;
+  avatarUrl: string | null;
 }
 
 export enum UserActionTypes {
   LOAD_USER = "LOAD_USER",
   CHANGE_USER = "CHANGE_USER",
+  SAVE_AVATAR = "SAVE_AVATAR",
 }
 
 interface LoadUserAction {
@@ -22,4 +24,9 @@ interface ChangeUserAction {
   payload: UserState;
 }
 
-export type UserAction = LoadUserAction | ChangeUserAction;
+interface SaveAvatarAction {
+  type: UserActionTypes.SAVE_AVATAR;
+  payload: string;
+}
+
+export type UserAction = LoadUserAction | ChangeUserAction | SaveAvatarAction;

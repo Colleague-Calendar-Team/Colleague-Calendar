@@ -13,6 +13,7 @@ import { Search, SearchIconWrapper, StyledInputBase } from '../../components/sea
 import { Button } from '@mui/material';
 import useButtonStyles from "../../styles/button";
 import GlobalContext from "../../context/globalContext";
+const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 const MembersEventInfo = () => {
   const classes = useButtonStyles();
@@ -75,7 +76,7 @@ const MembersEventInfo = () => {
                 <ListItemAvatar>
                   <Avatar
                     alt={`Avatar of ${user}`}
-                    src={`defaultAvatar.jpg`}
+                    src={defaultAvatar}
                   />
                 </ListItemAvatar>
                 <ListItemText id={labelId} primary={`${user}`} />

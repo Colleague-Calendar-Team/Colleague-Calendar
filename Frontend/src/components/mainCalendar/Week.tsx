@@ -5,7 +5,6 @@ import { Grid, Typography } from "@mui/material";
 import { WeekElementState } from "../../types/elements/weekElement";
 import { EventState } from "../../types/event";
 import Event from "./Event";
-import ReactDOMServer from "react-dom/server";
 import ReactDOM from "react-dom";
 import GlobalContext from "../../context/globalContext";
 
@@ -26,24 +25,24 @@ const Week: React.FC<WeekElementState> = ({ week }) => {
     const events: EventState[] = [
       {
         title: "Пример события1",
-        beginTime: "2022-03-15T05:00",
-        endTime: "2022-03-15T07:00",
+        beginTime: "2022-03-22T05:00",
+        endTime: "2022-03-22T07:00",
         description: "description",
         meetingLink: "meeting link",
         isRepeating: false,
       },
       {
         title: "Пример события2",
-        beginTime: "2022-03-17T09:00",
-        endTime: "2022-03-17T14:00",
+        beginTime: "2022-03-24T09:00",
+        endTime: "2022-03-24T14:00",
         description: "description",
         meetingLink: "meeting link",
         isRepeating: false,
       },
       {
         title: "Пример события3",
-        beginTime: "2022-03-20T14:00",
-        endTime: "2022-03-20T20:00",
+        beginTime: "2022-03-27T14:00",
+        endTime: "2022-03-27T20:00",
         description: "description",
         meetingLink: "meeting link",
         isRepeating: false,
@@ -60,7 +59,10 @@ const Week: React.FC<WeekElementState> = ({ week }) => {
           setSelectedEvent={setSelectedEvent}
         ></Event>
       );
-      ReactDOM.render(eventElement, document.getElementById(event.beginTime));
+      const parent = document.getElementById(event.beginTime);
+      if (parent) {
+        ReactDOM.render(eventElement, parent);
+      }
     });
   }, []);
 

@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import theme from '../../styles/theme';
 import GlobalContext from '../../context/globalContext';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 export default function UserBlock() {
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
@@ -31,7 +32,7 @@ export default function UserBlock() {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Настройки пользователя">
         <IconButton onClick={(event) => setAnchorElUser(event.currentTarget)} sx={{ mr: 1 }}>
-          <Avatar alt="Пользователь" src="/defaultAvatar.jpg" sx={{borderColor: theme.palette.primary.dark, border: 2}} />
+          <Avatar alt="Пользователь" src={defaultAvatar} sx={{borderColor: theme.palette.primary.dark, border: 2}} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -52,7 +53,7 @@ export default function UserBlock() {
       >
         <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', mb: 1}}>
           <IconButton sx={{ mr: 1 }}>
-            <Avatar alt="Пользователь" src="/defaultAvatar.jpg" sx={{borderColor: theme.palette.primary.dark, border: 2, width: 60, height: 60}} />
+            <Avatar alt="Пользователь" src={defaultAvatar} sx={{borderColor: theme.palette.primary.dark, border: 2, width: 60, height: 60}} />
           </IconButton>
           <Typography textAlign="center" sx={{fontSize: 12, fontWeight: 'bold'}}>{user.name} {user.surname}</Typography>
           <Typography textAlign="center" sx={{fontSize: 12}}>{user.email}</Typography>
