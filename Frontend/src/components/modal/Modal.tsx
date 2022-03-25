@@ -2,7 +2,7 @@ import { Box, Modal, ThemeProvider, Typography } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import GlobalContext from "../../context/globalContext";
 import theme from "../../styles/theme";
-import { ModalState } from "../../types/modal";
+import { ModalState } from "../../types/elements/modal";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";

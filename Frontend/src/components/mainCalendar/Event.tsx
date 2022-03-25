@@ -12,7 +12,9 @@ const Event: React.FC<EventElementState> =({event, day, hour, eventId, setShowMo
   function getEventStyle(event: EventState) {
     const begin = dayjs(event.beginTime, "YYYY-MM-DDTHH:mm");
     const end = dayjs(event.endTime, "YYYY-MM-DDTHH:mm");
-    let height = (dayjs(end).hour() - dayjs(begin).hour()) * 3;
+    const beginHour = dayjs(begin).hour();
+    const endHour =  dayjs(end).hour();
+    let height = ((endHour ? endHour : 24) - beginHour) * 3;
 
     return {
       height: `${height}em`,

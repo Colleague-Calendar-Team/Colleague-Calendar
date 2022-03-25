@@ -4,6 +4,9 @@ class Urls {
   eventAdd() {
     return this.url + 'event-processing/event/add';
   }
+  eventsGet() {
+    return this.url + 'event-processing/events/all';
+  }
   getUser() {
     return this.url + 'user';
   }

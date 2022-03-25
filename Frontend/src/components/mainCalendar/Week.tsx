@@ -7,9 +7,11 @@ import { EventState } from "../../types/event";
 import Event from "./Event";
 import ReactDOM from "react-dom";
 import GlobalContext from "../../context/globalContext";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 const Week: React.FC<WeekElementState> = ({ week }) => {
   const {setShowModalWindow, setSelectedEvent} = useContext(GlobalContext);
+  const {events} = useTypedSelector(state=>state.events);
 
   function getHours(): number[] {
     let hours: number[] = [];
@@ -22,48 +24,25 @@ const Week: React.FC<WeekElementState> = ({ week }) => {
   const hours = getHours();
 
   useEffect(() => {
-    const events: EventState[] = [
-      {
-        title: "Пример события1",
-        beginTime: "2022-03-22T05:00",
-        endTime: "2022-03-22T07:00",
-        description: "description",
-        meetingLink: "meeting link",
-        isRepeating: false,
-      },
-      {
-        title: "Пример события2",
-        beginTime: "2022-03-24T09:00",
-        endTime: "2022-03-24T14:00",
-        description: "description",
-        meetingLink: "meeting link",
-        isRepeating: false,
-      },
-      {
-        title: "Пример события3",
-        beginTime: "2022-03-27T14:00",
-        endTime: "2022-03-27T20:00",
-        description: "description",
-        meetingLink: "meeting link",
-        isRepeating: false,
-      },
-    ];
-    events.forEach((event, id) => {
-      const eventElement = (
-        <Event
-          event={event}
-          day={dayjs(event.beginTime)}
-          hour={dayjs(event.beginTime).hour()}
-          eventId={id}
-          setShowModalWindow={setShowModalWindow}
-          setSelectedEvent={setSelectedEvent}
-        ></Event>
-      );
-      const parent = document.getElementById(event.beginTime);
-      if (parent) {
-        ReactDOM.render(eventElement, parent);
-      }
-    });
+    console.log('Week element events:', events)
+    if (events !== null) {
+      events[0].forEach((event, id) => {
+        const eventElement = (
+          <Event
+            event={event}
+            day={dayjs(event.beginTime)}
+            hour={dayjs(event.beginTime).hour()}
+            eventId={id}
+            setShowModalWindow={setShowModalWindow}
+            setSelectedEvent={setSelectedEvent}
+          ></Event>
+        );
+        const parent = document.getElementById(event.beginTime);
+        if (parent) {
+          ReactDOM.render(eventElement, parent);
+        }
+      });
+    }
   }, []);
 
   return (

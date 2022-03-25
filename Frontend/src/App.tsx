@@ -18,10 +18,12 @@ import AuthWindow from './windows/authWindow/Auth';
 function App() {
   const {daySelected, showModalWindow, isAuthenticated} = useContext(GlobalContext);
   const [week, setWeek] = useState((getWeek()));
-  const {loadUser} = useActions();
+  const {loadUser, loadEvents} = useActions();
+  const {loading} = useTypedSelector(state=>state.events);
 
   useEffect(() => {
     loadUser();
+    loadEvents();
   }, []);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ function App() {
 
   return (
     <>
-    {isAuthenticated &&
+    {isAuthenticated && !loading &&
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
       {showModalWindow === 'event' && <EventWindow/>}
       {showModalWindow === 'settings' && <SettingsWindow/>}
@@ -44,6 +46,11 @@ function App() {
     {!isAuthenticated &&
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.secondary.main, color: theme.palette.primary.main}}>
         <AuthWindow/>
+      </Box>
+    }
+    {isAuthenticated && loading &&
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.secondary.main, color: theme.palette.primary.main}}>
+        Loading...
       </Box>
     }
     </>
