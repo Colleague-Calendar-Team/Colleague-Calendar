@@ -8,7 +8,7 @@ import { EventState } from "../../types/event";
 import Event from './Event';
 import { EventInit } from "../../context/initialState";
 
-const Hour: React.FC<HourElementState> = ({ day, hour }) => {
+const Hour: React.FC<HourElementState> = ({ day, hour, id }) => {
   // const [hourEvents, setHourEvents] = useState<EventState[]>([]);
   const hourClasses = useHourStyles();
   const { setDaySelected, setShowModalWindow, setSelectedEvent } = useContext(GlobalContext);
@@ -40,17 +40,19 @@ const Hour: React.FC<HourElementState> = ({ day, hour }) => {
         setShowModalWindow('event');
       }}
     >
-      <Box id={dayjs(
-            new Date(
-              dayjs(day).year(),
-              dayjs(day).month(),
-              dayjs(day).date(),
-              hour
-            )).format('YYYY-MM-DDTHH:mm')} className={hourClasses.root} sx={getCellStyle(day, hour)}>
+      <Box id={id.toString()} className={hourClasses.root} sx={getCellStyle(day, hour)}>
+      {/* id={dayjs(
+      //       new Date(
+      //         dayjs(day).year(),
+      //         dayjs(day).month(),
+      //         dayjs(day).date(),
+      //         hour
+      //       )).format('YYYY-MM-DDTHH:mm')} className={hourClasses.root} sx={getCellStyle(day, hour)}>
         {/* {day.format("DD")} */}
         {/* {hourEvents.map((event, id) => ( */}
           {/* <Event event={event} day={day} hour={hour} eventId={id}></Event> */}
         {/* ))} */}
+        {/* {id} */}
       </Box>
     </Box>
   );

@@ -11,15 +11,17 @@ import UserBlock from './UserBlock';
 
 const Header:React.FC<WeekElementState> = ({week}) => {
   const classes = useButtonStyles();
-  const {daySelected, setDaySelected } = useContext(GlobalContext);
+  const {daySelected, setDaySelected, renderWeek, setRenderWeek } = useContext(GlobalContext);
   const firstDate = dayjs(new Date(week[0].year(), week[0].month()));
   const secondDate = dayjs(new Date(week[6].year(), week[6].month()));
 
   function clickPrevWeek() {
     setDaySelected(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
+    setRenderWeek(renderWeek - 1);
   };
   function clickNextWeek() {
     setDaySelected(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() + 7)));
+    setRenderWeek(renderWeek + 1);
   };
   function clickToday() {
     setDaySelected(daySelected === dayjs() ? daySelected : dayjs());

@@ -7,6 +7,8 @@ import { EventState } from '../types/event';
 const GlobalContext = React.createContext({
   week: getWeek(dayjs()),
   setWeek: (week: dayjs.Dayjs[]) => {},
+  renderWeek: 0,
+  setRenderWeek: (renderWeek: number) => {},
   daySelected: dayjs(),
   setDaySelected: (day: dayjs.Dayjs) => {},
   selectedEvent: EventInit,

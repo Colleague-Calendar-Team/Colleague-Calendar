@@ -7,6 +7,7 @@ import { EventInit } from './initialState';
 
 export default function ContextWrapper(props: any) {
   const [week, setWeek] = useState(getWeek(dayjs()));
+  const [renderWeek, setRenderWeek] = useState(0);
   const [daySelected, setDaySelected] = useState<dayjs.Dayjs>(dayjs());
   const [showModalWindow, setShowModalWindow] = useState<string>('');
   const [modalPage, setModalPage] = useState('');
@@ -17,6 +18,8 @@ export default function ContextWrapper(props: any) {
     <GlobalContext.Provider value={{
       week,
       setWeek,
+      renderWeek,
+      setRenderWeek,
       daySelected,
       setDaySelected,
       selectedEvent,
