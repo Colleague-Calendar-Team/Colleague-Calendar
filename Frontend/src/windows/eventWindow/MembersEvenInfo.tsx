@@ -12,12 +12,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from '../../components/search/search';
 import { Button } from '@mui/material';
 import useButtonStyles from "../../styles/button";
-import GlobalContext from "../../context/globalContext";
+import { useActions } from '../../hooks/useActions';
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 const MembersEventInfo = () => {
   const classes = useButtonStyles();
-  const { setModalPage } = useContext(GlobalContext);
+  const {selectModalPage} = useActions();
   const [checked, setChecked] = useState([1]);
   const [users, setUsers] = useState(['Иван Иванов', 'Рафаэль Петров', 'Роберт Иванов', 'Родион Романов', 'Роман Петров', 'Роза Иванова', 'Петр Петров']);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
@@ -38,11 +38,11 @@ const MembersEventInfo = () => {
   };
 
   function Back() {
-    setModalPage('Общее');
+    selectModalPage('Общее');
   }
 
   function Next() {
-    setModalPage('Уведомления');
+    selectModalPage('Уведомления');
   }
 
   return (

@@ -1,6 +1,5 @@
 import { Box, Modal, ThemeProvider, Typography } from "@mui/material";
-import React, { useContext, useEffect } from "react";
-import GlobalContext from "../../context/globalContext";
+import React, { useEffect } from "react";
 import theme from "../../styles/theme";
 import { ModalState } from "../../types/elements/modal";
 import Tab from "@mui/material/Tab";
@@ -8,6 +7,8 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import themeModalTab from "../../styles/modalTab";
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 const style = {
   position: "absolute",
@@ -21,20 +22,22 @@ const style = {
 };
 
 const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
-  const { setShowModalWindow, modalPage, setModalPage } = useContext(GlobalContext);
+  const { selectModalWindow, selectModalPage } = useActions();
+  const {modalPage} = useTypedSelector(state=>state.selectElements);
+
   const handleClose = () => {
-    setShowModalWindow('');
+    selectModalWindow('');
   }
   
   useEffect(() => {
-    setModalPage(pagesNames[0]);
+    selectModalPage(pagesNames[0]);
   }, []);
 
   const handleChangePage = (
     event: React.SyntheticEvent<Element, Event>,
     newPage: any
   ) => {
-    setModalPage(newPage);
+    selectModalPage(newPage);
   };
 
   return (

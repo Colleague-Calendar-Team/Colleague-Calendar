@@ -6,25 +6,25 @@ import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import theme from '../../styles/theme';
-import GlobalContext from '../../context/globalContext';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useActions } from '../../hooks/useActions';
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 export default function UserBlock() {
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
-  const {setShowModalWindow, setIsAuthenticated} = useContext(GlobalContext);
+  const { selectModalWindow, authUser } = useActions();
   const user = useTypedSelector(state=>state.user);
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
   const openSettings = () => {
-    setShowModalWindow('settings');
+    selectModalWindow('settings');
     setAnchorElUser(null);
   };
   const onExit = () => {
-    setShowModalWindow('auth');
-    setIsAuthenticated(false);
+    selectModalWindow('auth');
+    authUser(false);
     setAnchorElUser(null);
   };
 

@@ -1,6 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { ChangeEvent, ChangeEventHandler, useContext, useState } from "react";
-import GlobalContext from "../../context/globalContext";
 import useButtonStyles from "../../styles/button";
 import theme from "../../styles/theme";
 import Avatar from '@mui/material/Avatar';

@@ -1,7 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import MuiPhoneNumber from 'material-ui-phone-number';
-import GlobalContext from "../../context/globalContext";
 import useButtonStyles from "../../styles/button";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
@@ -12,7 +11,6 @@ const GeneralSettingsInfo = () => {
   // const [telegram, setTelegram] = useState("unknown");
   // const [phoneNumber, setPhoneNumber] = useState("+79161234567");
   const [user, setUser] = useState(useTypedSelector(state=>state.user));
-
   const classes = useButtonStyles();
 
   function onSubmit() {

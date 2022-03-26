@@ -20,3 +20,9 @@ export const loadEvents = () => {
     }
   }
 }
+
+export const changeWeek = (week: number) => {
+  return (dispatch: Dispatch<EventsAction>) => {
+      dispatch({type: EventsActionTypes.CHANGE_WEEK, payload: week});
+  }
+}

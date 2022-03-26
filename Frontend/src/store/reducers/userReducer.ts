@@ -8,6 +8,7 @@ const initialState: UserState = {
   name: 'unknown',
   surname: 'unknown',
   avatarUrl: null,
+  isAuthenticated: true,
 }
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {
@@ -15,7 +16,9 @@ export const userReducer = (state = initialState, action: UserAction): UserState
     case UserActionTypes.LOAD_USER:
       return action.payload;
     case UserActionTypes.SAVE_AVATAR:
-      return {...state, 'avatarUrl': action.payload};
+      return {...state, avatarUrl: action.payload};
+    case UserActionTypes.AUTH_USER:
+      return {...state, isAuthenticated: action.payload};
     default:
       return state;
   }

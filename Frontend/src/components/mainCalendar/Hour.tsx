@@ -1,24 +1,30 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, memo } from "react";
 import dayjs from "dayjs";
 import { Box } from "@mui/material";
 import { HourElementState } from "../../types/elements/hourElement";
-import GlobalContext from "../../context/globalContext";
 import useHourStyles from "../../styles/hour";
-import { EventState } from "../../types/event";
+import { EventState, EventInit } from "../../types/event";
 import Event from './Event';
-import { EventInit } from "../../context/initialState";
+import { DEBUG_RENDER } from "../../utils/debug";
+import { getHourById } from "../../utils/getWeek";
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
-const Hour: React.FC<HourElementState> = ({ day, hour, id }) => {
-  // const [hourEvents, setHourEvents] = useState<EventState[]>([]);
+const Hour: React.FC<HourElementState> = ({ day, hour }) => {
+  if (DEBUG_RENDER) {
+    console.log('hour render (memo+)');
+  }
+
+  const id = day*24 + hour;
   const hourClasses = useHourStyles();
-  const { setDaySelected, setShowModalWindow, setSelectedEvent } = useContext(GlobalContext);
+  const { selectModalWindow, selectHour } = useActions();
 
-  function getCellStyle(day: dayjs.Dayjs, hour: number) {
+  function getCellStyle(day: number, hour: number) {
     return {
       borderLeft: 1,
       borderTop: hour === 0 ? 1 : 0,
       borderBottom: hour === 23 ? 1 : 0,
-      borderRight: day.day() === 7 ? 1 : 0,
+      borderRight: day === 6 ? 1 : 0,
     };
   }
 
@@ -26,18 +32,8 @@ const Hour: React.FC<HourElementState> = ({ day, hour, id }) => {
     <Box
       sx={{ display: "flex", flexDirection: "column" }}
       onClick={() => {
-        setDaySelected(
-          dayjs(
-            new Date(
-              dayjs(day).year(),
-              dayjs(day).month(),
-              dayjs(day).date(),
-              hour
-            )
-          )
-        );
-        setSelectedEvent(EventInit);
-        setShowModalWindow('event');
+        selectHour(id);
+        selectModalWindow('event');
       }}
     >
       <Box id={id.toString()} className={hourClasses.root} sx={getCellStyle(day, hour)}>
@@ -58,4 +54,4 @@ const Hour: React.FC<HourElementState> = ({ day, hour, id }) => {
   );
 };
 
-export default Hour;
+export default memo(Hour);

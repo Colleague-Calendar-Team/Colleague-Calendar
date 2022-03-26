@@ -2,6 +2,7 @@ import { EventsState, EventsActionTypes, EventsAction } from "../../types/events
 
 const initialState: EventsState = {
   events: null,
+  renderWeek: 0,
   loading: true,
   error: null,
 }
@@ -9,11 +10,13 @@ const initialState: EventsState = {
 export const eventsReducer = (state = initialState, action: EventsAction): EventsState => {
   switch(action.type) {
     case EventsActionTypes.LOADING_EVENTS:
-      return {events: null, loading: true, error: null};
+      return {...state, loading: true};
     case EventsActionTypes.LOADING_EVENTS_SUCCESS:
-      return {events: action.payload, loading: false, error: null};
+      return {...state, events: action.payload, loading: false};
     case EventsActionTypes.LOADING_EVENTS_ERROR:
-      return {events: null, loading: false, error: action.payload};
+      return {...state, error: action.payload, loading: false};
+    case EventsActionTypes.CHANGE_WEEK:
+      return {...state, renderWeek: action.payload};
     default:
       return state;
   }

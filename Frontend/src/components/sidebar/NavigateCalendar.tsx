@@ -1,15 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react';
 import dayjs from 'dayjs';
-import GlobalContext from '../../context/globalContext';
 import { Box, TextField } from '@mui/material';
 import themeCalendarPicker from '../../styles/calendarPicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import { ThemeProvider } from '@mui/material/styles';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 export default function NavigateCalendar() {
-  const { daySelected, setDaySelected } = useContext(GlobalContext);
+  const {selectDay} = useActions();
+  const {selectedDay} = useTypedSelector(state=>state.selectElements); 
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column'}}>
@@ -17,22 +19,14 @@ export default function NavigateCalendar() {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <StaticDatePicker
             displayStaticWrapperAs="desktop"
-            value={daySelected}
+            value={selectedDay}
             onChange={(day) => {
               if (day !== null) {
-                setDaySelected(day);
+                selectDay(day);
               } else {
-                setDaySelected(dayjs());
+                selectDay(dayjs());
               }
             }}
-            // onMonthChange={(day) => {
-            //   const selectDay = dayjs(day).month();
-            //   if (selectDay !== null) {
-            //     setCurMonthId(selectDay);
-            //   } else {
-            //     setCurMonthId(0);
-            //   }
-            // }}
             renderInput={(params) => <TextField {...params} 
             />}
           />

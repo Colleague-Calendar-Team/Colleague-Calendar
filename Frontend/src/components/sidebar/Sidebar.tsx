@@ -1,9 +1,14 @@
+import { memo } from 'react';
 import { Box } from '@mui/material';
 import AddEventBtn from './AddEventBtn';
 
 import NavigateCalendar from './NavigateCalendar';
+import { DEBUG_RENDER } from '../../utils/debug';
 
-export default function Sidebar() {
+export default memo(function Sidebar() {
+  if (DEBUG_RENDER) {
+    console.log('render sidebar (+memo)');
+  }
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column'}}>
       <Box sx={{ display: 'flex'}}>
@@ -12,4 +17,4 @@ export default function Sidebar() {
       <NavigateCalendar/>
     </Box>
   )
-}
+});

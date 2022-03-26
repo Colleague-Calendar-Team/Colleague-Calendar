@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 
 export interface HourElementState {
-  day: dayjs.Dayjs;
+  day: number;
   hour: number;
-  id: number;
 }

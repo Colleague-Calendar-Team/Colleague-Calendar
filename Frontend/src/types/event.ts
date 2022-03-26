@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export interface EventState {
   title: string;
   beginTime: string;
@@ -17,3 +19,14 @@ interface SaveEventAction {
 }
 
 export type EventAction = SaveEventAction;
+
+export function EventInit({title = '', description = '', beginTime = dayjs().format('YYYY-MM-DDTHH:mm'), endTime = dayjs().format('YYYY-MM-DDTHH:mm'), meetingLink = '', isRepeating = false}): EventState {
+  return {
+    title: title,
+    beginTime: beginTime,
+    endTime: endTime,
+    description: description,
+    meetingLink: meetingLink,
+    isRepeating: isRepeating,
+  }
+}

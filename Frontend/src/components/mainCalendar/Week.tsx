@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, memo } from "react";
 import dayjs from "dayjs";
 import Hour from "./Hour";
 import { Grid, Typography } from "@mui/material";
@@ -6,20 +6,20 @@ import { WeekElementState } from "../../types/elements/weekElement";
 import { EventState } from "../../types/event";
 import Event from "./Event";
 import ReactDOM from "react-dom";
-import GlobalContext from "../../context/globalContext";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { getIdOfHourInWeek, getWeek } from "../../utils/getWeek";
 import {DEBUG_RENDER} from '../../utils/debug';
+import { useActions } from "../../hooks/useActions";
 
-const Week: React.FC<WeekElementState> = ({week}) => {
+const Week: React.FC = () => {
   if (DEBUG_RENDER) {
-    console.log('week render');
+    console.log('selectedWeek render (memo+)');
   }
 
-  const {setShowModalWindow, setSelectedEvent, renderWeek } = useContext(GlobalContext);
-  const {events} = useTypedSelector(state=>state.events);
+  const { selectModalWindow, selectEvent, selectHour } = useActions();
+  const {events, renderWeek} = useTypedSelector(state=>state.events);
+  const {selectedWeek} = useTypedSelector(state=>state.selectElements);
   const [prevEventsParents, setPrevEventsParents] = useState<Set<HTMLElement> | null>(null);
-  // const [prevBeginDay, setPrevBeginDay] = useState(dayjs());
 
   function getHours(): number[] {
     let hours: number[] = [];
@@ -31,10 +31,15 @@ const Week: React.FC<WeekElementState> = ({week}) => {
   }
   const hours = getHours();
 
-  // useEffect(() => {
-  //   console.log('change week')
-  //   setWeek(getWeek(daySelected))
-  // }, [daySelected]);
+  function getDays(): number[] {
+    let days: number[] = [];
+    for (let i: number = 0; i < 7; i++) {
+      days.push(i);
+    }
+
+    return days;
+  }
+  const days = getDays();
 
   useEffect(() => {
     if (prevEventsParents) {
@@ -53,12 +58,14 @@ const Week: React.FC<WeekElementState> = ({week}) => {
             day={dayjs(event.beginTime)}
             hour={dayjs(event.beginTime).hour()}
             eventId={id}
-            setShowModalWindow={setShowModalWindow}
-            setSelectedEvent={setSelectedEvent}
+            setShowModalWindow={selectModalWindow}
+            setSelectedEvent={selectEvent}
+            selectHour={selectHour}
           ></Event>
         );
 
-        const parent:(HTMLElement | null) = document.getElementById(getIdOfHourInWeek(dayjs(event.beginTime), week[0]).toString());
+        const parent:(HTMLElement | null) = document.getElementById(getIdOfHourInWeek(dayjs(event.beginTime), selectedWeek[0]).toString());
+        // console.log('parent:', parent, 'id:', getIdOfHourInWeek(dayjs(event.beginTime), selectedWeek[0]), 'selectedWeek', selectedWeek, 'event:', event);
         if (parent) {
           ReactDOM.render(eventElement, parent);
           eventsParents.add(parent);
@@ -66,12 +73,12 @@ const Week: React.FC<WeekElementState> = ({week}) => {
       });
       setPrevEventsParents(eventsParents);
     }
-  }, [renderWeek]);
+  }, [selectedWeek]);
 
   return (
     <Grid container columns={{ xs: 8 }}>
       <Grid item xs={1}></Grid>
-      {week.map((day, dayId) => (
+      {selectedWeek.map((day, dayId) => (
         <Grid item xs={1} key={dayId}>
           <Typography sx={{ textAlign: "center" }}>
             {day.format("ddd")} {day.format("DD")}
@@ -87,9 +94,9 @@ const Week: React.FC<WeekElementState> = ({week}) => {
               {hour}:00
             </Typography>
           </Grid>
-          {week.map((day, dayId) => (
+          {days.map((day, dayId) => (
             <Grid item xs={1} key={dayId}>
-              <Hour day={day} hour={hour} key={dayId} id={dayId*24 + hourId}/>
+              <Hour day={day} hour={hour} key={dayId}/>
             </Grid>
           ))}
         </React.Fragment>
@@ -98,5 +105,5 @@ const Week: React.FC<WeekElementState> = ({week}) => {
   );
 };
 
-export default Week;
+export default memo(Week);
 

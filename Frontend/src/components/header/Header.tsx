@@ -5,26 +5,35 @@ import Logo from '../../assets/logo';
 import useButtonStyles from '../../styles/button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import GlobalContext from '../../context/globalContext';
 import { WeekElementState } from '../../types/elements/weekElement';
 import UserBlock from './UserBlock';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import {DEBUG_RENDER} from '../../utils/debug';
 
 const Header:React.FC<WeekElementState> = ({week}) => {
+  if (DEBUG_RENDER) {
+    console.log('header render');
+  }
+
   const classes = useButtonStyles();
-  const {daySelected, setDaySelected, renderWeek, setRenderWeek } = useContext(GlobalContext);
+  const {selectDay, changeWeek} = useActions();
+  const {selectedDay} = useTypedSelector(state=>state.selectElements);
+  const {renderWeek} = useTypedSelector(state=>state.events);
+
   const firstDate = dayjs(new Date(week[0].year(), week[0].month()));
   const secondDate = dayjs(new Date(week[6].year(), week[6].month()));
 
   function clickPrevWeek() {
-    setDaySelected(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
-    setRenderWeek(renderWeek - 1);
+    selectDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
+    changeWeek(renderWeek - 1);
   };
   function clickNextWeek() {
-    setDaySelected(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() + 7)));
-    setRenderWeek(renderWeek + 1);
+    selectDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() + 7)));
+    changeWeek(renderWeek + 1);
   };
   function clickToday() {
-    setDaySelected(daySelected === dayjs() ? daySelected : dayjs());
+    selectDay(selectedDay === dayjs() ? selectedDay : dayjs());
   };
 
   return (

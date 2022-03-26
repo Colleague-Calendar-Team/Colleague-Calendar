@@ -2,16 +2,16 @@ import { Box, Button, TextField } from "@mui/material";
 import { useState, useContext } from "react";
 import useButtonStyles from "../../styles/button";
 import Logo from "../../assets/logo";
-import GlobalContext from "../../context/globalContext";
+import {useActions} from "../../hooks/useActions";
 
 const Login = () => {
-  const { setIsAuthenticated } = useContext(GlobalContext);
+  const { authUser } = useActions();
   const classes = useButtonStyles();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
   function onSubmit() {
-    setIsAuthenticated(true);
+    authUser(true);
   }
 
   return (

@@ -4,10 +4,10 @@ import useButtonStyles from "../../styles/button";
 import Logo from "../../assets/logo";
 import { RegistrationInfo } from "../../types/registrationInfo";
 import MuiPhoneNumber from "material-ui-phone-number";
-import GlobalContext from "../../context/globalContext";
+import {useActions} from "../../hooks/useActions";
 
 const Registration = () => {
-  const { setIsAuthenticated } = useContext(GlobalContext);
+  const { authUser } = useActions();
   const classes = useButtonStyles();
   const [info, setInfo] = useState<RegistrationInfo>({
     name: '',
@@ -20,7 +20,7 @@ const Registration = () => {
   });
 
   function onSubmit() {
-    setIsAuthenticated(true);
+    authUser(true);
   }
 
   return (

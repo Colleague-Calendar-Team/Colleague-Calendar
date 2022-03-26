@@ -10,10 +10,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import NotificationElement from '../../components/notifications/NotificationElement';
 import useButtonStyles from "../../styles/button";
 import theme from "../../styles/theme";
-import GlobalContext from "../../context/globalContext";
+import { useActions } from "../../hooks/useActions";
 
 export default function NotificationsEventInfo() {
-  const { setModalPage, setShowModalWindow } = useContext(GlobalContext);
+  const {selectModalPage} = useActions();
+  const { selectModalWindow } = useActions();
   const classes = useButtonStyles();
   const [selectedNotifications, setSelectedNotifications] = useState([
     "email",
@@ -28,10 +29,10 @@ export default function NotificationsEventInfo() {
   ];
 
   function Back() {
-    setModalPage('Участники');
+    selectModalPage('Участники');
   }
   function Submit() {
-    setShowModalWindow('');
+    selectModalWindow('');
   }
   const handleChange = (event: SelectChangeEvent<number>) => {
     setTimeBeforeNtf(Number(event.target.value));

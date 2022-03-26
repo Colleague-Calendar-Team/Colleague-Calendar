@@ -8,7 +8,6 @@ import Sidebar from './components/sidebar/Sidebar';
 import Week from './components/mainCalendar/Week';
 import Header from './components/header/Header';
 import { getWeek } from './utils/getWeek';
-import GlobalContext from './context/globalContext';
 import EventWindow from './windows/eventWindow/EventWindow';
 import SettingsWindow from './windows/settingsWindow/SettingsWindow';
 import { useActions } from './hooks/useActions';
@@ -20,32 +19,32 @@ function App() {
   if (DEBUG_RENDER) {
     console.log('render app');
   }
-  const {daySelected, showModalWindow, isAuthenticated} = useContext(GlobalContext);
-  // const [week, setWeek] = useState((getWeek()));
-  const week = getWeek(daySelected);
-  const {loadUser, loadEvents} = useActions();
+
+  const {loadUser, loadEvents, selectWeek} = useActions();
   const {loading} = useTypedSelector(state=>state.events);
+  const {modalWindow, selectedDay, selectedWeek} = useTypedSelector(state=>state.selectElements);
+  const {isAuthenticated} = useTypedSelector(state=>state.user);
 
   useEffect(() => {
     loadUser();
     loadEvents();
   }, []);
 
-  // useEffect(() => {
-  //   setWeek(getWeek(daySelected));
-  // }, [daySelected]);
+  useEffect(() => {
+    selectWeek(getWeek(selectedDay));
+  }, [selectedDay]);
 
   return (
     <>
     {isAuthenticated && !loading &&
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
-      {showModalWindow === 'event' && <EventWindow/>}
-      {showModalWindow === 'settings' && <SettingsWindow/>}
+      {modalWindow === 'event' && <EventWindow/>}
+      {modalWindow === 'settings' && <SettingsWindow/>}
       
-      <Header week={week}/>
+      <Header week={selectedWeek}/>
       <Box sx={{ display: 'flex', backgroundColor: theme.palette.primary.main}}>
         <Sidebar/>
-        <Week week={week}/>
+        <Week/>
       </Box>
     </Box>}
     {!isAuthenticated &&

@@ -1,6 +1,5 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useContext, useState } from "react";
-import GlobalContext from "../../context/globalContext";
 import useButtonStyles from "../../styles/button";
 
 const PasswordSettingsInfo = () => {

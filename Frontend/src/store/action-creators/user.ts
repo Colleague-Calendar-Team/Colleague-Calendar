@@ -2,7 +2,6 @@ import { Dispatch } from 'redux';
 import { UserState, UserAction, UserActionTypes } from '../../types/user';
 import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 export const loadUser = () => {
   return (dispatch: Dispatch<UserAction>) => {
@@ -28,5 +27,11 @@ export const saveAvatar = (avatarUrl: string) => {
     catch {
       console.error('ERROR in Save avatar:', avatarUrl)
     }
+  }
+}
+
+export const authUser = (auth: boolean) => {
+  return (dispatch: Dispatch<UserAction>) => {
+      dispatch({type: UserActionTypes.AUTH_USER, payload: auth});
   }
 }

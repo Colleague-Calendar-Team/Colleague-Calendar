@@ -8,4 +8,5 @@ export interface EventElementState {
   eventId: number;
   setShowModalWindow: (open: string) => void,
   setSelectedEvent: (event: EventState) => void,
+  selectHour: (hour: number) => void;
 }

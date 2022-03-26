@@ -6,7 +6,7 @@ import { EventState } from "../../types/event";
 import { EventElementState } from "../../types/elements/eventElement";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-const Event: React.FC<EventElementState> =({event, day, hour, eventId, setShowModalWindow, setSelectedEvent}) => {
+const Event: React.FC<EventElementState> =({event, day, hour, eventId, setShowModalWindow, setSelectedEvent, selectHour}) => {
   const eventClasses = useEventStyles();
 
   function getEventStyle(event: EventState) {
@@ -48,6 +48,7 @@ const Event: React.FC<EventElementState> =({event, day, hour, eventId, setShowMo
       onClick={() => {
         setSelectedEvent(event);
         setShowModalWindow('event');
+        selectHour(-1);
       }}
     >
       <Box sx={{display: 'flex', flexDirection: 'column', textAlign: 'start', ml: 1}}>

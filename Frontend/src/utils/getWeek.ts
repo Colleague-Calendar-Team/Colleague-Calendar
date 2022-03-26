@@ -22,3 +22,12 @@ export function getIdOfHourInWeek(day = dayjs(), dayBegin = dayjs()) {
   const hour = dayjs(day).hour();
   return (date*24 + hour); 
 }
+
+export function getHourById(id = -1, dayBegin = dayjs()) {
+  const day = id / 24;
+  const hour = id % 24;
+  const month = dayjs(dayBegin).month();
+  const year = dayjs(dayBegin).year();
+  const dateBegin = dayjs(dayBegin).date();
+  return dayjs(new Date(year, month, dateBegin + day, hour));
+}
