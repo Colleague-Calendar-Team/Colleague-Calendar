@@ -37,6 +37,7 @@ const Header:React.FC<WeekElementState> = ({week}) => {
           </Typography>
           <Button className={classes.root} onClick={clickToday}>Сегодня</Button>
           <ChevronLeftIcon onClick={clickPrevWeek}/>
+          <ChevronRightIcon onClick={clickNextWeek}/>
             <Typography variant="h6" component="h2" sx={{m: 1}}>
               {firstDate.format("MMMM")}
               {week[0].year() !== week[6].year() && firstDate.format(" YYYY")}
@@ -44,7 +45,6 @@ const Header:React.FC<WeekElementState> = ({week}) => {
               {secondDate.format(" YYYY ")}
               {week[0].date()} - {week[6].date()}
             </Typography>
-          <ChevronRightIcon onClick={clickNextWeek}/>
         </Box>
         <UserBlock/>
       </Toolbar>

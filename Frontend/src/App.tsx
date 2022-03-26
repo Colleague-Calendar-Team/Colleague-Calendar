@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState, memo } from 'react';
 import dayjs from 'dayjs';
 import './App.css';
 import { Box } from '@mui/material';
@@ -14,10 +14,15 @@ import SettingsWindow from './windows/settingsWindow/SettingsWindow';
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import AuthWindow from './windows/authWindow/Auth';
+import {DEBUG_RENDER} from './utils/debug';
 
 function App() {
+  if (DEBUG_RENDER) {
+    console.log('render app');
+  }
   const {daySelected, showModalWindow, isAuthenticated} = useContext(GlobalContext);
-  const [week, setWeek] = useState((getWeek()));
+  // const [week, setWeek] = useState((getWeek()));
+  const week = getWeek(daySelected);
   const {loadUser, loadEvents} = useActions();
   const {loading} = useTypedSelector(state=>state.events);
 
@@ -26,9 +31,9 @@ function App() {
     loadEvents();
   }, []);
 
-  useEffect(() => {
-    setWeek(getWeek(daySelected));
-  }, [daySelected]);
+  // useEffect(() => {
+  //   setWeek(getWeek(daySelected));
+  // }, [daySelected]);
 
   return (
     <>

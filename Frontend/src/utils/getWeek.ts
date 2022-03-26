@@ -16,7 +16,7 @@ export function getWeek(day = dayjs()) {
   return weekDays;
 }
 
-export function getIdOfRenderWeek(day = dayjs(), dayBegin = dayjs()) {
+export function getIdOfHourInWeek(day = dayjs(), dayBegin = dayjs()) {
   const dateBegin = dayjs(dayBegin).date();
   const date = dayjs(day).date() - dateBegin;
   const hour = dayjs(day).hour();

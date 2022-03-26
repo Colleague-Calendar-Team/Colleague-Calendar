@@ -8,14 +8,18 @@ import Event from "./Event";
 import ReactDOM from "react-dom";
 import GlobalContext from "../../context/globalContext";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { getIdOfRenderWeek, getWeek } from "../../utils/getWeek";
+import { getIdOfHourInWeek, getWeek } from "../../utils/getWeek";
+import {DEBUG_RENDER} from '../../utils/debug';
 
-const Week: React.FC<WeekElementState> = ({ }) => {
-  const {setShowModalWindow, setSelectedEvent, renderWeek, daySelected } = useContext(GlobalContext);
-  const week = getWeek(daySelected);
+const Week: React.FC<WeekElementState> = ({week}) => {
+  if (DEBUG_RENDER) {
+    console.log('week render');
+  }
+
+  const {setShowModalWindow, setSelectedEvent, renderWeek } = useContext(GlobalContext);
   const {events} = useTypedSelector(state=>state.events);
-  const [prevWeek, setPrevWeek] = useState(renderWeek);
-  const [prevBeginDay, setPrevBeginDay] = useState(dayjs());
+  const [prevEventsParents, setPrevEventsParents] = useState<Set<HTMLElement> | null>(null);
+  // const [prevBeginDay, setPrevBeginDay] = useState(dayjs());
 
   function getHours(): number[] {
     let hours: number[] = [];
@@ -27,20 +31,21 @@ const Week: React.FC<WeekElementState> = ({ }) => {
   }
   const hours = getHours();
 
+  // useEffect(() => {
+  //   console.log('change week')
+  //   setWeek(getWeek(daySelected))
+  // }, [daySelected]);
+
   useEffect(() => {
-    if (events !== null && prevWeek >= 0 && prevWeek < 5) {
-      console.log("prev week: ", prevWeek);
-      events[prevWeek].forEach((event, id) => {
-        const parent = document.getElementById(getIdOfRenderWeek(dayjs(event.beginTime), prevBeginDay).toString());
-        console.log('parent:', parent, 'id:', getIdOfRenderWeek(dayjs(event.beginTime), prevBeginDay).toString(), 'event: ', event.beginTime);
-        if (parent) {
-          ReactDOM.unmountComponentAtNode(parent);
-        }
+    if (prevEventsParents) {
+      prevEventsParents.forEach((parent) => {
+        ReactDOM.unmountComponentAtNode(parent);
       });
     }
     if (events !== null && renderWeek >= 0 && renderWeek < 5) {
       console.log('Week element events:', events[renderWeek]);
-      console.log('Week 0:', week[0]);
+
+      const eventsParents = new Set<HTMLElement>();
       events[renderWeek].forEach((event, id) => {
         const eventElement = (
           <Event
@@ -52,14 +57,15 @@ const Week: React.FC<WeekElementState> = ({ }) => {
             setSelectedEvent={setSelectedEvent}
           ></Event>
         );
-        const parent = document.getElementById(getIdOfRenderWeek(dayjs(event.beginTime), week[0]).toString());
+
+        const parent:(HTMLElement | null) = document.getElementById(getIdOfHourInWeek(dayjs(event.beginTime), week[0]).toString());
         if (parent) {
           ReactDOM.render(eventElement, parent);
+          eventsParents.add(parent);
         }
       });
+      setPrevEventsParents(eventsParents);
     }
-    setPrevWeek(renderWeek);
-    setPrevBeginDay(week[0]);
   }, [renderWeek]);
 
   return (
