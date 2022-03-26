@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo } from "react";
 import dayjs from "dayjs";
 import Hour from "./Hour";
 import { Grid, Typography } from "@mui/material";
-import { WeekElementState } from "../../types/elements/weekElement";
-import { EventState } from "../../types/event";
 import Event from "./Event";
 import ReactDOM from "react-dom";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { getIdOfHourInWeek, getWeek } from "../../utils/getWeek";
+import { getIdOfHourInWeek } from "../../utils/getWeek";
 import {DEBUG_RENDER} from '../../utils/debug';
 import { useActions } from "../../hooks/useActions";
 
@@ -55,8 +53,6 @@ const Week: React.FC = () => {
         const eventElement = (
           <Event
             event={event}
-            day={dayjs(event.beginTime)}
-            hour={dayjs(event.beginTime).hour()}
             eventId={id}
             setShowModalWindow={selectModalWindow}
             setSelectedEvent={selectEvent}
@@ -65,7 +61,6 @@ const Week: React.FC = () => {
         );
 
         const parent:(HTMLElement | null) = document.getElementById(getIdOfHourInWeek(dayjs(event.beginTime), selectedWeek[0]).toString());
-        // console.log('parent:', parent, 'id:', getIdOfHourInWeek(dayjs(event.beginTime), selectedWeek[0]), 'selectedWeek', selectedWeek, 'event:', event);
         if (parent) {
           ReactDOM.render(eventElement, parent);
           eventsParents.add(parent);

@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import Logo from '../../assets/logo';
@@ -9,11 +8,11 @@ import { WeekElementState } from '../../types/elements/weekElement';
 import UserBlock from './UserBlock';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import {DEBUG_RENDER} from '../../utils/debug';
+import { DEBUG_RENDER } from '../../utils/debug';
 
 const Header:React.FC<WeekElementState> = ({week}) => {
   if (DEBUG_RENDER) {
-    console.log('header render');
+    console.log('header render (memo+)');
   }
 
   const classes = useButtonStyles();
