@@ -26,7 +26,9 @@ const Event: React.FC<EventElementState> =({event, eventId, setShowModalWindow, 
       key={eventId}
       className={eventClasses.root}
       sx={getEventStyle(event)}
-      onClick={() => {
+      onClick={(e) => {
+        console.log('click EVENT:', e.target);
+        e.stopPropagation();
         setSelectedEvent(event);
         setShowModalWindow('event');
         selectHour(-1);

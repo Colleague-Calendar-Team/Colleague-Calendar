@@ -8,6 +8,7 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { getIdOfHourInWeek } from "../../utils/getWeek";
 import {DEBUG_RENDER} from '../../utils/debug';
 import { useActions } from "../../hooks/useActions";
+import { GenNumbersArr } from "../../utils/genArr";
 
 const Week: React.FC = () => {
   if (DEBUG_RENDER) {
@@ -19,27 +20,10 @@ const Week: React.FC = () => {
   const {selectedWeek} = useTypedSelector(state=>state.selectElements);
   const [prevEventsParents, setPrevEventsParents] = useState<Set<HTMLElement> | null>(null);
 
-  function getHours(): number[] {
-    let hours: number[] = [];
-    for (let i: number = 0; i < 24; i++) {
-      hours.push(i);
-    }
+  const hours = GenNumbersArr(24);
+  const days = GenNumbersArr(7);
 
-    return hours;
-  }
-  const hours = getHours();
-
-  function getDays(): number[] {
-    let days: number[] = [];
-    for (let i: number = 0; i < 7; i++) {
-      days.push(i);
-    }
-
-    return days;
-  }
-  const days = getDays();
-
-  useEffect(() => {
+  function renderEvents() {
     if (prevEventsParents) {
       prevEventsParents.forEach((parent) => {
         ReactDOM.unmountComponentAtNode(parent);
@@ -68,6 +52,10 @@ const Week: React.FC = () => {
       });
       setPrevEventsParents(eventsParents);
     }
+  }
+
+  useEffect(() => {
+    renderEvents();
   }, [selectedWeek]);
 
   return (

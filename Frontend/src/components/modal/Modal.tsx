@@ -1,7 +1,7 @@
 import { Box, Modal, ThemeProvider, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import theme from "../../styles/theme";
-import { ModalState } from "../../types/elements/modal";
+import { ModalState } from "../../types/windows/modal";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";

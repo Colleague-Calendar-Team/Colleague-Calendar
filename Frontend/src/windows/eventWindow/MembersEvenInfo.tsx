@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -7,34 +7,75 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
 import theme from '../../styles/theme';
-import { Box } from '@mui/material';
+import { Box, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Search, SearchIconWrapper, StyledInputBase } from '../../components/search/search';
 import { Button } from '@mui/material';
 import useButtonStyles from "../../styles/button";
 import { useActions } from '../../hooks/useActions';
+import { MemberState } from '../../types/members';
+import { GenNumbersArr } from '../../utils/genArr';
+import {DEBUG_RENDER} from "../../utils/debug";
+import { render } from '@testing-library/react';
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 const MembersEventInfo = () => {
   const classes = useButtonStyles();
   const {selectModalPage} = useActions();
-  const [checked, setChecked] = useState([1]);
-  const [users, setUsers] = useState(['Иван Иванов', 'Рафаэль Петров', 'Роберт Иванов', 'Родион Романов', 'Роман Петров', 'Роза Иванова', 'Петр Петров']);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [checked, setChecked] = useState<Set<number>>(new Set());
+  const [users, setUsers] = useState<MemberState[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<MemberState[]>([]);
 
-  const handleToggle = (user: string, userId: number) => () => {
-    const currentIndex = checked.indexOf(userId);
-    const newChecked = [...checked];
+  if (DEBUG_RENDER) {
+    console.log('Render users info:', checked);
+  }
 
-    if (currentIndex === -1) {
-      newChecked.push(userId);
-      selectedUsers.push(user);
-    } else {
-      newChecked.splice(currentIndex, 1);
-      selectedUsers.splice(currentIndex, 1);
-    }
+  useEffect(() => {
+    const users = [{id: 1, name: 'Иван', surname: 'Иванов'}, {id: 2, name: 'Петр', surname: 'Петров'}];
+    setSelectedUsers(users);
+    setUsers(users);
+  }, []);
 
+  useEffect(() => {
+    const newChecked = checked;
+    selectedUsers.forEach((user) => {
+      newChecked.add(user.id);
+    })
     setChecked(newChecked);
+    console.log('set checked:', checked);
+  }, [selectedUsers]);
+
+  const handleToggle = (user: MemberState, userId: number) => () => {
+    if (checked.has(user.id)) {
+      const newSet = checked;
+      newSet.delete(user.id);
+
+      setChecked(newSet);
+      // selectedUsers.forEach((u, index) =>{
+      //   if (u.id === user.id) {
+      //     selectedUsers.splice(index, 1);
+      //   }
+      // });
+    } else {
+      setSelectedUsers(users);
+      // setChecked(checked.add(user.id));
+      // selectedUsers.push(user);
+    }
+    
+    // console.log("toggle")
+    // const currentIndex = checked.indexOf(userId);
+    // const newChecked = [...checked];
+
+    // if (currentIndex === -1) {
+    //   newChecked.push(userId);
+    //   selectedUsers.push(user);
+    // } else {
+    //   newChecked.splice(currentIndex, 1);
+    //   selectedUsers.splice(currentIndex, 1);
+    // }
+
+    // setChecked(newChecked);
+    console.log("checked:", checked);
   };
 
   function Back() {
@@ -45,28 +86,42 @@ const MembersEventInfo = () => {
     selectModalPage('Уведомления');
   }
 
+  function searchUsers() {
+    const searchUsers = [{id: 3, name: 'Родион', surname: 'Родионов'}, {id: 4, name: 'Роман', surname: 'Романов'}];
+    // setSelectedUsers(selectedUsers.concat(searchUsers));
+    setUsers(selectedUsers.concat(searchUsers));
+  }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column'}}>
-      <Search>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Search…"
-          inputProps={{ 'aria-label': 'search' }}
+      {checked}
+      <Box>
+        <TextField
+          id="search-input"
+          label="Поиск..."
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          variant="outlined"
         />
-      </Search>
+        <Button onClick={searchUsers} className={classes.root} sx={{ml: 1}}>Найти</Button>
+      </Box>
       <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: theme.palette.primary.main, position: 'relative', overflow: 'auto', maxHeight: 300, }}>
         {users.map((user, userId) => {
           const labelId = `checkbox-list-secondary-label-${user}`;
           return (
             <ListItem
-              key={user}
+              key={userId}
               secondaryAction={
                 <Checkbox
                   edge="end"
                   onChange={handleToggle(user, userId)}
-                  checked={checked.indexOf(userId) !== -1}
+                  checked={checked.has(user.id)}
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               }
@@ -79,7 +134,7 @@ const MembersEventInfo = () => {
                     src={defaultAvatar}
                   />
                 </ListItemAvatar>
-                <ListItemText id={labelId} primary={`${user}`} />
+                <ListItemText id={labelId} primary={`${user.name} ${user.surname}`} />
               </ListItemButton>
             </ListItem>
           );

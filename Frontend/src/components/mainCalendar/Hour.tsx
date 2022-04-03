@@ -26,7 +26,8 @@ const Hour: React.FC<HourElementState> = ({ day, hour }) => {
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column" }}
-      onClick={() => {
+      onClick={(e) => {
+        console.log("HOUR")
         selectHour(id);
         selectModalWindow('event');
       }}

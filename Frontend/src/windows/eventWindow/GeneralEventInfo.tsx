@@ -10,29 +10,16 @@ import { EventState, EventInit } from "../../types/event";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { getHourById } from "../../utils/getWeek";
 import {DEBUG_RENDER} from "../../utils/debug";
+import { GeneralEventInfoState } from "../../types/windows/eventWindow";
 
-const GeneralEventInfo = () => {
-  const { selectedEvent, selectedHour, selectedWeek } = useTypedSelector(
-    (state) => state.selectElements
-  );
+const GeneralEventInfo: React.FC<GeneralEventInfoState> = ({isCreate, event, setEvent, selectModalPage}) => {
   if (DEBUG_RENDER) {
-    console.log('render GeneralEventInfo ', selectedHour);
+    console.log('render GeneralEventInfo (memo+)');
   }
 
   const classes = useButtonStyles();
-  const { selectModalWindow, selectModalPage } = useActions();
-  
-  const [event, setEvent] = useState(
-    selectedHour === -1
-      ? selectedEvent
-      : EventInit({
-          beginTime: getHourById(selectedHour, selectedWeek[0]).format("YYYY-MM-DDTHH:mm"),
-          endTime: getHourById(selectedHour + 1, selectedWeek[0]).format("YYYY-MM-DDTHH:mm"),
-        })
-  );
 
-  function eventSubmit() {
-    selectModalWindow("");
+  function onSubmit() {
   }
 
   function Next() {
@@ -105,9 +92,10 @@ const GeneralEventInfo = () => {
         onChange={(e) => setEvent({ ...event, description: e.target.value })}
       />
       <Box sx={{ display: "flex", justifyContent: "end" }}>
-        <Button className={classes.root} onClick={Next}>
-          Далее
-        </Button>
+        {isCreate
+          ? <Button className={classes.root} onClick={Next}>Далее</Button>
+          : <Button className={classes.root} onClick={onSubmit}>Сохранить</Button>
+        }
       </Box>
     </Box>
   );
