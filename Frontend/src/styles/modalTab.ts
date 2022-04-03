@@ -7,14 +7,15 @@ const themeModalTab = createTheme({
     MuiTab: {
       styleOverrides: {
         root: {
-          MuiSelected: {
-            styleOverrides: {
-              backgroundColor: theme.palette.primary.main,
-            },
-          },
+          color: theme.palette.secondary.main,
         }
-      }
-    }
+      },
+    },
+  },
+  palette: {
+    primary: {
+      main: theme.palette.secondary.dark,
+    },
   },
 });
 

@@ -19,6 +19,7 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   bgcolor: theme.palette.primary.main,
+  borderRadius: 2,
 };
 
 const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
@@ -44,7 +45,7 @@ const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
     <Modal open={true} onClose={handleClose}>
       <Box sx={style}>
         {title !== '' &&
-        <Typography id="modal-title" variant="h6" component="h2" sx={{ p: 1 }}>
+        <Typography id="modal-title" variant="h6" component="h2" sx={{ p: 1, backgroundColor: theme.palette.primary.dark, color: theme.palette.primary.main}}>
           {title}
         </Typography>
         }
