@@ -11,31 +11,31 @@ import NotificationElement from '../../components/notifications/NotificationElem
 import useButtonStyles from "../../styles/button";
 import theme from "../../styles/theme";
 import { useActions } from "../../hooks/useActions";
+import { NotificationsEventInfoState } from "../../types/windows/eventWindow";
 
-export default function NotificationsEventInfo() {
+export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({isCreate, notifications, setNotifications}) => {
   const {selectModalPage} = useActions();
   const { selectModalWindow } = useActions();
   const classes = useButtonStyles();
-  const [selectedNotifications, setSelectedNotifications] = useState([
-    "email",
-  ]);
-  const [timeBeforeNtf, setTimeBeforeNtf] = useState(5);
   const timeIntervals = [5, 10, 15];
 
   const ntfItems = [
-    { ntfName: "email", ntfLabel: "Почта" },
-    { ntfName: "telegram", ntfLabel: "Телеграм" },
-    { ntfName: "messages", ntfLabel: "Сообщения в телефон" },
+    { ntfName: "notificationInEmail", ntfLabel: "Почта" },
+    { ntfName: "notificationInTelegram", ntfLabel: "Телеграм" },
+    { ntfName: "notificationInSMS", ntfLabel: "Сообщения в телефон" },
   ];
 
   function Back() {
     selectModalPage('Участники');
   }
-  function Submit() {
+  function onSubmit() {
+    selectModalWindow('');
+  }
+  function onCreate() {
     selectModalWindow('');
   }
   const handleChange = (event: SelectChangeEvent<number>) => {
-    setTimeBeforeNtf(Number(event.target.value));
+    setNotifications({ ...notifications, notificationTime : Number(event.target.value) })
   };
 
   return (
@@ -50,24 +50,24 @@ export default function NotificationsEventInfo() {
         <NotificationElement
           ntfName={ntfItems[0].ntfName}
           ntfLabel={ntfItems[0].ntfLabel}
-          selectedNotifications={selectedNotifications}
-          setSelectedNotifications={setSelectedNotifications}
+          notification={notifications.notificationInEmail}
+          setNotification={() => setNotifications({ ...notifications, notificationInEmail: !notifications.notificationInEmail })}
         >
           <AlternateEmailIcon />
         </NotificationElement>
         <NotificationElement
           ntfName={ntfItems[1].ntfName}
           ntfLabel={ntfItems[1].ntfLabel}
-          selectedNotifications={selectedNotifications}
-          setSelectedNotifications={setSelectedNotifications}
+          notification={notifications.notificationInTelegram}
+          setNotification={() => setNotifications({ ...notifications, notificationInTelegram: !notifications.notificationInTelegram })}
         >
           <TelegramIcon />
         </NotificationElement>
         <NotificationElement
           ntfName={ntfItems[2].ntfName}
           ntfLabel={ntfItems[2].ntfLabel}
-          selectedNotifications={selectedNotifications}
-          setSelectedNotifications={setSelectedNotifications}
+          notification={notifications.notificationInSMS}
+          setNotification={() => setNotifications({ ...notifications, notificationInSMS: !notifications.notificationInSMS })}
         >
           <MessageIcon />
         </NotificationElement>
@@ -78,7 +78,7 @@ export default function NotificationsEventInfo() {
           <FormControl>
             <Select
               id="minutes-interval-select"
-              value={timeBeforeNtf}
+              value={notifications.notificationTime}
               onChange={handleChange}
               size="small"
             >
@@ -90,12 +90,18 @@ export default function NotificationsEventInfo() {
         </Box>
         <span> минут до события</span>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      {isCreate ?
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1}}>
         <Button className={classes.root} onClick={Back}>
           Назад
         </Button>
-        <Button className={classes.root} onClick={Submit}>Создать</Button>
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Button className={classes.root} onClick={onCreate}>Создать</Button>
+        </Box>
       </Box>
+        :<Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Button className={classes.root} onClick={onSubmit}>Сохранить</Button>
+        </Box>}
     </Box>
   );
 }

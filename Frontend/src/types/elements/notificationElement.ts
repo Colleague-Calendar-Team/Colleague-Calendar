@@ -1,7 +1,9 @@
+import { NotificationsState } from "../notifications";
+
 export interface NotificationElementState {
   ntfName: string;
   ntfLabel: string;
-  selectedNotifications: string[];
-  setSelectedNotifications: React.Dispatch<React.SetStateAction<string[]>>;
+  notification: boolean;
+  setNotification: () => void;
   children: React.ReactNode;
 }

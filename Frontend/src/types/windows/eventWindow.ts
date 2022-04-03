@@ -1,5 +1,6 @@
 import { EventState } from "../event";
 import { MemberState } from "../members";
+import { NotificationsState } from "../notifications";
 
 export interface GeneralEventInfoState {
   isCreate: boolean;
@@ -14,4 +15,10 @@ export interface MembersEventInfoState {
   setUsers: (users: MemberState[]) => void;
   checked: Set<number>;
   setChecked: (checked: Set<number>) => void;
+}
+
+export interface NotificationsEventInfoState {
+  isCreate: boolean;
+  notifications: NotificationsState;
+  setNotifications: (notifications: NotificationsState) => void;
 }

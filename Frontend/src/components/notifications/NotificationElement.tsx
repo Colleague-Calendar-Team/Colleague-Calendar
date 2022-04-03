@@ -7,23 +7,10 @@ import { NotificationElementState } from "../../types/elements/notificationEleme
 const NotificationElement: React.FC<NotificationElementState> = ({
   ntfName,
   ntfLabel,
-  selectedNotifications,
-  setSelectedNotifications,
+  notification,
+  setNotification,
   children,
 }) => {
-  const handleToggle = (value: string) => () => {
-    const currentIndex = selectedNotifications.indexOf(value);
-    const newChecked = [...selectedNotifications];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setSelectedNotifications(newChecked);
-  };
-
   return (
     <ListItem>
       <ListItemIcon>{children}</ListItemIcon>
@@ -33,8 +20,8 @@ const NotificationElement: React.FC<NotificationElementState> = ({
       />
       <Switch
         edge="end"
-        onChange={handleToggle(ntfName)}
-        checked={selectedNotifications.indexOf(ntfName) !== -1}
+        onChange={setNotification}
+        checked={notification}
         inputProps={{
           "aria-labelledby": `switch-list-label-{${ntfName}}`,
         }}

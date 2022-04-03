@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import ModalWindow from "../../components/modal/Modal";
 import GeneralEventInfo from "./GeneralEventInfo";
 import MembersEventInfo from "./MembersEvenInfo";
-import NotificationsEventInfo from "./NotificationsEventInfo";
+import {NotificationsEventInfo} from "./NotificationsEventInfo";
 import { EventInit, EventState } from "../../types/event";
 import { getHourById } from "../../utils/getWeek";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 import { DEBUG_RENDER } from "../../utils/debug";
 import { MemberState } from "../../types/members";
+import { NotificationsInit, NotificationsState } from "../../types/notifications";
 
 const EventWindow = () => {
   const { selectModalWindow, selectModalPage } = useActions();
@@ -19,6 +20,7 @@ const EventWindow = () => {
   const [event, setEvent] = useState<EventState>(EventInit({}));
   const [checked, setChecked] = useState<Set<number>>(new Set());
   const [users, setUsers] = useState<MemberState[]>([]);
+  const [notifications, setNotifications] = useState<NotificationsState>(NotificationsInit);
 
   if (DEBUG_RENDER) {
     console.log("render event window:");
@@ -56,7 +58,7 @@ const EventWindow = () => {
     >
       <GeneralEventInfo isCreate={selectedHour === -1 ? false : true} event={event} setEvent={setEvent} selectModalPage={selectModalPage}/>
       <MembersEventInfo isCreate={selectedHour === -1 ? false : true} checked={checked} setChecked={setChecked} users={users} setUsers={setUsers}/>
-      <NotificationsEventInfo />
+      <NotificationsEventInfo isCreate={selectedHour === -1 ? false : true} notifications={notifications} setNotifications={setNotifications}/>
     </ModalWindow>
   );
 }
