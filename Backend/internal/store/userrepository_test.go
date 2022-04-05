@@ -22,9 +22,7 @@ func TestUserRepository_Create(t *testing.T) {
 		testID := 0
 		t.Logf("\tTest %d: \tWhen use Create.", testID)
 		{
-			u, err := s.User().Create(&model.User{
-				Email: "user@example.ru",
-			})
+			u, err := s.User().Create(model.TestUser(t))
 
 			if err != nil {
 				t.Fatalf("\t%s\tShould be able to create user : %T.", failed, err)
@@ -60,11 +58,10 @@ func TestUserRepository_FindByEmail(t *testing.T) {
 		t.Logf("\tTest %d: \tWhen use FindByEmail for existing user.", testID)
 		{
 			email := "user@example.ru"
-			s.User().Create(&model.User{
-				Email: email,
-			})
-
-			_, err := s.User().FindByEmail(email)
+			u := model.TestUser(t)
+			u.Email = email
+			s.User().Create(u)
+			u, err := s.User().FindByEmail(email)
 
 			if err != nil {
 				t.Fatalf("\t%s\tShould be able to find user : %T.", failed, err)
