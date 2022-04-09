@@ -1,15 +1,14 @@
-import { UserWorkloadState } from "../../types/workload";
+import { UserWorkloadInnerState } from "../../types/workload";
 
 function timeToWidth(time: string) {
   const maxMinutes = 1440; // 24 * 60
   const timeSplit = time.split(':');
   const hours = Number(timeSplit[0]);
   const minutes = Number(timeSplit[1]);
-  console.log("width:", ((hours * 60 + minutes) / maxMinutes) * 100, "hour:", hours, "minutes:", minutes);
   return ((hours * 60 + minutes) / maxMinutes) * 100;
 }
 
-export function WorkloadToArrOfWidth(workload:UserWorkloadState[]) {
+export function WorkloadToArrOfWidth(workload:UserWorkloadInnerState[]) {
   let widthArr = [];
   
   workload.forEach((w) => {

@@ -39,7 +39,7 @@ const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Methods', 'POST, PUT, GET, OPTIONS, PUTCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Date, x-date, date');
 
   switch (req.url) {
     case '/':
@@ -66,6 +66,28 @@ const server = http.createServer((req, res) => {
     case '/user':
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(user));
+      break;
+    case '/request':
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify('request'));
+      break;
+    case '/user/1/workload':
+      console.log('HEADERS:', req.headers['x-date']);
+      const workloadNew = [ {
+        beginTime: '00:00',
+        endTime: '5:46',
+      }, {
+        beginTime: '9:00',
+        endTime: '12:30',
+      }, {
+        beginTime: '13:45',
+        endTime: '15:25',
+      }, {
+        beginTime: '22:45',
+        endTime: '00:00',
+      }];
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify(workloadNew));
       break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});

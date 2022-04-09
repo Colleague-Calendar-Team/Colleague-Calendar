@@ -14,9 +14,13 @@ import {Box} from '@mui/material';
 import { UserElementState } from '../../types/elements/userElements';
 import { UserProfileState } from '../../types/user';
 import dayjs from 'dayjs';
-import { UserWorkloadState } from '../../types/workload';
+import { UserWorkloadInnerState } from '../../types/workload';
 import theme from '../../styles/theme';
 import { WorkloadToArrOfWidth } from './workloadWidths';
+import { getUserWorkload } from '../../ajax/requests/workload';
+import { DEBUG_REQUESTS } from '../../utils/debug';
+import urls from '../../ajax/urls';
+import ajax from '../../ajax/ajax';
 
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
@@ -29,24 +33,17 @@ const UserElement:React.FC<UserElementState> = ({user, date, checked, setChecked
   const handleClick = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
 
-    const workloadNew:UserWorkloadState[] = [ {
-      beginTime: '00:00',
-      endTime: '5:46',
-    }, {
-      beginTime: '9:00',
-      endTime: '12:30',
-    }, {
-      beginTime: '13:45',
-      endTime: '15:25',
-    }, {
-      beginTime: '22:45',
-      endTime: '00:00',
-    }];
-
-    const workloadWidths = WorkloadToArrOfWidth(workloadNew);
-
     if (!workload.length) {
-      setWorkload(workloadWidths);
+      const data = getUserWorkload(workloadDay, user.userID, 'token');
+      data?.then((response) => {
+        if (DEBUG_REQUESTS) {
+          console.log('RESPONSE WORKLOAD: ');
+          console.log(response);
+        }
+
+        const workloads:UserWorkloadInnerState[] = response;
+        setWorkload(WorkloadToArrOfWidth(workloads));
+      });
     }
   };
 

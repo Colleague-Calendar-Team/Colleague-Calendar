@@ -1,4 +1,4 @@
-export interface UserWorkloadState {
+export interface UserWorkloadInnerState {
   beginTime: string;
   endTime: string;
 }
