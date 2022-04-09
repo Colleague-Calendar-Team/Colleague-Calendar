@@ -8,7 +8,7 @@ import { getHourById } from "../../utils/getWeek";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 import { DEBUG_RENDER } from "../../utils/debug";
-import { MemberState } from "../../types/members";
+import { UserProfileState } from "../../types/user";
 import { NotificationsInit, NotificationsState } from "../../types/notifications";
 
 const EventWindow = () => {
@@ -19,7 +19,7 @@ const EventWindow = () => {
 
   const [event, setEvent] = useState<EventState>(EventInit({}));
   const [checked, setChecked] = useState<Set<number>>(new Set());
-  const [users, setUsers] = useState<MemberState[]>([]);
+  const [users, setUsers] = useState<UserProfileState[]>([]);
   const [notifications, setNotifications] = useState<NotificationsState>(NotificationsInit);
 
   if (DEBUG_RENDER) {
@@ -38,13 +38,13 @@ const EventWindow = () => {
   }, []);
 
   useEffect(() => {
-    const newUsers = [{id: 1, name: 'Иван', surname: 'Иванов'}, {id: 2, name: 'Петр', surname: 'Петров'}];
+    const newUsers = [{userID: 1, name: 'Иван', surname: 'Иванов'}, {userID: 2, name: 'Петр', surname: 'Петров'}];
     setUsers(newUsers);
 
     const newChecked = new Set(checked);
     newUsers.forEach((u) => {
-      if (!checked.has(u.id)) {
-        newChecked.add(u.id);
+      if (!checked.has(u.userID)) {
+        newChecked.add(u.userID);
       }
     })
     setChecked(newChecked);
@@ -57,7 +57,7 @@ const EventWindow = () => {
       pagesNames={["Общее", "Участники", "Уведомления"]}
     >
       <GeneralEventInfo isCreate={selectedHour === -1 ? false : true} event={event} setEvent={setEvent} selectModalPage={selectModalPage}/>
-      <MembersEventInfo isCreate={selectedHour === -1 ? false : true} checked={checked} setChecked={setChecked} users={users} setUsers={setUsers}/>
+      <MembersEventInfo isCreate={selectedHour === -1 ? false : true} checked={checked} setChecked={setChecked} users={users} setUsers={setUsers} date={event.beginTime}/>
       <NotificationsEventInfo isCreate={selectedHour === -1 ? false : true} notifications={notifications} setNotifications={setNotifications}/>
     </ModalWindow>
   );

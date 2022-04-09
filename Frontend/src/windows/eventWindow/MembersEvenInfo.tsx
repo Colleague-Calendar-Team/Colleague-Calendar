@@ -1,11 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Checkbox from '@mui/material/Checkbox';
-import Avatar from '@mui/material/Avatar';
 import theme from '../../styles/theme';
 import { Box, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -13,30 +7,21 @@ import { Search, SearchIconWrapper, StyledInputBase } from '../../components/sea
 import { Button } from '@mui/material';
 import useButtonStyles from "../../styles/button";
 import { useActions } from '../../hooks/useActions';
-import { MemberState } from '../../types/members';
+import { UserProfileState } from '../../types/user';
 import { GenNumbersArr } from '../../utils/genArr';
 import {DEBUG_RENDER} from "../../utils/debug";
 import { render } from '@testing-library/react';
 import { MembersEventInfoState } from '../../types/windows/eventWindow';
-const defaultAvatar = require('../../assets/defaultAvatar.jpg');
+import UserElement from './../../components/users/userElement';
+import dayjs from 'dayjs';
 
-const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, setChecked, users, setUsers}) => {
+const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, setChecked, users, setUsers, date}) => {
   const classes = useButtonStyles();
   const {selectModalPage} = useActions();
 
   if (DEBUG_RENDER) {
     console.log('Render users info:', checked);
   }
-
-  const handleToggle = (user: MemberState, userId: number) => () => {
-    if (checked.has(user.id)) {
-      const newSet = new Set(checked);
-      newSet.delete(user.id);
-      setChecked(newSet);
-    } else {
-      setChecked(new Set(checked.add(user.id)));
-    }
-  };
 
   function Back() {
     selectModalPage('Общее');
@@ -50,18 +35,18 @@ const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, se
   }
 
   function searchUsers() {
-    const searchUsers = [{id: 3, name: 'Родион', surname: 'Родионов'}, {id: 4, name: 'Роман', surname: 'Романов'}];
+    const searchUsers = [{userID: 3, name: 'Родион', surname: 'Родионов'}, {userID: 4, name: 'Роман', surname: 'Романов'}];
     const newUsers = users.slice(0);
     let newUsersId = 0;
     for (let i = 0; i < users.length; i++) {
-      if (!checked.has(users[i].id)) {
+      if (!checked.has(users[i].userID)) {
         newUsers.splice(newUsersId, 1);
       } else {
         newUsersId++;
       }
     }
     searchUsers.forEach((u, idx) => {
-      if (!checked.has(u.id)) {
+      if (!checked.has(u.userID)) {
         newUsers.push(u);
       }
     })
@@ -89,30 +74,8 @@ const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, se
       </Box>
       <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: theme.palette.primary.main, position: 'relative', overflow: 'auto', maxHeight: 300, }}>
         {users.map((user, userId) => {
-          const labelId = `checkbox-list-secondary-label-${user}`;
           return (
-            <ListItem
-              key={userId}
-              secondaryAction={
-                <Checkbox
-                  edge="end"
-                  onChange={handleToggle(user, userId)}
-                  checked={checked.has(user.id)}
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              }
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemAvatar>
-                  <Avatar
-                    alt={`Avatar of ${user}`}
-                    src={defaultAvatar}
-                  />
-                </ListItemAvatar>
-                <ListItemText id={labelId} primary={`${user.name} ${user.surname} check: ${user.id}`} />
-              </ListItemButton>
-            </ListItem>
+            <UserElement user={user} date={date} checked={checked} setChecked={setChecked} key={userId}/>
           );
         })}
       </List>

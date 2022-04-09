@@ -44,7 +44,7 @@ const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
   return (
     <Modal open={true} onClose={handleClose}>
       <Box sx={style}>
-        {title !== '' &&
+        {title &&
         <Typography id="modal-title" variant="h6" component="h2" sx={{ p: 1, backgroundColor: theme.palette.primary.dark, color: theme.palette.primary.main}}>
           {title}
         </Typography>

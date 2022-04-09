@@ -9,6 +9,12 @@ export interface UserState {
   isAuthenticated: boolean;
 }
 
+export interface UserProfileState {
+  userID: number;
+  name: string;
+  surname: string;
+}
+
 export enum UserActionTypes {
   LOAD_USER = "LOAD_USER",
   CHANGE_USER = "CHANGE_USER",
