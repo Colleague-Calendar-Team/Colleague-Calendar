@@ -5,5 +5,6 @@ CREATE TABLE events (
 	description varchar,
 	meeting_link varchar,
 	is_repeating boolean,
-	title varchar
+	title varchar,
+	owner varchar not null
 );

@@ -1,7 +1,7 @@
-package store_test
+package sqlstore_test
 
 import(
-	"Backend/internal/store"
+	"Backend/internal/store/sqlstore"
 	"Backend/internal/model"
 
 	"testing"
@@ -14,21 +14,23 @@ const (
 
 // TestUserRepository_Create ...
 func TestUserRepository_Create(t *testing.T) {
-	s, teardown := store.TestStore(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, databaseURL)
 	defer teardown("users")
+
+	s := sqlstore.New(db)
 
 	t.Log("Given the need to test UserRepository_Create")
 	{
 		testID := 0
 		t.Logf("\tTest %d: \tWhen use Create.", testID)
 		{
-			u, err := s.User().Create(model.TestUser(t))
+			u := model.TestUser(t)
 
-			if err != nil {
-				t.Fatalf("\t%s\tShould be able to create user : %T.", failed, err)
-			}
 			if u == nil {
 				t.Fatalf("\t%s\tShould be able to create user : User is nil.", failed)
+			}
+			if err := s.User().Create(u); err != nil {
+				t.Fatalf("\t%s\tShould be able to create user : %T.", failed, err)
 			}
                         t.Logf("\t%s\tShould be able to create user", success)
 		}
@@ -37,8 +39,10 @@ func TestUserRepository_Create(t *testing.T) {
 
 
 func TestUserRepository_FindByEmail(t *testing.T) {
-	s, teardown := store.TestStore(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, databaseURL)
 	defer teardown("users")
+
+	s := sqlstore.New(db)
 
 	t.Log("Given the need to test UserRepository_FindByEmail")
 	{

@@ -11,4 +11,5 @@ type Event struct {
 	MeetingLink string
 	IsRepeating bool
 	Title string
+	Owner string
 }
