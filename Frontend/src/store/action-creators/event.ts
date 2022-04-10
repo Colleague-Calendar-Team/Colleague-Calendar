@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { EventState, EventAction, EventActionTypes } from '../../types/event';
 import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
+import { RequestParamsState } from '../../types/ajax';
 
 export const saveEvent = (event: EventState) => {
   return (dispatch: Dispatch<EventAction>) => {
@@ -9,10 +10,10 @@ export const saveEvent = (event: EventState) => {
       console.log('EVENT:', event)
       dispatch({type: EventActionTypes.SAVE_EVENT, payload: event});
 
-      const requestParams: RequestInit = {
+      const requestParams: RequestParamsState = {
         body: Object(event),
       }
-      ajax.post(urls.eventAdd(), requestParams).then((response) => {
+      ajax.post(urls.addEvent(), requestParams).then((response) => {
         console.log("EVENT response:");
         console.log(response);
       });

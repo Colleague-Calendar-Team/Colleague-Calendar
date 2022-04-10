@@ -8,10 +8,10 @@ export const loadEvents = () => {
     try {
       dispatch({type: EventsActionTypes.LOADING_EVENTS});
 
-      ajax.get(urls.eventsGet()).then((response) => {
+      ajax.get(urls.getWeeks()).then((response) => {
         console.log("EVENTS GET response:");
-        console.log(response);
-        dispatch({type: EventsActionTypes.LOADING_EVENTS_SUCCESS, payload: response});
+        console.log(response.data);
+        dispatch({type: EventsActionTypes.LOADING_EVENTS_SUCCESS, payload: response.data});
       });
     }
     catch (e) {

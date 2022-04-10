@@ -34,12 +34,13 @@ const events = new Array(5).fill(null).map((_, weekId) => new Array(genEvents[we
 }));
 
 const server = http.createServer((req, res) => {
-  console.log('request: ' + req.url, " method:", req.method, ' headers:', req.headers);
+  let body = '';
+  console.log('request: ' + req.url, " method:", req.method, ' headers:', req.headers, 'body:');
   
   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Methods', 'POST, PUT, GET, OPTIONS, PUTCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Date, x-date, date');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Date, x-date, Accept');
 
   switch (req.url) {
     case '/':
@@ -47,7 +48,7 @@ const server = http.createServer((req, res) => {
       const data = `{ "data": "data from server"}`;
       res.end(data);
       break;
-    case '/event-processing/event/add':
+    case '/events/add':
       res.writeHead(200, {'Content-Type': 'application/json'});
 
       let data3 = "";
@@ -59,17 +60,13 @@ const server = http.createServer((req, res) => {
         res.end(data3);
       });
       break;
-    case '/event-processing/events/all':
+    case '/events/weeks':
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(events));
       break;
     case '/user':
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(user));
-      break;
-    case '/request':
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify('request'));
       break;
     case '/user/1/workload':
       console.log('HEADERS:', req.headers['x-date']);
@@ -88,6 +85,29 @@ const server = http.createServer((req, res) => {
       }];
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(workloadNew));
+      break;
+    case '/auth/register':
+      body = '';
+      req.on('data', (chunk) => {
+          body += chunk;
+      });
+      req.on('end', () => {
+          console.log(body);
+          const registerInfo = JSON.parse(body);
+          if (registerInfo.name === "sveta") {
+            res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+            res.write('success registration');
+          } else {
+            res.writeHead(400, {'Content-Type': 'text/plain; charset=utf-8'});
+            res.write('Invalid user data provided for registration');
+          }
+          
+          res.end();
+      });
+      break;
+    case '/auth/login?login=sveta&password=123':
+      res.writeHead(200, {'Content-Type': 'text/plain', 'Accept': 'text/plain'});
+      res.end("token");
       break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});

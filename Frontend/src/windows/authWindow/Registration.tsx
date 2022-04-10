@@ -1,30 +1,47 @@
-import { Box, Button, TextField } from "@mui/material";
-import { useContext, useState } from "react";
+import { Box, Button, Modal, TextField } from "@mui/material";
+import { useState } from "react";
 import useButtonStyles from "../../styles/button";
 import Logo from "../../assets/logo";
-import { RegistrationInfo } from "../../types/registrationInfo";
+import { RegistrationInfoState } from "../../types/auth/registration";
 import MuiPhoneNumber from "material-ui-phone-number";
 import {useActions} from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import theme from "../../styles/theme";
+import { modalStyle } from "../../styles/modal";
+
+const registerInfoInit = {
+  name: '',
+  surname: '',
+  email: '',
+  telegramID: '',
+  password: '',
+  repeatPassword: '',
+  phoneNumber: '',
+};
 
 const Registration = () => {
-  const { authUser } = useActions();
+  const { register, registerEnd, selectModalPage } = useActions();
+  const { isRegistered, error } = useTypedSelector(state=>state.registration);
   const classes = useButtonStyles();
-  const [info, setInfo] = useState<RegistrationInfo>({
-    name: '',
-    surname: '',
-    email: '',
-    telegramID: '',
-    password: '',
-    repeatPassword: '',
-    phoneNumber: '',
-  });
+  const [info, setInfo] = useState<RegistrationInfoState>(registerInfoInit);
 
   function onSubmit() {
-    authUser(true);
+    register(info);
+  }
+
+  function handleClose() {
+    registerEnd();
+    selectModalPage("Вход");
+    setInfo(registerInfoInit);
   }
 
   return (
     <Box>
+      <Modal open={isRegistered} onClose={handleClose}>
+          <Box sx={modalStyle}>
+            <Box>Успешная регистрация</Box>
+          </Box>
+      </Modal>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2}}>
         <Logo width={80} height={80}/>
       </Box>
@@ -94,6 +111,8 @@ const Registration = () => {
             setInfo({...info, 'phoneNumber': e.target.value})
           }
         }}/>
+        {error && 
+        <Box sx={{color: theme.palette.error.main}}>{error}</Box>}
         <Box sx={{ display: 'flex', justifyContent: 'end'}}>
           <Button className={classes.root} onClick={onSubmit}>
             Регистрация

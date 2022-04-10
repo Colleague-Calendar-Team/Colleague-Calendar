@@ -5,13 +5,13 @@ import Logo from "../../assets/logo";
 import {useActions} from "../../hooks/useActions";
 
 const Login = () => {
-  const { authUser } = useActions();
+  const { loginUser } = useActions();
   const classes = useButtonStyles();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
   function onSubmit() {
-    authUser(true);
+    loginUser(login, password);
   }
 
   return (

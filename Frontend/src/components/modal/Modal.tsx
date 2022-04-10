@@ -9,18 +9,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import themeModalTab from "../../styles/modalTab";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  border: "2px solid #000",
-  boxShadow: 24,
-  bgcolor: theme.palette.primary.main,
-  borderRadius: 2,
-};
+import { modalStyle } from "../../styles/modal";
 
 const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
   const { selectModalWindow, selectModalPage } = useActions();
@@ -43,7 +32,7 @@ const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
 
   return (
     <Modal open={true} onClose={handleClose}>
-      <Box sx={style}>
+      <Box sx={modalStyle}>
         {title &&
         <Typography id="modal-title" variant="h6" component="h2" sx={{ p: 1, backgroundColor: theme.palette.primary.dark, color: theme.palette.primary.main}}>
           {title}

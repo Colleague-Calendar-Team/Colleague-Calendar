@@ -1,6 +1,7 @@
 import { UserState, UserAction, UserActionTypes } from "../../types/user";
 
 const initialState: UserState = {
+  userID: 0,
   password: '',
   email: 'unknown@mail.ru',
   phoneNumber: '',
@@ -8,7 +9,7 @@ const initialState: UserState = {
   name: 'unknown',
   surname: 'unknown',
   avatarUrl: null,
-  isAuthenticated: true,
+  token: '',
 }
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {
@@ -18,7 +19,7 @@ export const userReducer = (state = initialState, action: UserAction): UserState
     case UserActionTypes.SAVE_AVATAR:
       return {...state, avatarUrl: action.payload};
     case UserActionTypes.AUTH_USER:
-      return {...state, isAuthenticated: action.payload};
+      return {...state, token: action.payload};
     default:
       return state;
   }

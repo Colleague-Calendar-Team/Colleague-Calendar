@@ -1,4 +1,5 @@
 export interface UserState {
+  userID: number;
   password: string;
   email: string;
   phoneNumber: string;
@@ -6,7 +7,7 @@ export interface UserState {
   name: string;
   surname: string;
   avatarUrl: string | null;
-  isAuthenticated: boolean;
+  token: string;
 }
 
 export interface UserProfileState {
@@ -39,7 +40,7 @@ interface SaveAvatarAction {
 
 interface AuthUserAction {
   type: UserActionTypes.AUTH_USER;
-  payload: boolean;
+  payload: string;
 }
 
 export type UserAction = LoadUserAction | ChangeUserAction | SaveAvatarAction | AuthUserAction;

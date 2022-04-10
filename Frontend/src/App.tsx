@@ -14,29 +14,33 @@ import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import AuthWindow from './windows/authWindow/Auth';
 import {DEBUG_RENDER} from './utils/debug';
+import { Modal } from '@mui/material';
+import { modalStyle } from './styles/modal';
 
 function App() {
   if (DEBUG_RENDER) {
     console.log('render app');
   }
 
-  const {loadUser, loadEvents, selectWeek} = useActions();
+  const {loadUser, loadEvents, selectWeek, registerEnd, selectModalPage} = useActions();
   const {loading} = useTypedSelector(state=>state.events);
+  const { isRegistered } = useTypedSelector(state=>state.registration);
   const {modalWindow, selectedDay, selectedWeek} = useTypedSelector(state=>state.selectElements);
-  const {isAuthenticated} = useTypedSelector(state=>state.user);
+  const {token} = useTypedSelector(state=>state.user);
 
   useEffect(() => {
-    loadUser();
-    loadEvents();
+    // loadUser();
+    // loadEvents();
   }, []);
 
   useEffect(() => {
     selectWeek(getWeek(selectedDay));
   }, [selectedDay]);
 
+
   return (
     <>
-    {isAuthenticated && !loading &&
+    {token !== '' && !loading &&
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
       {modalWindow === 'event' && <EventWindow/>}
       {modalWindow === 'settings' && <SettingsWindow/>}
@@ -47,12 +51,12 @@ function App() {
         <Week/>
       </Box>
     </Box>}
-    {!isAuthenticated &&
+    {token === '' &&
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.secondary.main, color: theme.palette.primary.main}}>
         <AuthWindow/>
       </Box>
     }
-    {isAuthenticated && loading &&
+    {token !== '' && loading &&
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.secondary.main, color: theme.palette.primary.main}}>
         Loading...
       </Box>
