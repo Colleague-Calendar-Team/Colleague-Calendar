@@ -10,7 +10,7 @@ function timeToWidth(time: string) {
 
 export function WorkloadToArrOfWidth(workload:UserWorkloadInnerState[]) {
   let widthArr = [];
-  
+
   workload.forEach((w) => {
     widthArr.push(timeToWidth(w.beginTime));
 

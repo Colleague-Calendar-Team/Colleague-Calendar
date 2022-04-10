@@ -19,8 +19,6 @@ import theme from '../../styles/theme';
 import { WorkloadToArrOfWidth } from './workloadWidths';
 import { getUserWorkload } from '../../ajax/requests/workload';
 import { DEBUG_REQUESTS } from '../../utils/debug';
-import urls from '../../ajax/urls';
-import ajax from '../../ajax/ajax';
 
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
@@ -41,7 +39,7 @@ const UserElement:React.FC<UserElementState> = ({user, date, checked, setChecked
           console.log(response.data);
         }
 
-        const workloads:UserWorkloadInnerState[] = response.data;
+        const workloads:UserWorkloadInnerState[] = JSON.parse(response.data);
         setWorkload(WorkloadToArrOfWidth(workloads));
       });
     }

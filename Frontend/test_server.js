@@ -39,8 +39,14 @@ const server = http.createServer((req, res) => {
   
   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
   res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Methods', 'POST, PUT, GET, OPTIONS, PUTCH, DELETE');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, PUT, GET, OPTIONS, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Date, x-date, Accept');
+
+  if (req.method === "OPTIONS") {
+    res.writeHead(200);
+    res.end();
+    return;
+  }
 
   switch (req.url) {
     case '/':
@@ -67,6 +73,17 @@ const server = http.createServer((req, res) => {
     case '/user/account':
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(user));
+      break;
+    case '/auth/logout':
+      if (req.headers.authorization !== 'Bearer token') {
+        res.writeHead(401, {'Content-Type': 'text/plain; charset=utf-8'});
+        res.write('User unathorized');
+      } else {
+        res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+        res.write('success logout');
+      }
+      
+      res.end();
       break;
     case '/user/1/workload':
       console.log('HEADERS:', req.headers['x-date']);

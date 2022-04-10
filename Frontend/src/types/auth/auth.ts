@@ -11,7 +11,8 @@ export enum AuthActionTypes {
   REGISTER_ERROR = "REGISTER_ERROR",
   REGISTER_END = "REGISTER_END",
   LOGIN_SUCCESS = "LOGIN_SUCCESS",
-  LOGIN_ERROR = "LOGIN_ERROR",
+  LOGOUT_SUCCESS = "LOGOUT_SUCCESS",
+  AUTH_ERROR = "AUTH_ERROR",
 }
 
 interface RegistrationSuccessAction {
@@ -32,9 +33,14 @@ interface LoginSuccessAction {
   payload: string;
 }
 
-interface LoginErrorAction {
-  type: AuthActionTypes.LOGIN_ERROR;
+interface AuthErrorAction {
+  type: AuthActionTypes.AUTH_ERROR;
   payload: string;
 }
 
-export type AuthAction = RegistrationSuccessAction | RegistrationErrorAction | RegistrationEndAction | LoginSuccessAction | LoginErrorAction;
+interface LogoutSuccessAction {
+  type: AuthActionTypes.LOGOUT_SUCCESS;
+}
+
+
+export type AuthAction = RegistrationSuccessAction | RegistrationErrorAction | RegistrationEndAction | LoginSuccessAction | AuthErrorAction | LogoutSuccessAction;

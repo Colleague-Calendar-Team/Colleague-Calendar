@@ -12,8 +12,9 @@ const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 export default function UserBlock() {
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
-  const { selectModalWindow } = useActions();
+  const { selectModalWindow, logout } = useActions();
   const user = useTypedSelector(state=>state.user);
+  const {token} = useTypedSelector(state=>state.auth.login);
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -23,6 +24,7 @@ export default function UserBlock() {
     setAnchorElUser(null);
   };
   const onExit = () => {
+    logout(token);
     selectModalWindow('auth');
     setAnchorElUser(null);
   };

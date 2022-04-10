@@ -21,8 +21,10 @@ export const authReducer = (state = initialState, action: AuthAction): AuthState
       return { ...state, registration: {isRegistered: false, error: null},};
     case AuthActionTypes.LOGIN_SUCCESS:
       return { ...state, login: {token: action.payload, error: null},};
-    case AuthActionTypes.LOGIN_ERROR:
-      return { ...state, login: {token: '', error: action.payload},};
+    case AuthActionTypes.AUTH_ERROR:
+      return { ...state, login: {token: state.login.token, error: action.payload},};
+    case AuthActionTypes.LOGOUT_SUCCESS:
+      return { ...state, login: {token: '', error: null},};
     default:
       return state;
   }

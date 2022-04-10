@@ -4,7 +4,7 @@ import { RegistrationInfoState } from '../../types/auth/registration';
 import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
 import { DEBUG_REQUESTS } from '../../utils/debug';
-import { RequestParamsState } from '../../types/ajax';
+import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
 
 export const register = (registerData: RegistrationInfoState) => {
   return (dispatch: Dispatch<AuthAction>) => {
@@ -69,7 +69,38 @@ export const loginUser = (login: string, password: string) => {
       }
     }).catch((e) => {
       console.error('ERROR in Login: ', login, ' password:', password);
-      dispatch({type: AuthActionTypes.LOGIN_ERROR, payload: `Ошибка входа: ${e}`});
+      dispatch({type: AuthActionTypes.AUTH_ERROR, payload: `Ошибка входа: ${e}`});
+    });
+  }
+}
+
+export const logout = (token: string) => {
+  return (dispatch: Dispatch<AuthAction>) => {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST LOGOUT');
+    }
+
+    const requestParams: RequestParamsState = {
+      headers: new Headers ({
+        'Authorization': 'Bearer ' + token,
+        'Content-type': 'text/plain',
+      }) as RequestHeadersState,
+    }
+    const data = ajax.post(urls.logout(), requestParams);
+    data?.then((response) => {
+      if (DEBUG_REQUESTS) {
+        console.log("RESPONSE logout:");
+        console.log(response.data);
+      }
+
+      if (response.status === 200) {
+        dispatch({type: AuthActionTypes.LOGOUT_SUCCESS});
+      } else {
+        throw response.data;
+      }
+    }).catch((e) => {
+      console.error('ERROR in Logout: ', token);
+      dispatch({type: AuthActionTypes.AUTH_ERROR, payload: `Ошибка входа: ${e}`});
     });
   }
 }
