@@ -22,4 +22,5 @@ export interface NotificationsEventInfoState {
   isCreate: boolean;
   notifications: NotificationsState;
   setNotifications: (notifications: NotificationsState) => void;
+  onCreate: () => void;
 }

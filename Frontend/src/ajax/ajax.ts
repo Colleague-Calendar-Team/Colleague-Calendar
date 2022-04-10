@@ -10,7 +10,6 @@ export enum AjaxMethods {
 }
 
 const RequestParamsInit = {
-  body: '',
   mode: 'cors' as RequestMode,
   credentials: "include" as RequestCredentials,
   headers: new Headers({
@@ -35,7 +34,7 @@ async function ajaxCall(url: string = urls.url, method: AjaxMethods = AjaxMethod
   }
 
   const response = await fetch(url, fetchParams);
-  if (requestParams.headers?.get('Content-Type') === 'application/json') {
+  if (response.headers.get('Content-Type') === 'application/json') {
     if (DEBUG_REQUESTS) {
       console.log("JSON");
     }

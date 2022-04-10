@@ -27,7 +27,6 @@ const Event: React.FC<EventElementState> =({event, eventId, setShowModalWindow, 
       className={eventClasses.root}
       sx={getEventStyle(event)}
       onClick={(e) => {
-        console.log('click EVENT:', e.target);
         e.stopPropagation();
         setSelectedEvent(event);
         setShowModalWindow('event');

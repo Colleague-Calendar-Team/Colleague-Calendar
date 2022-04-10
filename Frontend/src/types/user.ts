@@ -15,12 +15,25 @@ export interface UserProfileState {
   surname: string;
 }
 
+export interface UserInfoState {
+  email: string;
+  phoneNumber: string;
+  telegramID: string;
+  name: string;
+  surname: string;
+}
+
+export interface PasswordInfoState {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordRepeat: string;
+}
+
 export enum UserActionTypes {
   LOAD_USER = "LOAD_USER",
-  CHANGE_USER = "CHANGE_USER",
-  SAVE_AVATAR = "SAVE_AVATAR",
-  AUTH_USER = "AUTH_USER",
-  AUTH_ERROR = "AUTH_ERROR",
+  UPDATE_AVATAR = "UPDATE_AVATAR",
+  UPDATE_PROFILE = "UPDATE_PROFILE",
+  UPDATE_PASSWORD = "UPDATE_PASSWORD",
 }
 
 interface LoadUserAction {
@@ -28,14 +41,19 @@ interface LoadUserAction {
   payload: UserState;
 }
 
-interface ChangeUserAction {
-  type: UserActionTypes.CHANGE_USER;
-  payload: UserState;
+interface UpdateProfileAction {
+  type: UserActionTypes.UPDATE_PROFILE;
+  payload: UserInfoState;
 }
 
-interface SaveAvatarAction {
-  type: UserActionTypes.SAVE_AVATAR;
+interface UpdatePasswordAction {
+  type: UserActionTypes.UPDATE_PASSWORD;
+  payload: PasswordInfoState;
+}
+
+interface UpdateAvatarAction {
+  type: UserActionTypes.UPDATE_AVATAR;
   payload: string;
 }
 
-export type UserAction = LoadUserAction | ChangeUserAction | SaveAvatarAction;
+export type UserAction = LoadUserAction | UpdateAvatarAction | UpdatePasswordAction | UpdateProfileAction;

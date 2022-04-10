@@ -26,6 +26,10 @@ const EventWindow = () => {
     console.log("render event window:");
   }
 
+  function onCreate() {
+    selectModalWindow('');
+  }
+
   useEffect(() => {
     if (selectedHour === -1) {
       setEvent(selectedEvent);
@@ -48,17 +52,16 @@ const EventWindow = () => {
       }
     })
     setChecked(newChecked);
-    console.log("USERS LOAD:", users)
   }, []);
 
   return (
     <ModalWindow
-      title={selectedHour === -1 ? "Редактирование мероприятия" : "Создание мероприятия"}
+      title={event.title === '' ? "Создание мероприятия" : "Редактирование мероприятия"}
       pagesNames={["Общее", "Участники", "Уведомления"]}
     >
-      <GeneralEventInfo isCreate={selectedHour === -1 ? false : true} event={event} setEvent={setEvent} selectModalPage={selectModalPage}/>
-      <MembersEventInfo isCreate={selectedHour === -1 ? false : true} checked={checked} setChecked={setChecked} users={users} setUsers={setUsers} date={event.beginTime}/>
-      <NotificationsEventInfo isCreate={selectedHour === -1 ? false : true} notifications={notifications} setNotifications={setNotifications}/>
+      <GeneralEventInfo isCreate={event.title !== '' ? false : true} event={event} setEvent={setEvent} selectModalPage={selectModalPage}/>
+      <MembersEventInfo isCreate={event.title !== '' ? false : true} checked={checked} setChecked={setChecked} users={users} setUsers={setUsers} date={event.beginTime}/>
+      <NotificationsEventInfo isCreate={event.title !== '' ? false : true} notifications={notifications} setNotifications={setNotifications} onCreate={onCreate}/>
     </ModalWindow>
   );
 }

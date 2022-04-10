@@ -13,7 +13,7 @@ import theme from "../../styles/theme";
 import { useActions } from "../../hooks/useActions";
 import { NotificationsEventInfoState } from "../../types/windows/eventWindow";
 
-export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({isCreate, notifications, setNotifications}) => {
+export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({isCreate, notifications, setNotifications, onCreate}) => {
   const {selectModalPage} = useActions();
   const { selectModalWindow } = useActions();
   const classes = useButtonStyles();
@@ -29,9 +29,6 @@ export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({is
     selectModalPage('Участники');
   }
   function onSubmit() {
-    selectModalWindow('');
-  }
-  function onCreate() {
     selectModalWindow('');
   }
   const handleChange = (event: SelectChangeEvent<number>) => {

@@ -37,9 +37,10 @@ const UserElement:React.FC<UserElementState> = ({user, date, checked, setChecked
         if (DEBUG_REQUESTS) {
           console.log('RESPONSE WORKLOAD: ');
           console.log(response.data);
+          // console.log(JSON.parse(response.data));
         }
 
-        const workloads:UserWorkloadInnerState[] = JSON.parse(response.data);
+        const workloads:UserWorkloadInnerState[] = response.data;
         setWorkload(WorkloadToArrOfWidth(workloads));
       });
     }

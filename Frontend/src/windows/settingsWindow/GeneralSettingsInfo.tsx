@@ -3,12 +3,24 @@ import { useState } from "react";
 import MuiPhoneNumber from 'material-ui-phone-number';
 import useButtonStyles from "../../styles/button";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { UserInfoState } from "../../types/user";
+import { useActions } from "../../hooks/useActions";
 
 const GeneralSettingsInfo = () => {
-  const [user, setUser] = useState(useTypedSelector(state=>state.user));
+  const {updateUserProfile} = useActions();
+  const {name, surname, email, telegramID, phoneNumber} = useTypedSelector(state=>state.user);
+  const {token} = useTypedSelector(state=>state.auth.login);
+  const [user, setUser] = useState<UserInfoState>({
+    name: name,
+    surname: surname,
+    email: email,
+    telegramID: telegramID,
+    phoneNumber: phoneNumber,
+  });
   const classes = useButtonStyles();
 
   function onSubmit() {
+    updateUserProfile(token, user);
   }
 
   return (

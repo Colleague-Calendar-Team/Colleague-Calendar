@@ -9,15 +9,17 @@ import useButtonStyles from "../../styles/button";
 import { useActions } from '../../hooks/useActions';
 import { UserProfileState } from '../../types/user';
 import { GenNumbersArr } from '../../utils/genArr';
-import {DEBUG_RENDER} from "../../utils/debug";
+import {DEBUG_RENDER, DEBUG_REQUESTS} from "../../utils/debug";
 import { render } from '@testing-library/react';
 import { MembersEventInfoState } from '../../types/windows/eventWindow';
 import UserElement from './../../components/users/userElement';
 import dayjs from 'dayjs';
+import { getProfilesByUsername } from '../../ajax/requests/profiles';
 
 const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, setChecked, users, setUsers, date}) => {
   const classes = useButtonStyles();
   const {selectModalPage} = useActions();
+  const [username, setUsername] = useState<string>('');
 
   if (DEBUG_RENDER) {
     console.log('Render users info:', checked);
@@ -35,23 +37,31 @@ const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, se
   }
 
   function searchUsers() {
-    const searchUsers = [{userID: 3, name: 'Родион', surname: 'Родионов'}, {userID: 4, name: 'Роман', surname: 'Романов'}];
-    const newUsers = users.slice(0);
-    let newUsersId = 0;
-    for (let i = 0; i < users.length; i++) {
-      if (!checked.has(users[i].userID)) {
-        newUsers.splice(newUsersId, 1);
-      } else {
-        newUsersId++;
+    const data = getProfilesByUsername(username);
+    data?.then((response) => {
+      if (DEBUG_REQUESTS) {
+        console.log('RESPONSE SEARCH: ');
+        console.log(response.data);
       }
-    }
-    searchUsers.forEach((u, idx) => {
-      if (!checked.has(u.userID)) {
-        newUsers.push(u);
-      }
-    })
 
-    setUsers(newUsers);
+      const searchUsers:UserProfileState[] = response.data;
+      const newUsers = users.slice(0);
+      let newUsersId = 0;
+      for (let i = 0; i < users.length; i++) {
+        if (!checked.has(users[i].userID)) {
+          newUsers.splice(newUsersId, 1);
+        } else {
+          newUsersId++;
+        }
+      }
+      searchUsers.forEach((u, idx) => {
+        if (!checked.has(u.userID)) {
+          newUsers.push(u);
+        }
+      })
+  
+      setUsers(newUsers);
+    });
   }
 
   return (
@@ -69,6 +79,7 @@ const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, se
             ),
           }}
           variant="outlined"
+          onChange={(e) => setUsername(e.target.value)}
         />
         <Button onClick={searchUsers} className={classes.root} sx={{ml: 1}}>Найти</Button>
       </Box>

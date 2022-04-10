@@ -74,6 +74,18 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(user));
       break;
+    case '/user/update/profile':
+      res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+      res.end('succesful update');
+      break;
+    case '/user/update/password':
+      res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+      res.end('succesful update');
+      break;
+    case '/user/update/avatar':
+      res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+      res.end('succesful update');
+      break;
     case '/auth/logout':
       if (req.headers.authorization !== 'Bearer token') {
         res.writeHead(401, {'Content-Type': 'text/plain; charset=utf-8'});
@@ -87,7 +99,7 @@ const server = http.createServer((req, res) => {
       break;
     case '/user/1/workload':
       console.log('HEADERS:', req.headers['x-date']);
-      const workloadNew = [ {
+      const workloadNew = [{
         beginTime: '00:00',
         endTime: '5:46',
       }, {
@@ -102,6 +114,11 @@ const server = http.createServer((req, res) => {
       }];
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(workloadNew));
+      break;
+    case '/user/Ivan/profiles':
+      const searchUsers = [{userID: 3, name: 'Ivan', surname: 'Rodionov'}, {userID: 4, name: 'Ivan', surname: 'Romanov'}];
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify(searchUsers));
       break;
     case '/auth/register':
       body = '';

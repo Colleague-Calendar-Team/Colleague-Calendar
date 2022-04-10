@@ -1,15 +1,23 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import useButtonStyles from "../../styles/button";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { useActions } from "../../hooks/useActions";
+import { PasswordInfoState } from "../../types/user";
 
 const PasswordSettingsInfo = () => {
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [newRepeatPassword, setNewRepeatPassword] = useState('');
+  const {updateUserPassword} = useActions();
+  const {token} = useTypedSelector(state=>state.auth.login);
+  const [passwordInfo, setPasswordInfo] = useState<PasswordInfoState>({
+    oldPassword: '',
+    newPassword: '',
+    newPasswordRepeat: '',
+  })
 
   const classes = useButtonStyles();
 
   function onSubmit() {
+    updateUserPassword(token, passwordInfo);
   }
 
   return (
@@ -25,24 +33,24 @@ const PasswordSettingsInfo = () => {
         id="oldPassword"
         label="Старый пароль"
         type="password"
-        defaultValue={oldPassword}
-        onChange={(e) => setOldPassword(e.target.value)}
+        defaultValue={passwordInfo.oldPassword}
+        onChange={(e) => setPasswordInfo({...passwordInfo, 'oldPassword': e.target.value})}
         size="small"
       />
       <TextField
         id="newPassword"
         label="Новый пароль"
         type="password"
-        defaultValue={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
+        defaultValue={passwordInfo.newPassword}
+        onChange={(e) => setPasswordInfo({...passwordInfo, 'newPassword': e.target.value})}
         size="small"
       />
       <TextField
         id="newRepeatPassword"
         label="Новый пароль повторно"
         type="password"
-        defaultValue={newRepeatPassword}
-        onChange={(e) => setNewRepeatPassword(e.target.value)}
+        defaultValue={passwordInfo.newPasswordRepeat}
+        onChange={(e) => setPasswordInfo({...passwordInfo, 'newPasswordRepeat': e.target.value})}
         size="small"
       />
       <Box sx={{ display: 'flex', justifyContent: 'end'}}>

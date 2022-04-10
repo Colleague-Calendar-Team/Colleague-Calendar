@@ -12,11 +12,16 @@ const initialState: UserState = {
 }
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {
-  switch(action.type) {
+  switch (action.type) {
     case UserActionTypes.LOAD_USER:
       return action.payload;
-    case UserActionTypes.SAVE_AVATAR:
-      return {...state, avatarUrl: action.payload};
+    case UserActionTypes.UPDATE_AVATAR:
+      return { ...state, avatarUrl: action.payload };
+    case UserActionTypes.UPDATE_PROFILE:
+      return { ...state, email: action.payload.email, phoneNumber: action.payload.phoneNumber, 
+        telegramID: action.payload.telegramID, name: action.payload.name, surname: action.payload.surname };
+    case UserActionTypes.UPDATE_PASSWORD:
+      return { ...state, password: action.payload.newPassword };
     default:
       return state;
   }
