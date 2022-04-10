@@ -1,18 +1,22 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import useButtonStyles from "../../styles/button";
 import Logo from "../../assets/logo";
 import {useActions} from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import theme from "../../styles/theme";
 
 const Login = () => {
-  const { loginUser } = useActions();
+  const { loginUser, getCurrentUserAccount } = useActions();
   const classes = useButtonStyles();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const {error} = useTypedSelector(state=>state.auth.login);
 
   function onSubmit() {
     loginUser(login, password);
   }
+
 
   return (
     <Box
@@ -42,6 +46,8 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           size="small"
         />
+      {error && 
+        <Box sx={{color: theme.palette.error.main}}>{error}</Box>}
       <Box sx={{ display: 'flex', justifyContent: 'end'}}>
         <Button className={classes.root} onClick={onSubmit}>
           Вход

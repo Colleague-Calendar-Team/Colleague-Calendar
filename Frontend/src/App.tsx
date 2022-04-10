@@ -22,25 +22,25 @@ function App() {
     console.log('render app');
   }
 
-  const {loadUser, loadEvents, selectWeek, registerEnd, selectModalPage} = useActions();
-  const {loading} = useTypedSelector(state=>state.events);
-  const { isRegistered } = useTypedSelector(state=>state.registration);
+  const {getCurrentUserAccount, loadEvents, selectWeek, registerEnd, selectModalPage} = useActions();
+  const {loading, error} = useTypedSelector(state=>state.events);
+  const { token } = useTypedSelector(state=>state.auth.login);
   const {modalWindow, selectedDay, selectedWeek} = useTypedSelector(state=>state.selectElements);
-  const {token} = useTypedSelector(state=>state.user);
-
-  useEffect(() => {
-    // loadUser();
-    // loadEvents();
-  }, []);
 
   useEffect(() => {
     selectWeek(getWeek(selectedDay));
   }, [selectedDay]);
 
+  useEffect(() => {
+    if (token) {
+      getCurrentUserAccount(token);
+      loadEvents(token, dayjs());
+    }
+  }, [token]);
 
   return (
     <>
-    {token !== '' && !loading &&
+    {token !== '' && !loading && !error &&
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
       {modalWindow === 'event' && <EventWindow/>}
       {modalWindow === 'settings' && <SettingsWindow/>}

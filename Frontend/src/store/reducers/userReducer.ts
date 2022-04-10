@@ -9,7 +9,6 @@ const initialState: UserState = {
   name: 'unknown',
   surname: 'unknown',
   avatarUrl: null,
-  token: '',
 }
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {
@@ -18,8 +17,6 @@ export const userReducer = (state = initialState, action: UserAction): UserState
       return action.payload;
     case UserActionTypes.SAVE_AVATAR:
       return {...state, avatarUrl: action.payload};
-    case UserActionTypes.AUTH_USER:
-      return {...state, token: action.payload};
     default:
       return state;
   }

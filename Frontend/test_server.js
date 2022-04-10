@@ -64,7 +64,7 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(events));
       break;
-    case '/user':
+    case '/user/account':
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(user));
       break;

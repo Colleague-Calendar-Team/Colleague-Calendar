@@ -7,7 +7,6 @@ export interface UserState {
   name: string;
   surname: string;
   avatarUrl: string | null;
-  token: string;
 }
 
 export interface UserProfileState {
@@ -21,6 +20,7 @@ export enum UserActionTypes {
   CHANGE_USER = "CHANGE_USER",
   SAVE_AVATAR = "SAVE_AVATAR",
   AUTH_USER = "AUTH_USER",
+  AUTH_ERROR = "AUTH_ERROR",
 }
 
 interface LoadUserAction {
@@ -38,9 +38,4 @@ interface SaveAvatarAction {
   payload: string;
 }
 
-interface AuthUserAction {
-  type: UserActionTypes.AUTH_USER;
-  payload: string;
-}
-
-export type UserAction = LoadUserAction | ChangeUserAction | SaveAvatarAction | AuthUserAction;
+export type UserAction = LoadUserAction | ChangeUserAction | SaveAvatarAction;

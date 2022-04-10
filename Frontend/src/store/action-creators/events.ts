@@ -2,22 +2,41 @@ import { Dispatch } from 'redux';
 import { EventsState, EventsAction, EventsActionTypes } from '../../types/events';
 import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
+import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
+import dayjs from 'dayjs';
+import { DEBUG_REQUESTS } from '../../utils/debug';
 
-export const loadEvents = () => {
+export const loadEvents = (token: string, date: dayjs.Dayjs) => {
   return (dispatch: Dispatch<EventsAction>) => {
-    try {
-      dispatch({type: EventsActionTypes.LOADING_EVENTS});
+    if (DEBUG_REQUESTS) {
+      console.log("REQUEST load weeks events");
+    }
+      
+    dispatch({type: EventsActionTypes.LOADING_EVENTS});
 
-      ajax.get(urls.getWeeks()).then((response) => {
+    const requestParams: RequestParamsState = {
+      headers: new Headers ({
+        'Authorization': 'Bearer ' + token,
+        'x-date' : date.format('YYYY-MM-DD'),
+        'Content-Type': 'application/json',
+      }) as RequestHeadersState,
+    }
+
+    ajax.get(urls.getWeeks(), requestParams).then((response) => {
+      if (DEBUG_REQUESTS) {
         console.log("EVENTS GET response:");
         console.log(response.data);
+      }
+
+      if (response.status === 200) {
         dispatch({type: EventsActionTypes.LOADING_EVENTS_SUCCESS, payload: response.data});
-      });
-    }
-    catch (e) {
+      } else {
+        throw response.data;
+      }   
+    }).catch ((e) => {
       console.error('ERROR in LoadingEvents');
       dispatch({type: EventsActionTypes.LOADING_EVENTS_ERROR, payload: `Ошибка загрузки событий: ${e}`});
-    }
+    });
   }
 }
 

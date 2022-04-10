@@ -9,6 +9,10 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import theme from "../../styles/theme";
 import { modalStyle } from "../../styles/modal";
 
+export const messageModalStyle = {
+  margin: 3,
+};
+
 const registerInfoInit = {
   name: '',
   surname: '',
@@ -21,7 +25,7 @@ const registerInfoInit = {
 
 const Registration = () => {
   const { register, registerEnd, selectModalPage } = useActions();
-  const { isRegistered, error } = useTypedSelector(state=>state.registration);
+  const { isRegistered, error } = useTypedSelector(state=>state.auth.registration);
   const classes = useButtonStyles();
   const [info, setInfo] = useState<RegistrationInfoState>(registerInfoInit);
 
@@ -39,7 +43,7 @@ const Registration = () => {
     <Box>
       <Modal open={isRegistered} onClose={handleClose}>
           <Box sx={modalStyle}>
-            <Box>Успешная регистрация</Box>
+            <Box sx={messageModalStyle}>Успешная регистрация</Box>
           </Box>
       </Modal>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2}}>

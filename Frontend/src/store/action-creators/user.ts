@@ -4,22 +4,31 @@ import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
 import { DEBUG_REQUESTS } from '../../utils/debug';
 import dayjs from 'dayjs';
-import { RequestParamsState } from '../../types/ajax';
+import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-export const loadUser = () => {
+export const getCurrentUserAccount = (token: string) => {
   return (dispatch: Dispatch<UserAction>) => {
+    if (DEBUG_REQUESTS) {
+      console.log("REQUEST get current user account: " + token);
+    }
     try {
-      ajax.get(urls.getUser()).then((response) => {
+      const requestParams: RequestParamsState = {
+        headers: new Headers ({
+          'Authorization': 'Bearer ' + token,
+        }) as RequestHeadersState,
+      }
+      ajax.get(urls.getCurrentUserAccount(), requestParams).then((response) => {
         if (DEBUG_REQUESTS) {
-          console.log("RESPONSE user:");
+          console.log("RESPONSE user account:");
           console.log(response.data);
         }
 
         dispatch({type: UserActionTypes.LOAD_USER, payload: response.data});
       });
     }
-    catch {
-      console.error('ERROR in Load User');
+    catch(err) {
+      console.error('ERROR in get user account:', err);
     }
   }
 }
@@ -35,35 +44,6 @@ export const saveAvatar = (avatarUrl: string) => {
     }
     catch {
       console.error('ERROR in Save avatar:', avatarUrl)
-    }
-  }
-}
-
-export const loginUser = (login: string, password: string) => {
-  return (dispatch: Dispatch<UserAction>) => {
-    try {
-      if (DEBUG_REQUESTS) {
-        console.log('REQUEST USER login:', login, ' password:', password);
-      }
-
-      const requestParams: RequestParamsState = {
-        headers: new Headers({
-          'Content-type': 'text/plain',
-        })
-      }
-
-      const data = ajax.post(urls.login(login, password), requestParams);
-      data?.then((response) => {
-        if (DEBUG_REQUESTS) {
-          console.log("RESPONSE user token:");
-          console.log(response.data);
-        }
-
-        dispatch({type: UserActionTypes.AUTH_USER, payload: response.data});
-      });
-    }
-    catch {
-      console.error('ERROR in Login: ', login, ' password:', password);
     }
   }
 }
