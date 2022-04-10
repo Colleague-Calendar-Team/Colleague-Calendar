@@ -9,11 +9,11 @@ import (
 
 // ServerApi ...
 type ServerApiRegistration struct {
-	store *store.Store
+	store store.Store
 }
 
 // New ...
-func New(st *store.Store) *ServerApiRegistration {
+func New(st store.Store) *ServerApiRegistration {
 	return &ServerApiRegistration{
 		store: st,
 	}
@@ -25,5 +25,12 @@ func (s *ServerApiRegistration) HandleTest() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
 		io.WriteString(w, "Test")
+	}
+}
+
+
+func (s *ServerApiRegistration) HandleUsersCreate() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
 	}
 }
