@@ -9,14 +9,14 @@ import (
 
 // User ...
 type User struct {
-	ID int
-	Email string
-	Password string
-	EncryptedPassword string
-	PhoneNumber string
-	TelegramID string
-	Name string
-	Surname string
+	ID                int    `json:"userID"`
+	Email             string `json:"email"`
+	Password          string `json:"password,omitempty"`
+	EncryptedPassword string `json:"-"`
+	PhoneNumber       string `json:"phoneNumber,omitempty"`
+	TelegramID        string `json:"telegramID,omitempty"`
+	Name              string `json:"name,omitempty"`
+	Surname           string `json:"surname,omitempty"`
 	// TODO: avatar
 }
 
@@ -45,7 +45,17 @@ func (u *User) BeforeCreate() error {
 	return nil
 }
 
+// Sanitize ...
+func (u *User) Sanitize() {
+	u.Password = ""
+}
 
+// ComparePassword ...
+func (u *User) ComparePassword(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(u.EncryptedPassword), []byte(password)) == nil
+}
+
+// encryptString ...
 func encryptString(s string) (string, error) {
 	b, err := bcrypt.GenerateFromPassword([]byte(s), bcrypt.MinCost)
 	if err != nil {

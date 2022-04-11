@@ -2,6 +2,8 @@ package serverApiRegistration
 
 import (
 	"Backend/internal/store/teststore"
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -14,29 +16,47 @@ const (
 	failed  = "\u2717"
 )
 
-func TestAPIServerReg_HandleTest(t *testing.T) {
-	t.Log("Given the need to test HandleTest")
-	{
-		testID := 0
-		t.Logf("\tTest %d: \tWhen use  HandleTest.", testID)
+func TestAPIServerReg_HandleRegisterUser(t *testing.T) {
+	s := New(teststore.New())
+	r := mux.NewRouter()
+	configureRouter_test(r, s)
+	testCases := []struct {
+		name         string
+		payload      interface{}
+		expectedCode int
+	}{
 		{
+			name: "valid",
+			payload: map[string]string{
+				"email":          "user@example.org",
+				"password":       "password",
+				"passwordRepeat": "password",
+			},
+			expectedCode: http.StatusOK,
+		},
+	}
+
+	testID := 0
+	t.Log("Given the need to test HandleRegisterUser")
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
 			rec := httptest.NewRecorder()
-			req, _ := http.NewRequest(http.MethodPost, "/users", nil)
-			s := New(teststore.New())
-			r := mux.NewRouter()
-			configureRouter_test(r, s)
-
+			b := &bytes.Buffer{}
+			json.NewEncoder(b).Encode(tc.payload)
+			req, _ := http.NewRequest(http.MethodPost, "/auth/register", b)
 			r.ServeHTTP(rec, req)
-			if rec.Code != http.StatusOK {
-				t.Fatalf("\t%s\tShould be able to get Hello : %T.", failed, rec)
+			t.Logf("\tTest %d: \tWhen use HandleRegisterUser for %s user.", testID, tc.name)
+			if tc.expectedCode != rec.Code {
+				t.Fatalf("\t%s\tShould be able to get equal status:\n Expected: %d, Received: %d.", failed, tc.expectedCode, rec.Code)
 			}
-			t.Logf("\t%s\tShould be able to get Hello", success)
-		}
-
+			t.Logf("\t%s\tShould be able to get equal status.", success)
+			testID++
+		})
 	}
 }
 
 func configureRouter_test(r *mux.Router, s *ServerApiRegistration) {
-	r.HandleFunc("/test", s.HandleTest())
-	r.HandleFunc("/users", s.HandleUsersCreate()).Methods("POST")
+	auth := r.PathPrefix("/auth").Subrouter()
+	//auth.Use()
+	auth.HandleFunc("/register", s.HandleRegisterUser()).Methods("POST")
 }
