@@ -1,4 +1,4 @@
-import { NotificationsState } from "../notifications";
+import { NotificationsState } from "../event/notifications";
 
 export interface NotificationElementState {
   ntfName: string;

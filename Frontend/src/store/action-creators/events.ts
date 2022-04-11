@@ -1,10 +1,10 @@
 import { Dispatch } from 'redux';
-import { EventsState, EventsAction, EventsActionTypes } from '../../types/events';
+import { EventsState, EventsAction, EventsActionTypes } from '../../types/event/events';
 import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
 import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
 import dayjs from 'dayjs';
-import { DEBUG_REQUESTS } from '../../utils/debug';
+import { DEBUG_REQUESTS, DEBUG_REQUESTS_ERRORS } from '../../utils/debug';
 
 export const loadEvents = (token: string, date: dayjs.Dayjs) => {
   return (dispatch: Dispatch<EventsAction>) => {
@@ -34,7 +34,10 @@ export const loadEvents = (token: string, date: dayjs.Dayjs) => {
         throw response.data;
       }   
     }).catch ((e) => {
-      console.error('ERROR in LoadingEvents');
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in LoadingEvents');
+      }
+     
       dispatch({type: EventsActionTypes.LOADING_EVENTS_ERROR, payload: `Ошибка загрузки событий: ${e}`});
     });
   }

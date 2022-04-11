@@ -1,6 +1,6 @@
-import { EventState } from "../event";
+import { EventState } from "../event/event";
 import { UserProfileState } from "../user";
-import { NotificationsState } from "../notifications";
+import { NotificationsState } from "../event/notifications";
 
 export interface GeneralEventInfoState {
   isCreate: boolean;

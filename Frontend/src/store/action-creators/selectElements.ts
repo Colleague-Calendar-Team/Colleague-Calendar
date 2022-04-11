@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { Dispatch } from 'redux';
-import { EventState } from '../../types/event';
+import { EventState } from '../../types/windows/event/event';
 import { SelectElementsAction, SelectElementsActionTypes } from '../../types/selectElements';
 
 export const selectModalWindow = (windowName: string) => {

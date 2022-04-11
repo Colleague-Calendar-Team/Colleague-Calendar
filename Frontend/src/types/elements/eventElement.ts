@@ -1,4 +1,4 @@
-import { EventState } from "../event";
+import { EventState } from "../windows/event/event";
 
 export interface EventElementState {
   event: EventState;

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { EventState } from "./event";
+import { EventState } from "./event/event";
 
 export interface SelectElementsState {
   modalWindow: string;

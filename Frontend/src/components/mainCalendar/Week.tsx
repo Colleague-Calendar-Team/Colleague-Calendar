@@ -6,7 +6,7 @@ import Event from "./Event";
 import ReactDOM from "react-dom";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { getIdOfHourInWeek } from "../../utils/getWeek";
-import {DEBUG_RENDER} from '../../utils/debug';
+import {DEBUG_RENDER, DEBUG_COMPONENTS} from '../../utils/debug';
 import { useActions } from "../../hooks/useActions";
 import { GenNumbersArr } from "../../utils/genArr";
 
@@ -30,7 +30,9 @@ const Week: React.FC = () => {
       });
     }
     if (events !== null && renderWeek >= 0 && renderWeek < 5) {
-      console.log('Week element events:', events[renderWeek]);
+      if (DEBUG_COMPONENTS) {
+        console.log('Week element events:', events[renderWeek]);
+      }
 
       const eventsParents = new Set<HTMLElement>();
       events[renderWeek].forEach((event, id) => {

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { RequestHeadersState, RequestParamsState } from "../../types/ajax";
-import { DEBUG_REQUESTS } from "../../utils/debug";
+import { DEBUG_REQUESTS, DEBUG_REQUESTS_ERRORS } from "../../utils/debug";
 import ajax from "../ajax";
 import urls from "../urls";
 
@@ -20,6 +20,8 @@ export const getUserWorkload = (date: dayjs.Dayjs, userID: number, token: string
     return ajax.get(urls.getUserWorkload(userID), requestParams);
   }
   catch {
-    console.error('ERROR in Get User Workload: user:', userID, " date: ", date);
+    if (DEBUG_REQUESTS_ERRORS) {
+      console.error('ERROR in Get User Workload: user:', userID, " date: ", date);
+    }
   }
 }

@@ -5,6 +5,7 @@ import theme from "../../styles/theme";
 import Avatar from '@mui/material/Avatar';
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
+import { DEBUG_COMPONENTS } from "../../utils/debug";
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 const AvatarSettingsInfo = () => {
@@ -22,7 +23,10 @@ const AvatarSettingsInfo = () => {
   function onSelectAvatar(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | UIEvent & { target: HTMLInputElement & { files: Array<string>}}) {
     if (e.target instanceof HTMLInputElement) {
       if (e.target?.files?.length) {
-        console.log("avatar:", URL.createObjectURL(e.target.files[0]))
+        if (DEBUG_COMPONENTS) { 
+          console.log("avatar:", URL.createObjectURL(e.target.files[0]))
+        }
+        
         setAvatar(URL.createObjectURL(e.target.files[0]));
       }
     }

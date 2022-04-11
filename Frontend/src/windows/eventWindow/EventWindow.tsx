@@ -3,13 +3,13 @@ import ModalWindow from "../../components/modal/Modal";
 import GeneralEventInfo from "./GeneralEventInfo";
 import MembersEventInfo from "./MembersEvenInfo";
 import {NotificationsEventInfo} from "./NotificationsEventInfo";
-import { EventInit, EventState } from "../../types/event";
+import { EventInit, EventState } from "../../types/event/event";
 import { getHourById } from "../../utils/getWeek";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 import { DEBUG_RENDER } from "../../utils/debug";
 import { UserProfileState } from "../../types/user";
-import { NotificationsInit, NotificationsState } from "../../types/notifications";
+import { NotificationsInit, NotificationsState } from "../../types/event/notifications";
 
 const EventWindow = () => {
   const { selectModalWindow, selectModalPage } = useActions();

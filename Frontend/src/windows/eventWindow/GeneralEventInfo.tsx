@@ -6,7 +6,7 @@ import Checkbox from "@mui/material/Checkbox";
 import dayjs from "dayjs";
 import useButtonStyles from "../../styles/button";
 import { useActions } from "../../hooks/useActions";
-import { EventState, EventInit } from "../../types/event";
+import { EventState, EventInit } from "../../types/windows/event/event";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { getHourById } from "../../utils/getWeek";
 import {DEBUG_RENDER} from "../../utils/debug";

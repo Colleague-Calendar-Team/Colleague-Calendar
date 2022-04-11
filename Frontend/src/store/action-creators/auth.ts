@@ -3,7 +3,7 @@ import { AuthAction, AuthActionTypes} from '../../types/auth/auth';
 import { RegistrationInfoState } from '../../types/auth/registration';
 import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
-import { DEBUG_REQUESTS } from '../../utils/debug';
+import { DEBUG_REQUESTS, DEBUG_REQUESTS_ERRORS } from '../../utils/debug';
 import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
 
 export const register = (registerData: RegistrationInfoState) => {
@@ -32,7 +32,10 @@ export const register = (registerData: RegistrationInfoState) => {
         throw response.data;
       }
     }).catch((e) => {
-      console.error('ERROR in Registration:', e);
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in Registration:', e);
+      }
+      
       dispatch({type: AuthActionTypes.REGISTER_ERROR, payload: `Ошибка регистрации: ${e}`});
     });
   }
@@ -68,7 +71,10 @@ export const loginUser = (login: string, password: string) => {
         throw response.data;
       }
     }).catch((e) => {
-      console.error('ERROR in Login: ', login, ' password:', password);
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in Login: ', login, ' password:', password);
+      }
+      
       dispatch({type: AuthActionTypes.AUTH_ERROR, payload: `Ошибка входа: ${e}`});
     });
   }
@@ -99,7 +105,10 @@ export const logout = (token: string) => {
         throw response.data;
       }
     }).catch((e) => {
-      console.error('ERROR in Logout: ', token);
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in Logout: ', token);
+      }
+      
       dispatch({type: AuthActionTypes.AUTH_ERROR, payload: `Ошибка входа: ${e}`});
     });
   }

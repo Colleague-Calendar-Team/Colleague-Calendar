@@ -1,4 +1,4 @@
-import { EventsState, EventsActionTypes, EventsAction } from "../../types/events";
+import { EventsState, EventsActionTypes, EventsAction } from "../../types/event/events";
 
 const initialState: EventsState = {
   events: null,
