@@ -108,5 +108,5 @@ func newDB(configStore *config.StoreConfig) (*sql.DB, error) {
 func configureRouter(r *mux.Router, s *serverApiRegistration.ServerApiRegistration) {
 	auth := r.PathPrefix("/auth").Subrouter()
 	//auth.Use()
-	auth.HandleFunc("/register", s.HandleRegisterUser()).Methods("POST")
+	auth.HandleFunc("/login", s.HandleAuthenticateUser()).Methods("POST")
 }

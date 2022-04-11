@@ -1,0 +1,5 @@
+httpServer:
+        endpoint: "127.0.0.1:8081"
+        writeTimeout: 15
+        readTimeout: 15
+storePath: "./cmd/store/"
