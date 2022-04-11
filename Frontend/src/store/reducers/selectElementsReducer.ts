@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { EventState, EventInit } from '../../types/windows/event/event';
+import { EventInit } from '../../types/event/eventInit';
 import { getWeek } from '../../utils/getWeek';
 import { SelectElementsState, SelectElementsActionTypes, SelectElementsAction } from './../../types/selectElements';
 

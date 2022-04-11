@@ -42,7 +42,7 @@ function App() {
     <>
     {token !== '' && !loading && !error &&
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100vh', backgroundColor: theme.palette.primary.main, color: theme.palette.primary.dark}}>
-      {modalWindow === 'event' && <EventWindow/>}
+      {(modalWindow === 'eventEdit' || modalWindow === 'eventCreate') && <EventWindow/>}
       {modalWindow === 'settings' && <SettingsWindow/>}
       
       <Header week={selectedWeek}/>

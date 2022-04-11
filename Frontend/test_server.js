@@ -63,15 +63,18 @@ const server = http.createServer((req, res) => {
       res.end(data);
       break;
     case '/events/add':
-      res.writeHead(200, {'Content-Type': 'application/json'});
-
-      let data3 = "";
-      req.on("data", chunk => {
-          data3 += chunk;
+      body = '';
+      req.on('data', (chunk) => {
+          body += chunk;
       });
-      req.on("end", () => {
-        console.log('data3:', data3);
-        res.end(data3);
+      req.on('end', () => {
+          console.log(body);
+  
+          eventID++;
+          res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+          res.write(eventID.toString());
+          
+          res.end();
       });
       break;
     case '/events/weeks':

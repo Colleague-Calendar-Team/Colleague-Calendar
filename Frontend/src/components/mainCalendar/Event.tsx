@@ -2,7 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import { Box, Typography } from "@mui/material";
 import useEventStyles from "../../styles/event";
-import { EventState } from "../../types/windows/event/event";
+import { EventState } from "../../types/event/event";
 import { EventElementState } from "../../types/elements/eventElement";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
@@ -29,7 +29,7 @@ const Event: React.FC<EventElementState> =({event, eventId, setShowModalWindow, 
       onClick={(e) => {
         e.stopPropagation();
         setSelectedEvent(event);
-        setShowModalWindow('event');
+        setShowModalWindow('eventEdit');
         selectHour(-1);
       }}
     >

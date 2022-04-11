@@ -1,7 +1,8 @@
+import { EventState } from "../../types/event/event";
 import { EventsState, EventsActionTypes, EventsAction } from "../../types/event/events";
 
 const initialState: EventsState = {
-  events: null,
+  events: [],
   renderWeek: 0,
   loading: true,
   error: null,
@@ -17,6 +18,14 @@ export const eventsReducer = (state = initialState, action: EventsAction): Event
       return {...state, error: action.payload, loading: false};
     case EventsActionTypes.CHANGE_WEEK:
       return {...state, renderWeek: action.payload};
+    case EventsActionTypes.ADD_EVENT:
+      return {...state, events: state.events.map((_, id) => {
+        if (id === state.renderWeek) {
+          return state.events[id].concat(action.payload);
+        } else {
+          return state.events[id];
+        }
+      })};
     default:
       return state;
   }

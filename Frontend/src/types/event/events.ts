@@ -1,7 +1,7 @@
-import { EventState } from "./event";
+import { EventCreationState, EventState } from "./event";
 
 export interface EventsState {
-  events: EventState[][] | null;
+  events: EventState[][];
   renderWeek: number;
   loading: boolean;
   error: string | null;
@@ -12,6 +12,7 @@ export enum EventsActionTypes {
   LOADING_EVENTS_SUCCESS = "LOADING_EVENTS_SUCCESS",
   LOADING_EVENTS_ERROR = "LOADING_EVENTS_ERROR",
   CHANGE_WEEK = "CHANGE_WEEK",
+  ADD_EVENT = "ADD_EVENT",
 }
 
 interface LoadingEventsAction {
@@ -33,4 +34,9 @@ interface ChangeWeekAction {
   payload: number;
 }
 
-export type EventsAction = LoadingEventsAction | LoadingEventsSuccessAction | LoadingEventsErrorAction | ChangeWeekAction;
+interface AddEventAction {
+  type: EventsActionTypes.ADD_EVENT;
+  payload: EventState;
+}
+
+export type EventsAction = LoadingEventsAction | LoadingEventsSuccessAction | LoadingEventsErrorAction | ChangeWeekAction | AddEventAction;

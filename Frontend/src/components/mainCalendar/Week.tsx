@@ -29,7 +29,7 @@ const Week: React.FC = () => {
         ReactDOM.unmountComponentAtNode(parent);
       });
     }
-    if (events !== null && renderWeek >= 0 && renderWeek < 5) {
+    if (events.length > 0 && renderWeek >= 0 && renderWeek < 5) {
       if (DEBUG_COMPONENTS) {
         console.log('Week element events:', events[renderWeek]);
       }
@@ -58,7 +58,7 @@ const Week: React.FC = () => {
 
   useEffect(() => {
     renderEvents();
-  }, [selectedWeek]);
+  }, [selectedWeek, events]);
 
   return (
     <Grid container columns={{ xs: 8 }}>

@@ -28,7 +28,7 @@ const Hour: React.FC<HourElementState> = ({ day, hour }) => {
       sx={{ display: "flex", flexDirection: "column" }}
       onClick={(e) => {
         selectHour(id);
-        selectModalWindow('event');
+        selectModalWindow('eventCreate');
       }}
     >
       <Box id={id.toString()} className={hourClasses.root} sx={getCellStyle(day, hour)}></Box>

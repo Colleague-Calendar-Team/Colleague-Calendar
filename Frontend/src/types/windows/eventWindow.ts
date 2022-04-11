@@ -1,11 +1,11 @@
-import { EventState } from "../event/event";
+import { EventUpdateState } from "../event/eventGeneral";
 import { UserProfileState } from "../user";
 import { NotificationsState } from "../event/notifications";
 
 export interface GeneralEventInfoState {
   isCreate: boolean;
-  event: EventState;
-  setEvent: (event: EventState) => void;
+  event: EventUpdateState;
+  setEvent: (event: EventUpdateState) => void;
   selectModalPage: (page: string) => void;
 }
 

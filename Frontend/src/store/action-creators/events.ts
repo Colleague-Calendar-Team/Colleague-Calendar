@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { EventsState, EventsAction, EventsActionTypes } from '../../types/event/events';
+import { EventsAction, EventsActionTypes } from '../../types/event/events';
 import urls from '../../ajax/urls';
 import ajax from '../../ajax/ajax';
 import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
