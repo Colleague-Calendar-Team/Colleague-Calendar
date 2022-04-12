@@ -19,7 +19,7 @@ const (
 func TestAPIServerReg_HandleRegisterUser(t *testing.T) {
 	s := New(teststore.New())
 	r := mux.NewRouter()
-	configureRouter_test(r, s)
+	ConfigureRouter(r, s)
 	testCases := []struct {
 		name         string
 		payload      interface{}
@@ -53,10 +53,4 @@ func TestAPIServerReg_HandleRegisterUser(t *testing.T) {
 			testID++
 		})
 	}
-}
-
-func configureRouter_test(r *mux.Router, s *ServerApiRegistration) {
-	auth := r.PathPrefix("/auth").Subrouter()
-	//auth.Use()
-	auth.HandleFunc("/register", s.HandleRegisterUser()).Methods("POST")
 }

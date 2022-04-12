@@ -3,6 +3,7 @@ package main
 import (
 	"Backend/internal/serverApiRegistration"
 	"Backend/internal/store/sqlstore"
+	"Backend/internal/tokenStore"
 	"database/sql"
 	"flag"
 	"fmt"
@@ -50,7 +51,25 @@ func main() {
 		logger.Fatal("Cannot Unmarshal config file", zap.Error(err))
 	}
 
-	if err := config.InitViper(configData.StorePath); err != nil {
+	// initiate token storage
+	if err := config.InitViper(configData.TokenStore.ConfigDir); err != nil {
+		logger.Fatal("Cannot initiate viper", zap.Error(err))
+	}
+	logger.Info("Viper initiated")
+
+	configTokenStore, err := config.ParseTokenStoreConfig()
+	if err != nil {
+		logger.Fatal("Cannot Unmarshal store config file", zap.Error(err))
+	}
+
+	mc, err := tokenStore.NewMemcached(configTokenStore)
+	if err != nil {
+		logger.Fatal("Cannot initialized memcached client", zap.Error(err))
+	}
+	logger.Info("Memcached client initialized", zap.Error(err))
+
+	// initiate data storage
+	if err := config.InitViper(configData.Store.ConfigDir); err != nil {
 		logger.Fatal("Cannot initiate viper", zap.Error(err))
 	}
 
@@ -69,7 +88,7 @@ func main() {
 	defer db.Close()
 
 	st := sqlstore.New(db)
-	s := serverApiRegistration.New(st)
+	s := serverApiRegistration.New(st, mc)
 
 	r := mux.NewRouter()
 	configureRouter(r, s)

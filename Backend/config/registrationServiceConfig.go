@@ -11,7 +11,12 @@ type RegistrationServiceConfig struct {
 		WriteTimeout int    `yaml:"writeTimeout"`
 		ReadTimeout  int    `yaml:"readTimeout"`
 	} `yaml:"httpServer"`
-	StorePath string `yaml:"storePath"`
+	Store struct {
+		ConfigDir string `yaml:"configDir"`
+	} `yaml:"store"`
+	TokenStore struct {
+		ConfigDir string `yaml:"configDir"`
+	} `yaml:"tokenStore"`
 }
 
 // ParseRegistrationServiceConfig ...
