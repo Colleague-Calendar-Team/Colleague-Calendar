@@ -9,7 +9,7 @@ import (
 
 const (
 	success = "\u2713"
-	failed = "\u2717"
+	failed  = "\u2717"
 )
 
 // TestUserRepository_Create ...
@@ -29,11 +29,32 @@ func TestUserRepository_Create(t *testing.T) {
 			if err := s.User().Create(u); err != nil {
 				t.Fatalf("\t%s\tShould be able to create user : %T.", failed, err)
 			}
-                        t.Logf("\t%s\tShould be able to create user", success)
+			t.Logf("\t%s\tShould be able to create user", success)
 		}
 	}
 }
 
+func TestUserRepository_Find(t *testing.T) {
+	s := teststore.New()
+
+	t.Log("Given the need to test UserRepository_FindByEmail")
+	{
+		testID := 0
+		t.Logf("\tTest %d: \tWhen use FindByEmail for existing user.", testID)
+		{
+			u := model.TestUser(t)
+			s.User().Create(u)
+			u, err := s.User().Find(u.ID)
+
+			if err != nil {
+				t.Fatalf("\t%s\tShould be able to find user : %T.", failed, err)
+			}
+			t.Logf("\t%s\tShould be able to find user", success)
+		}
+
+		testID++
+	}
+}
 
 func TestUserRepository_FindByEmail(t *testing.T) {
 	s := teststore.New()
@@ -49,22 +70,20 @@ func TestUserRepository_FindByEmail(t *testing.T) {
 			if err == nil {
 				t.Fatalf("\t%s\tShould be able to get error : %T.", failed, err)
 			}
-                        t.Logf("\t%s\tShould be able to get error", success)
+			t.Logf("\t%s\tShould be able to get error", success)
 		}
 
 		testID++
 		t.Logf("\tTest %d: \tWhen use FindByEmail for existing user.", testID)
 		{
-			email := "user@example.ru"
 			u := model.TestUser(t)
-			u.Email = email
 			s.User().Create(u)
-			u, err := s.User().FindByEmail(email)
+			u, err := s.User().FindByEmail(u.Email)
 
 			if err != nil {
 				t.Fatalf("\t%s\tShould be able to find user : %T.", failed, err)
 			}
-                        t.Logf("\t%s\tShould be able to find user", success)
+			t.Logf("\t%s\tShould be able to find user", success)
 		}
 	}
 }

@@ -3,7 +3,10 @@ package serverApiRegistration
 import (
 	"Backend/internal/model"
 	"Backend/internal/store"
+	"Backend/internal/tokenStore"
+	"context"
 	"encoding/json"
+	"strings"
 
 	"errors"
 	"net/http"
@@ -13,24 +16,47 @@ import (
 )
 
 var (
-	ErrorInvalidDataRegistration = errors.New("Invalid user data provided for registration")
-	ErrorReadingReqBody          = errors.New("Error reading request body")
-	ErrorCouldnotAnswerFromDB    = errors.New("Couldn't get answer from database") // TODO: add
-	ErrorInvalidLoginOrPass      = errors.New("Invalid username/password supplied")
-	ErrorReadingReqQuery         = errors.New("Error reading request query")
+	ErrorInvalidDataRegistration = errors.New("invalid user data provided for registration")
+	ErrorReadingReqBody          = errors.New("error reading request body")
+	ErrorCouldnotAnswerFromDB    = errors.New("couldn't get answer from database") // TODO: add
+	ErrorInvalidLoginOrPass      = errors.New("invalid username/password supplied")
+	ErrorReadingReqQuery         = errors.New("error reading request query")
+	ErrorNotAuthorized           = errors.New("not authorized")
 )
 
-var mySignKey = []byte("qwertyuiop")
+const (
+	signingKey                 = "ddgjhkbfhsdbfjhbfbbjbjhgbksdhbf"
+	tokenTTL                   = 1 * time.Minute
+	authorizationHeader        = "Authorization"
+	ctxKeyUser          ctxKey = iota
+)
+
+type ctxKey int16
+
+type tokenClaims struct {
+	jwt.StandardClaims
+	UserID int `json:"userID"`
+}
 
 // ServerApi ...
 type ServerApiRegistration struct {
-	store store.Store
+	store      store.Store
+	tokenStore *tokenStore.Client
 }
 
 // New ...
-func New(st store.Store) *ServerApiRegistration {
+func New(st store.Store, tokenSt *tokenStore.Client) *ServerApiRegistration {
 	return &ServerApiRegistration{
-		store: st,
+		store:      st,
+		tokenStore: tokenSt,
+	}
+}
+
+// HandleWhoami ...
+func (s *ServerApiRegistration) HandleWhoami() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		u, _ := s.store.User().Find(r.Context().Value(ctxKeyUser).(int))
+		s.respond(w, r, http.StatusOK, u.Email)
 	}
 }
 
@@ -67,14 +93,56 @@ func (s *ServerApiRegistration) HandleRegisterUser() http.HandlerFunc {
 			Surname:     req.Surname,
 		}
 
-		if err := s.store.User().Create(u); err != nil { // TODO: check repeat password in equal
+		if err := s.store.User().Create(u); err != nil {
 			s.error(w, r, http.StatusBadRequest, ErrorInvalidDataRegistration)
 			return
 		}
 
-		u.Sanitize()
 		s.respond(w, r, http.StatusOK, nil)
 	}
+}
+
+// AuthenticateUser ...
+func (s *ServerApiRegistration) AuthenticateUser(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		header := r.Header.Get(authorizationHeader)
+		if header == "" {
+			s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
+			return
+		}
+
+		headerParts := strings.Split(header, " ")
+		if len(headerParts) != 2 {
+			s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
+			return
+		}
+
+		// parse token
+		/*
+			token, err := jwt.ParseWithClaims(headerParts[1], &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, ErrorNotAuthorized
+				}
+
+				return []byte(signingKey), nil
+			})
+			if err != nil {
+				s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
+				return
+			}
+				claims, ok := token.Claims.(*tokenClaims)
+				if !ok {
+					s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
+					return
+				}
+		*/
+		id, err := s.tokenStore.GetToken(headerParts[1])
+		if err != nil {
+			s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
+			return
+		}
+		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, id)))
+	})
 }
 
 // HandleAuthenticateUser ...
@@ -97,10 +165,20 @@ func (s *ServerApiRegistration) HandleAuthenticateUser() http.HandlerFunc {
 			return
 		}
 
-		validToken, err := GenerateJWT()
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+			jwt.StandardClaims{
+				ExpiresAt: time.Now().Add(tokenTTL).Unix(),
+				IssuedAt:  time.Now().Unix(),
+			},
+			u.ID,
+		})
+
+		validToken, err := token.SignedString([]byte(signingKey))
+
+		s.tokenStore.SetToken(validToken, u.ID)
 
 		if err != nil {
-			s.error(w, r, http.StatusInternalServerError, err)
+			s.error(w, r, http.StatusInternalServerError, err) // error generate token
 		}
 
 		s.respond(w, r, http.StatusOK, validToken)
@@ -116,15 +194,4 @@ func (s *ServerApiRegistration) respond(w http.ResponseWriter, r *http.Request, 
 	if data != nil {
 		json.NewEncoder(w).Encode(data)
 	}
-}
-
-func GenerateJWT() (string, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
-
-	claims := token.Claims.(jwt.MapClaims)
-
-	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
-
-	return token.SignedString(mySignKey)
-
 }
