@@ -141,7 +141,7 @@ func (s *ServerApiRegistration) AuthenticateUser(next http.Handler) http.Handler
 			s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
 			return
 		}
-		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, id)))
+		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, id))) // claims.UserID
 	})
 }
 

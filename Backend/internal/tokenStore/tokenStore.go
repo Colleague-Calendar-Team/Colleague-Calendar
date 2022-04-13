@@ -9,6 +9,15 @@ import (
 	"github.com/bradfitz/gomemcache/memcache"
 )
 
+var (
+	ErrorExpiredToken = errors.New("error expired token")
+	ErrorNotFoundToken = errors.New("error token not found")
+)
+
+const (
+	TokenTTL = time.Hour * 12
+)
+
 type Client struct {
 	client *memcache.Client
 }
@@ -21,7 +30,7 @@ func NewMemcached(configSt *config.TokenStoreConfig) (*Client, error) {
 		return nil, err
 	}
 
-	client.FlushAll() // TODO: maybe delete cleanse
+	client.FlushAll() // TODO: maybe cleanse all access only for admin
 	client.Timeout = 100 * time.Millisecond
 	client.MaxIdleConns = 100
 
@@ -33,8 +42,11 @@ func NewMemcached(configSt *config.TokenStoreConfig) (*Client, error) {
 // GetToken ...
 func (c *Client) GetToken(token string) (int, error) {
 	item, err := c.client.Get(token)
-	if err != nil || item.Expiration > 0 {
-		return 0, errors.New("xxx")
+	if err != nil {
+		if err.Error() == memcache.ErrNotStored.Error() {
+			return 0, ErrorNotFoundToken
+		}
+		return 0, ErrorExpiredToken
 	}
 	sID := string(item.Value)
 	UserID, err := strconv.Atoi(sID)
@@ -46,6 +58,6 @@ func (c *Client) SetToken(token string, UserID int) error {
 	return c.client.Set(&memcache.Item{
 		Key:        token,
 		Value:      []byte(strconv.Itoa(UserID)),
-		Expiration: int32(time.Now().Add(1*time.Minute).Unix() - time.Now().Unix()),
+		Expiration: int32(time.Now().Add(TokenTTL).Unix() - time.Now().Unix()),
 	})
 }

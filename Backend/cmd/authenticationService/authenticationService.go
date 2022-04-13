@@ -15,6 +15,7 @@ import (
 	"Backend/internal/logging"
 	"log"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
@@ -125,6 +126,7 @@ func newDB(configStore *config.StoreConfig) (*sql.DB, error) {
 
 // configureRouter ...
 func configureRouter(r *mux.Router, s *serverApiRegistration.ServerApiRegistration) {
+	r.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
 	auth := r.PathPrefix("/auth").Subrouter()
 	//auth.Use()
 	auth.HandleFunc("/login", s.HandleAuthenticateUser()).Methods("POST")
