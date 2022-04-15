@@ -1,14 +1,12 @@
 package main
 
 import (
+	"Backend/internal/dbUtils"
+	"Backend/internal/memcached"
 	"Backend/internal/serverApiRegistration"
 	"Backend/internal/store/sqlstore"
-	"Backend/internal/tokenStore"
-	"database/sql"
 	"flag"
-	"fmt"
 	"net/http"
-	"regexp"
 	"time"
 
 	"Backend/config"
@@ -20,20 +18,12 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
-	configDir *string
-)
-
-func init() {
-	configDir = flag.String("config_dir", ".", "directory for configuration file")
-}
-
 func main() {
+	configDir := flag.String("config_dir", ".", "directory for configuration file")
 	logLevel := flag.String("log_level", "info", "log level")
 	flag.Parse()
 
 	logger := logging.LoggerSetup(*logLevel)
-
 	defer func() {
 		if err := logger.Sync(); err != nil {
 			log.Fatalf("logger.Sync: %v", err)
@@ -43,46 +33,22 @@ func main() {
 	if err := config.InitViper(*configDir); err != nil {
 		logger.Fatal("Cannot initiate viper", zap.Error(err))
 	}
-
 	logger.Info("Viper initiated")
 
 	configData, err := config.ParseRegistrationServiceConfig()
-
 	if err != nil {
 		logger.Fatal("Cannot Unmarshal config file", zap.Error(err))
 	}
 
 	// initiate token storage
-	if err := config.InitViper(configData.TokenStore.ConfigDir); err != nil {
-		logger.Fatal("Cannot initiate viper", zap.Error(err))
-	}
-	logger.Info("Viper initiated")
-
-	configTokenStore, err := config.ParseTokenStoreConfig()
-	if err != nil {
-		logger.Fatal("Cannot Unmarshal store config file", zap.Error(err))
-	}
-
-	mc, err := tokenStore.NewMemcached(configTokenStore)
+	mc, err := memcached.NewMemcached(configData.Memcached)
 	if err != nil {
 		logger.Fatal("Cannot initialized memcached client", zap.Error(err))
 	}
 	logger.Info("Memcached client initialized", zap.Error(err))
 
 	// initiate data storage
-	if err := config.InitViper(configData.Store.ConfigDir); err != nil {
-		logger.Fatal("Cannot initiate viper", zap.Error(err))
-	}
-
-	logger.Info("Viper initiated")
-
-	configStore, err := config.ParseStoreConfig()
-
-	if err != nil {
-		logger.Fatal("Cannot Unmarshal store config file", zap.Error(err))
-	}
-
-	db, err := newDB(configStore)
+	db, err := dbUtils.NewDB(configData.Storage)
 	if err != nil {
 		logger.Fatal("Cannot open the storage", zap.Error(err))
 	}
@@ -104,24 +70,6 @@ func main() {
 
 	logger.Fatal("http listen and serve: ", zap.Error(srv.ListenAndServe()))
 
-}
-
-// newDB ...
-func newDB(configStore *config.StoreConfig) (*sql.DB, error) {
-	dburl := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", configStore.DatabaseURL.Host, configStore.DatabaseURL.Port, configStore.DatabaseURL.User, configStore.DatabaseURL.Password, configStore.DatabaseURL.DBname, configStore.DatabaseURL.SSLmode)
-	re := regexp.MustCompile(`[a-z]*= `)
-	dburl = re.ReplaceAllString(dburl, "")
-
-	db, err := sql.Open("postgres", dburl)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := db.Ping(); err != nil {
-		return nil, err
-	}
-
-	return db, nil
 }
 
 // configureRouter ...

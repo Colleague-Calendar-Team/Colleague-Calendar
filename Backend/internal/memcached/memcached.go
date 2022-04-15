@@ -1,17 +1,11 @@
-package tokenStore
+package memcached
 
 import (
 	"Backend/config"
-	"errors"
 	"strconv"
 	"time"
 
 	"github.com/bradfitz/gomemcache/memcache"
-)
-
-var (
-	ErrorExpiredToken = errors.New("error expired token")
-	ErrorNotFoundToken = errors.New("error token not found")
 )
 
 const (
@@ -23,14 +17,13 @@ type Client struct {
 }
 
 // NewMemcached ...
-func NewMemcached(configSt *config.TokenStoreConfig) (*Client, error) {
-	client := memcache.New(configSt.HTTPServer.Endpoint)
+func NewMemcached(configSt config.Memcached) (*Client, error) {
+	client := memcache.New(configSt.Endpoint)
 
 	if err := client.Ping(); err != nil {
 		return nil, err
 	}
 
-	client.FlushAll() // TODO: maybe cleanse all access only for admin
 	client.Timeout = 100 * time.Millisecond
 	client.MaxIdleConns = 100
 
@@ -43,10 +36,7 @@ func NewMemcached(configSt *config.TokenStoreConfig) (*Client, error) {
 func (c *Client) GetToken(token string) (int, error) {
 	item, err := c.client.Get(token)
 	if err != nil {
-		if err.Error() == memcache.ErrNotStored.Error() {
-			return 0, ErrorNotFoundToken
-		}
-		return 0, ErrorExpiredToken
+		return 0, err
 	}
 	sID := string(item.Value)
 	UserID, err := strconv.Atoi(sID)

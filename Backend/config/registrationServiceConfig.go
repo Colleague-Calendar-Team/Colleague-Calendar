@@ -4,19 +4,30 @@ import (
 	"github.com/spf13/viper"
 )
 
+type Memcached struct {
+	Endpoint     string `mapstructure:"endpoint"`
+	WriteTimeout int    `mapstructure:"writeTimeout"`
+	ReadTimeout  int    `mapstructure:"readTimeout"`
+}
+
+type Storage struct {
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+	DBname   string `mapstructure:"dbname"`
+	SSLmode  string `mapstructure:"sslmode"`
+}
+
 // RegistrationServiceConfig ...
 type RegistrationServiceConfig struct {
 	HTTPServer struct {
-		Endpoint     string `yaml:"endpoint"`
-		WriteTimeout int    `yaml:"writeTimeout"`
-		ReadTimeout  int    `yaml:"readTimeout"`
-	} `yaml:"httpServer"`
-	Store struct {
-		ConfigDir string `yaml:"configDir"`
-	} `yaml:"store"`
-	TokenStore struct {
-		ConfigDir string `yaml:"configDir"`
-	} `yaml:"tokenStore"`
+		Endpoint     string `mapstructure:"endpoint"`
+		WriteTimeout int    `mapstructure:"writeTimeout"`
+		ReadTimeout  int    `mapstructure:"readTimeout"`
+	} `mapstructure:"httpServer"`
+	Storage   Storage   `mapstructure:"storage"`
+	Memcached Memcached `mapstructure:"memcached"`
 }
 
 // ParseRegistrationServiceConfig ...

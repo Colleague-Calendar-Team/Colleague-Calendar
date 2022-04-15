@@ -1,9 +1,9 @@
 package serverApiRegistration
 
 import (
+	"Backend/internal/memcached"
 	"Backend/internal/model"
 	"Backend/internal/store"
-	"Backend/internal/tokenStore"
 	"context"
 	"encoding/json"
 	"strings"
@@ -26,7 +26,7 @@ var (
 
 const (
 	signingKey                 = "ddgjhkbfhsdbfjhbfbbjbjhgbksdhbf"
-	tokenTTL                   = 1 * time.Minute
+	tokenTTL                   = time.Hour * 12
 	authorizationHeader        = "Authorization"
 	ctxKeyUser          ctxKey = iota
 )
@@ -41,11 +41,11 @@ type tokenClaims struct {
 // ServerApi ...
 type ServerApiRegistration struct {
 	store      store.Store
-	tokenStore *tokenStore.Client
+	tokenStore *memcached.Client
 }
 
 // New ...
-func New(st store.Store, tokenSt *tokenStore.Client) *ServerApiRegistration {
+func New(st store.Store, tokenSt *memcached.Client) *ServerApiRegistration {
 	return &ServerApiRegistration{
 		store:      st,
 		tokenStore: tokenSt,
@@ -118,7 +118,9 @@ func (s *ServerApiRegistration) AuthenticateUser(next http.Handler) http.Handler
 		}
 
 		// parse token
+
 		/*
+			// use JWT-token
 			token, err := jwt.ParseWithClaims(headerParts[1], &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, ErrorNotAuthorized
@@ -130,18 +132,21 @@ func (s *ServerApiRegistration) AuthenticateUser(next http.Handler) http.Handler
 				s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
 				return
 			}
-				claims, ok := token.Claims.(*tokenClaims)
-				if !ok {
-					s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
-					return
-				}
+			claims, ok := token.Claims.(*tokenClaims)
+			if !ok {
+				s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
+				return
+			}
+			next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, claims.UserID)))
 		*/
+
+		// use Memcached
 		id, err := s.tokenStore.GetToken(headerParts[1])
 		if err != nil {
 			s.error(w, r, http.StatusUnauthorized, ErrorNotAuthorized)
 			return
 		}
-		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, id))) // claims.UserID
+		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, id)))
 	})
 }
 
