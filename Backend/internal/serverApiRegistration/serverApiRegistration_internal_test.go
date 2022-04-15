@@ -16,7 +16,7 @@ const (
 	failed  = "\u2717"
 )
 
-func TestAPIServerReg_HandleRegisterUser(t *testing.T) {
+func TestAPIServerRegHandleRegisterUser(t *testing.T) {
 	s := New(teststore.New())
 	r := mux.NewRouter()
 	ConfigureRouter(r, s)

@@ -1,6 +1,6 @@
 package sqlstore
 
-import(
+import (
 	"Backend/config"
 	"database/sql"
 
@@ -11,9 +11,9 @@ import(
 )
 
 // TestDB ...
-func TestDB(t *testing.T, databaseURL config.StoreConfig) (*sql.DB, func(...string)) {
+func TestDB(t *testing.T, databaseURL config.Storage) (*sql.DB, func(...string)) {
 	t.Helper()
-	dburl := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", databaseURL.DatabaseURL.Host, databaseURL.DatabaseURL.Port, databaseURL.DatabaseURL.User, databaseURL.DatabaseURL.Password, databaseURL.DatabaseURL.DBname, databaseURL.DatabaseURL.SSLmode)
+	dburl := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s", databaseURL.Host, databaseURL.Port, databaseURL.User, databaseURL.Password, databaseURL.DBname, databaseURL.SSLmode)
 	re := regexp.MustCompile(`[a-z]*= `)
 	dburl = re.ReplaceAllString(dburl, "")
 	db, err := sql.Open("postgres", dburl)
@@ -24,8 +24,6 @@ func TestDB(t *testing.T, databaseURL config.StoreConfig) (*sql.DB, func(...stri
 	if err := db.Ping(); err != nil {
 		t.Fatal(err)
 	}
-
-	
 
 	return db, func(tables ...string) {
 		if len(tables) > 0 {

@@ -1,7 +1,0 @@
-databaseURL:
-        host: "localhost"
-        port: ""
-        user: ""
-        password: ""
-        dbname: "restapi_dev"
-        sslmode: "disable"

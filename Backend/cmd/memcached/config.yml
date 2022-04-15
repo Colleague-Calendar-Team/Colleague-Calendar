@@ -1,4 +1,0 @@
-httpServer:
-        endpoint: "localhost:11211"
-        writeTimeout: 15
-        readTimeout: 15
