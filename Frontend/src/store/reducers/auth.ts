@@ -6,7 +6,7 @@ const initialState: AuthState = {
     error: null,
   },
   login: {
-    token: '',
+    token: null,
     error: null,
   }
 }

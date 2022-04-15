@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useButtonStyles from "../../styles/button";
 import Logo from "../../assets/logo";
 import {useActions} from "../../hooks/useActions";
@@ -11,12 +12,16 @@ const Login = () => {
   const classes = useButtonStyles();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const {error} = useTypedSelector(state=>state.auth.login);
+  const {error, token} = useTypedSelector(state=>state.auth.login);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/');
+  }, [token]);
 
   function onSubmit() {
     loginUser(login, password);
   }
-
 
   return (
     <Box
@@ -49,9 +54,9 @@ const Login = () => {
       {error && 
         <Box sx={{color: theme.palette.error.main}}>{error}</Box>}
       <Box sx={{ display: 'flex', justifyContent: 'end'}}>
-        <Button className={classes.root} onClick={onSubmit}>
-          Вход
-        </Button>
+          <Button className={classes.root} onClick={onSubmit}>
+            Вход
+          </Button>
       </Box>
     </Box>
   );

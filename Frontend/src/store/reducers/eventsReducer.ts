@@ -4,7 +4,7 @@ import { EventsState, EventsActionTypes, EventsAction } from "../../types/event/
 const initialState: EventsState = {
   events: [],
   renderWeek: 0,
-  loading: true,
+  loading: false,
   error: null,
 }
 

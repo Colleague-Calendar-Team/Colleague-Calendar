@@ -113,3 +113,29 @@ export const logout = (token: string) => {
     });
   }
 }
+
+export const getToken = () => {
+  return (dispatch: Dispatch<AuthAction>) => {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST get token');
+    }
+
+    const data = ajax.get(urls.getToken());
+    data?.then((response) => {
+      if (DEBUG_REQUESTS) {
+        console.log("RESPONSE token:");
+        console.log(response.data);
+      }
+
+      if (response.status === 200) {
+        dispatch({type: AuthActionTypes.LOGIN_SUCCESS, payload: response.data});
+      } else {
+        throw response.data;
+      }
+    }).catch((e) => {
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in get token:', e);
+      }
+    });
+  }
+}

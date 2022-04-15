@@ -1,4 +1,4 @@
 export interface LoginState {
-  token: string;
+  token: string  | null;
   error: string | null;
 }

@@ -20,7 +20,7 @@ const GeneralEventInfo: React.FC<GeneralEventInfoState> = ({isCreate, event, set
 
   const classes = useButtonStyles();
 
-  function onSubmit() {
+  function onSave() {
   }
 
   function Next() {
@@ -95,7 +95,7 @@ const GeneralEventInfo: React.FC<GeneralEventInfoState> = ({isCreate, event, set
       <Box sx={{ display: "flex", justifyContent: "end" }}>
         {isCreate
           ? <Button className={classes.root} onClick={Next}>Далее</Button>
-          : <Button className={classes.root} onClick={onSubmit}>Сохранить</Button>
+          : <Button className={classes.root} onClick={onSave}>Сохранить</Button>
         }
       </Box>
     </Box>

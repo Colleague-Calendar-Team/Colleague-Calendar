@@ -60,6 +60,10 @@ class Urls {
   getUser() {
     return this.url + 'user';
   }
+
+  getToken() {
+    return this.url + 'token';
+  }
 }
 
 const urls = new Urls();

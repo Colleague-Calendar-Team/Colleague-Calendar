@@ -10,13 +10,15 @@ import themeModalTab from "../../styles/modalTab";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { modalStyle } from "../../styles/modal";
+import { useNavigate } from 'react-router-dom';
 
 const ModalWindow: React.FC<ModalState> = ({ title, pagesNames, children }) => {
-  const { selectModalWindow, selectModalPage } = useActions();
+  const { selectModalPage } = useActions();
   const {modalPage} = useTypedSelector(state=>state.selectElements);
+  const navigate = useNavigate();
 
   const handleClose = () => {
-    selectModalWindow('');
+    navigate('/');
   }
   
   useEffect(() => {

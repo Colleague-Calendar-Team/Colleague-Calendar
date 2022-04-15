@@ -1,4 +1,7 @@
-import { EventCreationState, EventState } from "./event";
+import { UserProfileState } from "../user";
+import { EventState } from "./event";
+import { EventUpdateState } from "./eventGeneral";
+import { NotificationsState } from "./notifications";
 
 export interface EventsState {
   events: EventState[][];
@@ -13,6 +16,11 @@ export enum EventsActionTypes {
   LOADING_EVENTS_ERROR = "LOADING_EVENTS_ERROR",
   CHANGE_WEEK = "CHANGE_WEEK",
   ADD_EVENT = "ADD_EVENT",
+  UPDATE_EVENT = "UPDATE_EVENT",
+  UPDATE_PARTICIPANTS = "UPDATE_PARTICIPANTS",
+  UPDATE_NOTIFICATIONS = "UPDATE_NOTIFICATIONS",
+  DELETE_EVENT = "DELETE_EVENT",
+  GET_PARTICIPANTS = "GET_PARTICIPANTS",
 }
 
 interface LoadingEventsAction {
@@ -39,4 +47,29 @@ interface AddEventAction {
   payload: EventState;
 }
 
-export type EventsAction = LoadingEventsAction | LoadingEventsSuccessAction | LoadingEventsErrorAction | ChangeWeekAction | AddEventAction;
+interface UpdateEventAction {
+  type: EventsActionTypes.UPDATE_EVENT;
+  payload: EventUpdateState;
+}
+
+interface UpdateParticipiantsAction {
+  type: EventsActionTypes.UPDATE_PARTICIPANTS;
+  payload: number[];
+}
+
+interface UpdateNotificationsAction {
+  type: EventsActionTypes.UPDATE_NOTIFICATIONS;
+  payload: NotificationsState;
+}
+
+interface DeleteEventAction {
+  type: EventsActionTypes.DELETE_EVENT;
+}
+
+interface GetParticipiantsAction {
+  type: EventsActionTypes.GET_PARTICIPANTS;
+  payload: UserProfileState[];
+}
+
+export type EventsAction = LoadingEventsAction | LoadingEventsSuccessAction | LoadingEventsErrorAction | ChangeWeekAction | AddEventAction
+  | UpdateEventAction | UpdateParticipiantsAction | UpdateNotificationsAction | DeleteEventAction | GetParticipiantsAction;

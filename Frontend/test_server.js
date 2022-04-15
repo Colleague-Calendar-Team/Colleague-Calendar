@@ -13,6 +13,8 @@ const user = {
   surname: 'Иванов',
 }
 
+let token = '';
+
 // фронт сейчас настроен на массив до 5 недель
 // genEvents - какие события генерировать 1 число - номер столбца (дня) в Неделе, 2 число - начало (в часах), 3 число - конец (в часах) 
 const genEvents = [[[0, 2, 7]], 
@@ -26,7 +28,7 @@ const events = new Array(5).fill(null).map((_, weekId) => new Array(genEvents[we
   const week = getWeek(dayjs(new Date(dayjs().year(), dayjs().month(), dayjs().date() + 7*weekId)));
   eventID++;
   return {
-    id: eventID,
+    eventID: eventID,
     title: `Пример события ${eventID}`,
     beginTime: dayjs(new Date(dayjs(week[genEvents[weekId][id][0]]).year(), dayjs(week[genEvents[weekId][id][0]]).month(), dayjs(week[genEvents[weekId][id][0]]).date(), genEvents[weekId][id][1])).format('YYYY-MM-DDTHH:mm'),
     endTime: dayjs(new Date(dayjs(week[genEvents[weekId][id][0]]).year(), dayjs(week[genEvents[weekId][id][0]]).month(), dayjs(week[genEvents[weekId][id][0]]).date(), genEvents[weekId][id][2])).format('YYYY-MM-DDTHH:mm'),
@@ -152,7 +154,46 @@ const server = http.createServer((req, res) => {
       break;
     case '/auth/login?login=sveta&password=123':
       res.writeHead(200, {'Content-Type': 'text/plain', 'Accept': 'text/plain'});
-      res.end("token");
+      token = 'token';
+      res.end(token);
+      break;
+    case '/token':
+      res.writeHead(200, {'Content-Type': 'text/plain', 'Accept': 'text/plain'});
+      console.log('token:', token);
+      res.end(token);
+      break;
+    case '/events/1/delete':
+      res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+      res.end('success delete');
+      break;
+    case '/events/1/update':
+      res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+      res.end('success update');
+      break;
+    case '/events/1/update/participiants':
+      res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+      res.end('success update');
+      break;
+    case '/events/1/update/notifications':
+      res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+      res.end('success update');
+      break;
+    case '/events/1/participiants':
+      const participiants = [{
+        userID: '1',
+        name: 'Петр',
+        surname: 'Петров',
+      }, {
+        userID: '1',
+        name: 'Аркадий',
+        surname: 'Иванов',
+      }, {
+        userID: '1',
+        name: 'Екатерина',
+        surname: 'Кузнецова',
+      }];
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(participiants);
       break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});

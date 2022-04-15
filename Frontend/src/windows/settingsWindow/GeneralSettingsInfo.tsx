@@ -20,7 +20,7 @@ const GeneralSettingsInfo = () => {
   const classes = useButtonStyles();
 
   function onSubmit() {
-    updateUserProfile(token, user);
+    updateUserProfile(token === null ? '' : token, user);
   }
 
   return (

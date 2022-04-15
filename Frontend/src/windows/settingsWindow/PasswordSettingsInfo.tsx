@@ -17,7 +17,7 @@ const PasswordSettingsInfo = () => {
   const classes = useButtonStyles();
 
   function onSubmit() {
-    updateUserPassword(token, passwordInfo);
+    updateUserPassword(token === null ? '' : token, passwordInfo);
   }
 
   return (

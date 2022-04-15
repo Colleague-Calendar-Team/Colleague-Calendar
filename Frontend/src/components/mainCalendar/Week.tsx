@@ -9,6 +9,7 @@ import { getIdOfHourInWeek } from "../../utils/getWeek";
 import {DEBUG_RENDER, DEBUG_COMPONENTS} from '../../utils/debug';
 import { useActions } from "../../hooks/useActions";
 import { GenNumbersArr } from "../../utils/genArr";
+import { BrowserRouter } from "react-router-dom";
 
 const Week: React.FC = () => {
   if (DEBUG_RENDER) {
@@ -37,13 +38,15 @@ const Week: React.FC = () => {
       const eventsParents = new Set<HTMLElement>();
       events[renderWeek].forEach((event, id) => {
         const eventElement = (
-          <Event
-            event={event}
-            eventId={id}
-            setShowModalWindow={selectModalWindow}
-            setSelectedEvent={selectEvent}
-            selectHour={selectHour}
-          ></Event>
+          <BrowserRouter>
+            <Event
+              event={event}
+              eventId={id}
+              setShowModalWindow={selectModalWindow}
+              setSelectedEvent={selectEvent}
+              selectHour={selectHour}
+            ></Event>
+          </BrowserRouter>
         );
 
         const parent:(HTMLElement | null) = document.getElementById(getIdOfHourInWeek(dayjs(event.beginTime), selectedWeek[0]).toString());

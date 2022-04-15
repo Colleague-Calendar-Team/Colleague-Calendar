@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import {useNavigate} from 'react-router-dom';
 import ModalWindow from "../../components/modal/Modal";
 import GeneralEventInfo from "./GeneralEventInfo";
 import MembersEventInfo from "./MembersEvenInfo";
@@ -19,6 +20,7 @@ const EventWindow = () => {
     (state) => state.selectElements
   );
   const {token} = useTypedSelector(state=>state.auth.login);
+  const navigate = useNavigate();
   const {name} = useTypedSelector(state=>state.user);
 
   const [event, setEvent] = useState<EventUpdateState>(EventUpdateInit({}));
@@ -31,9 +33,9 @@ const EventWindow = () => {
   }
 
   function onCreate() {
-    selectModalWindow('');
+    navigate('/');
     
-    addEvent(token, Object.assign(event, notifications, {
+    addEvent(token === null ? '' : token, Object.assign(event, notifications, {
       participiants: Array.from(checked),
     }), name);
   }

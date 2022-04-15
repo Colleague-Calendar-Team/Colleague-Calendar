@@ -5,9 +5,11 @@ import useEventStyles from "../../styles/event";
 import { EventState } from "../../types/event/event";
 import { EventElementState } from "../../types/elements/eventElement";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useNavigate, Link } from "react-router-dom";
 
 const Event: React.FC<EventElementState> =({event, eventId, setShowModalWindow, setSelectedEvent, selectHour}) => {
   const eventClasses = useEventStyles();
+  const navigate = useNavigate();
 
   function getEventStyle(event: EventState) {
     const begin = dayjs(event.beginTime, "YYYY-MM-DDTHH:mm");
@@ -22,23 +24,26 @@ const Event: React.FC<EventElementState> =({event, eventId, setShowModalWindow, 
   }
 
   return (
-    <Box
-      key={eventId}
-      className={eventClasses.root}
-      sx={getEventStyle(event)}
-      onClick={(e) => {
-        e.stopPropagation();
-        setSelectedEvent(event);
-        setShowModalWindow('eventEdit');
-        selectHour(-1);
-      }}
-    >
-      <Box sx={{display: 'flex', flexDirection: 'column', textAlign: 'start', ml: 1}}>
-        <Typography sx={{fontWeight: 'bold'}}>{event.title}</Typography>
-        <Typography >{dayjs(event.beginTime).hour()}:00 - {dayjs(event.endTime).hour()}:00</Typography>
+      <Box
+        key={eventId}
+        className={eventClasses.root}
+        sx={getEventStyle(event)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedEvent(event);
+          setShowModalWindow('eventEdit');
+          console.log('EVENT ID:');
+          console.log(event)
+          navigate(`/events/${event.eventID}`);
+          selectHour(-1);
+        }}
+      >
+        <Box sx={{display: 'flex', flexDirection: 'column', textAlign: 'start', ml: 1}}>
+          <Typography sx={{fontWeight: 'bold'}}>{event.title}</Typography>
+          <Typography >{dayjs(event.beginTime).hour()}:00 - {dayjs(event.endTime).hour()}:00</Typography>
+        </Box>
+        <DeleteOutlineIcon />
       </Box>
-      <DeleteOutlineIcon />
-    </Box>
   );
 }
 

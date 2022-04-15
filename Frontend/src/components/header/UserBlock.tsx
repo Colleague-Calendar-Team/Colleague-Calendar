@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import theme from '../../styles/theme';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useActions';
+import { useNavigate } from 'react-router-dom';
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');
 
 export default function UserBlock() {
@@ -15,18 +16,19 @@ export default function UserBlock() {
   const { selectModalWindow, logout } = useActions();
   const user = useTypedSelector(state=>state.user);
   const {token} = useTypedSelector(state=>state.auth.login);
+  const navigate = useNavigate();
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
   const openSettings = () => {
-    selectModalWindow('settings');
     setAnchorElUser(null);
+    navigate('/settings');
   };
   const onExit = () => {
-    logout(token);
-    selectModalWindow('auth');
+    logout(token === null ? '' : token);
     setAnchorElUser(null);
+    navigate('/');
   };
 
   return (
@@ -60,10 +62,14 @@ export default function UserBlock() {
           <Typography textAlign="center" sx={{fontSize: 12}}>{user.email}</Typography>
         </Box>
         <MenuItem key={0} onClick={openSettings}>
-          <Typography textAlign="center">Настройки</Typography>
+            <Typography textAlign="center">
+                Настройки
+            </Typography>       
         </MenuItem>
         <MenuItem key={1} onClick={onExit}>
-          <Typography textAlign="center">Выход</Typography>
+            <Typography textAlign="center">
+              Выход
+            </Typography>
         </MenuItem>
       </Menu>
     </Box>
