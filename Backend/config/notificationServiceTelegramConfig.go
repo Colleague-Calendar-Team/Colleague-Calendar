@@ -17,11 +17,11 @@ type BotConfig struct {
 	} `yaml:"httpServer"`
 }
 
-func ParseBotConfig() (BotConfig, error) {
-	cfg := BotConfig{}
+func ParseBotConfig() (*BotConfig, error) {
+	cfg := &BotConfig{}
 
 	if err := viper.Unmarshal(&cfg); err != nil {
-		return BotConfig{}, err
+		return nil, err
 	}
 
 	return cfg, nil

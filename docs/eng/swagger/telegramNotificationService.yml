@@ -126,7 +126,7 @@ paths:
  
 # ----------------------------------EVENT--------------------------------------------------------------------------
   
-  /event/add/{eventID}:
+  /event/add:
 
     post:
       tags: 
@@ -137,16 +137,6 @@ paths:
 
       parameters:
 
-        - name: eventID
-
-          in: path
-
-          type: integer
-
-          required: true
-
-          description: id of telegram chat where to send message.
-        
         - name: notification text
           
           in: body
@@ -186,7 +176,7 @@ paths:
   
   /event/delete/{eventID}:
 
-    patch:
+    delete:
       tags: 
       - "event"
 
@@ -359,7 +349,7 @@ paths:
 
   /user/register:
 
-    get:
+    put:
       tags: 
       - "user"
 
@@ -406,7 +396,7 @@ paths:
 
 
 
-  /user/login:
+  /user/authenticationToken:
 
     get:
       tags: 
@@ -479,7 +469,6 @@ definitions:
       avatar:
         type: "string"
   
-        
   Event:
     type: "object"
     properties:
