@@ -1,0 +1,11 @@
+email:
+  login: "smtp.mail.ru:587"
+  pass: ""
+  smtpServerEndpoint: ""
+  smtpServerHost: ""
+  timeout: 40
+httpServer:
+  endpoint: "127.0.0.1:7100"
+  writeTimeout: 15
+  readTimeout: 15
+apiKey: "r42RQr234VtEqeRVbt"
