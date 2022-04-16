@@ -16,7 +16,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/');
+    if (token !== null && token !== '') {
+      navigate('/');
+    }
   }, [token]);
 
   function onSubmit() {

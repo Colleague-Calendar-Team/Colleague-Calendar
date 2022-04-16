@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Box } from '@mui/material';
-import AddEventBtn from './AddEventBtn';
+import AddEventBtn from './addEventBtn';
 
 import NavigateCalendar from './NavigateCalendar';
 import { DEBUG_RENDER } from '../../utils/debug';

@@ -28,7 +28,7 @@ export default function UserBlock() {
   const onExit = () => {
     logout(token === null ? '' : token);
     setAnchorElUser(null);
-    navigate('/');
+    navigate('/auth');
   };
 
   return (

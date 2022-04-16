@@ -17,15 +17,15 @@ let token = '';
 
 // фронт сейчас настроен на массив до 5 недель
 // genEvents - какие события генерировать 1 число - номер столбца (дня) в Неделе, 2 число - начало (в часах), 3 число - конец (в часах) 
-const genEvents = [[[0, 2, 7]], 
-[[1, 2, 8], [1, 10, 13]],
-[[0, 1, 3], [3, 7, 13], [3, 14, 15], [3, 23, 24], [6, 1, 24]],
+const genEvents = [[[0, 2, 7], [5, 4, 7]], 
+[[1, 2, 8], [1, 10, 13], [2, 3, 5], [3, 5, 19], [6, 7, 12]],
+[[0, 1, 3], [1, 10, 12], [3, 7, 13], [3, 14, 15], [3, 23, 24], [6, 1, 24]],
 [[3, 3, 5], [3, 6, 15]],
 [[5, 1, 3], [5, 7, 13], [5, 14, 15], [5, 23, 24]]];
 
 let eventID = -1;
 const events = new Array(5).fill(null).map((_, weekId) => new Array(genEvents[weekId].length).fill(null).map((_, id) => {
-  const week = getWeek(dayjs(new Date(dayjs().year(), dayjs().month(), dayjs().date() + 7*weekId)));
+  const week = getWeek(dayjs(new Date(dayjs().year(), dayjs().month(), dayjs().date() + 7*(weekId - 2))));
   eventID++;
   return {
     eventID: eventID,
@@ -106,6 +106,7 @@ const server = http.createServer((req, res) => {
       } else {
         res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
         res.write('success logout');
+        token = '';
       }
       
       res.end();

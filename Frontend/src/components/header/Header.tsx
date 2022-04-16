@@ -15,13 +15,16 @@ const Header:React.FC<WeekElementState> = ({week}) => {
     console.log('header render (memo+)');
   }
 
+  // console.log('first:', dayjs(new Date(week[0].year(), week[0].month(), week[0].date())), ' second:', dayjs(new Date(week[6].year(), week[6].month(), week[6].date())))
+  // console.log('week:', week)
+
   const classes = useButtonStyles();
   const {selectDay, changeWeek} = useActions();
   const {selectedDay} = useTypedSelector(state=>state.selectElements);
   const {renderWeek} = useTypedSelector(state=>state.events);
 
-  const firstDate = dayjs(new Date(week[0].year(), week[0].month()));
-  const secondDate = dayjs(new Date(week[6].year(), week[6].month()));
+  const firstDate = dayjs(new Date(week[0].year(), week[0].month(), week[0].date()));
+  const secondDate = dayjs(new Date(week[6].year(), week[6].month(), week[6].date()));
 
   function clickPrevWeek() {
     selectDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
@@ -46,13 +49,13 @@ const Header:React.FC<WeekElementState> = ({week}) => {
           <Button className={classes.root} onClick={clickToday}>Сегодня</Button>
           <ChevronLeftIcon onClick={clickPrevWeek}/>
           <ChevronRightIcon onClick={clickNextWeek}/>
-            <Typography variant="h6" component="h2" sx={{m: 1}}>
-              {firstDate.format("MMMM")}
-              {week[0].year() !== week[6].year() && firstDate.format(" YYYY")}
-              {week[0].month() !== week[6].month() && secondDate.format(" - MMMM")}
-              {secondDate.format(" YYYY ")}
-              {week[0].date()} - {week[6].date()}
-            </Typography>
+          <Typography variant="h6" component="h2" sx={{m: 1}}>
+            {firstDate.format("MMMM")}
+            {firstDate.year() !== secondDate.year() && firstDate.format(" YYYY")}
+            {firstDate.month() !== secondDate.month() && secondDate.format(" - MMMM")}
+            {secondDate.format(" YYYY ")}
+            {firstDate.date()} - {secondDate.date()}
+          </Typography>
         </Box>
         <UserBlock/>
       </Toolbar>

@@ -16,52 +16,53 @@ const Week: React.FC = () => {
     console.log('selectedWeek render (memo+)');
   }
 
-  const { selectModalWindow, selectEvent, selectHour } = useActions();
+  // const { selectModalWindow, selectEvent, selectHour } = useActions();
   const {events, renderWeek} = useTypedSelector(state=>state.events);
+  console.log('events:', events[renderWeek]);
   const {selectedWeek} = useTypedSelector(state=>state.selectElements);
-  const [prevEventsParents, setPrevEventsParents] = useState<Set<HTMLElement> | null>(null);
+  // const [prevEventsParents, setPrevEventsParents] = useState<Set<HTMLElement> | null>(null);
 
   const hours = GenNumbersArr(24);
   const days = GenNumbersArr(7);
 
-  function renderEvents() {
-    if (prevEventsParents) {
-      prevEventsParents.forEach((parent) => {
-        ReactDOM.unmountComponentAtNode(parent);
-      });
-    }
-    if (events.length > 0 && renderWeek >= 0 && renderWeek < 5) {
-      if (DEBUG_COMPONENTS) {
-        console.log('Week element events:', events[renderWeek]);
-      }
+  // function renderEvents() {
+  //   if (prevEventsParents) {
+  //     prevEventsParents.forEach((parent) => {
+  //       ReactDOM.unmountComponentAtNode(parent);
+  //     });
+  //   }
+  //   if (events.length > 0 && renderWeek >= 0 && renderWeek < 5) {
+  //     if (DEBUG_COMPONENTS) {
+  //       console.log('Week element events:', events[renderWeek]);
+  //     }
 
-      const eventsParents = new Set<HTMLElement>();
-      events[renderWeek].forEach((event, id) => {
-        const eventElement = (
-          <BrowserRouter>
-            <Event
-              event={event}
-              eventId={id}
-              setShowModalWindow={selectModalWindow}
-              setSelectedEvent={selectEvent}
-              selectHour={selectHour}
-            ></Event>
-          </BrowserRouter>
-        );
+  //     const eventsParents = new Set<HTMLElement>();
+  //     events[renderWeek].forEach((event, id) => {
+  //       const eventElement = (
+  //         <BrowserRouter>
+  //           <Event
+  //             event={event}
+  //             eventId={id}
+  //             setShowModalWindow={selectModalWindow}
+  //             setSelectedEvent={selectEvent}
+  //             selectHour={selectHour}
+  //           ></Event>
+  //         </BrowserRouter>
+  //       );
 
-        const parent:(HTMLElement | null) = document.getElementById(getIdOfHourInWeek(dayjs(event.beginTime), selectedWeek[0]).toString());
-        if (parent) {
-          ReactDOM.render(eventElement, parent);
-          eventsParents.add(parent);
-        }
-      });
-      setPrevEventsParents(eventsParents);
-    }
-  }
+  //       const parent:(HTMLElement | null) = document.getElementById(getIdOfHourInWeek(dayjs(event.beginTime), selectedWeek[0]).toString());
+  //       if (parent) {
+  //         ReactDOM.render(eventElement, parent);
+  //         eventsParents.add(parent);
+  //       }
+  //     });
+  //     setPrevEventsParents(eventsParents);
+  //   }
+  // }
 
-  useEffect(() => {
-    renderEvents();
-  }, [selectedWeek, events]);
+  // useEffect(() => {
+  //   renderEvents();
+  // }, [selectedWeek, events]);
 
   return (
     <Grid container columns={{ xs: 8 }}>
