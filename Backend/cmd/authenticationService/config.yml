@@ -1,0 +1,15 @@
+httpServer:
+        endpoint: "127.0.0.1:8081"
+        writeTimeout: 15
+        readTimeout: 15
+memcached:
+        endpoint: "localhost:11211"
+        writeTimeout: 15
+        readTimeout: 15
+storage:
+        host: "localhost"
+        port: ""
+        user: ""
+        password: ""
+        dbname: "restapi_dev"
+        sslmode: "disable"
