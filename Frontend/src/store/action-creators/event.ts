@@ -7,6 +7,7 @@ import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
 import { DEBUG_REQUESTS, DEBUG_REQUESTS_ERRORS} from '../../utils/debug';
 import { EventUpdateState } from '../../types/event/eventGeneral';
 import { NotificationsState } from '../../types/event/notifications';
+import dayjs from 'dayjs';
 
 export const addEvent = (token: string, event: EventCreationState, owner: string) => {
   return (dispatch: Dispatch<EventsAction>) => {
@@ -143,5 +144,42 @@ export const updateNotifications = (token: string, notifications: NotificationsS
         console.error('ERROR in update notifications:', e);
       }
     });
+  }
+}
+
+export const getProfilesByUsername = (username: string) => {
+  try {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST get profiles by username: ', username);
+    }
+
+    return ajax.get(urls.getUsersProfiles(username));
+  }
+  catch {
+    if (DEBUG_REQUESTS_ERRORS) {
+      console.error('ERROR in get profiles by username:', username);
+    }
+  }
+}
+
+export const getUserWorkload = (date: dayjs.Dayjs, userID: number, token: string) => {
+  try {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST: ', urls.getUserWorkload(userID));
+    }
+
+    const requestParams: RequestParamsState = {
+      headers: new Headers ({
+        'Authorization': 'Bearer ' + token,
+        'x-date' : date.format('YYYY-MM-DD'),
+      }) as RequestHeadersState,
+    }
+
+    return ajax.get(urls.getUserWorkload(userID), requestParams);
+  }
+  catch {
+    if (DEBUG_REQUESTS_ERRORS) {
+      console.error('ERROR in Get User Workload: user:', userID, " date: ", date);
+    }
   }
 }

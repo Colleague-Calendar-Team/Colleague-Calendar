@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 import { UserWorkloadInnerState } from '../../types/workload';
 import theme from '../../styles/theme';
 import { WorkloadToArrOfWidth } from './workloadWidths';
-import { getUserWorkload } from '../../ajax/requests/workload';
+import { getUserWorkload } from '../../store/action-creators/event';
 import { DEBUG_REQUESTS } from '../../utils/debug';
 
 const defaultAvatar = require('../../assets/defaultAvatar.jpg');

@@ -14,7 +14,7 @@ import { render } from '@testing-library/react';
 import { MembersEventInfoState } from '../../types/windows/eventWindow';
 import UserElement from './../../components/users/userElement';
 import dayjs from 'dayjs';
-import { getProfilesByUsername } from '../../ajax/requests/profiles';
+import { getProfilesByUsername } from '../../store/action-creators/event';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, eventID, checked, setChecked, users, setUsers, date}) => {
