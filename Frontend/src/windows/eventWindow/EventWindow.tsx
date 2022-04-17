@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import ModalWindow from "../../components/modal/Modal";
 import GeneralEventInfo from "./GeneralEventInfo";
 import MembersEventInfo from "./MembersEvenInfo";
@@ -27,6 +27,7 @@ const EventWindow = () => {
   const [checked, setChecked] = useState<Set<number>>(new Set());
   const [users, setUsers] = useState<UserProfileState[]>([]);
   const [notifications, setNotifications] = useState<NotificationsState>(NotificationsInit);
+  const {eventID} = useParams();
 
   if (DEBUG_RENDER) {
     console.log("render event window:");
@@ -70,9 +71,9 @@ const EventWindow = () => {
       title={modalWindow === 'eventCreate' ? "Создание мероприятия" : "Редактирование мероприятия"}
       pagesNames={["Общее", "Участники", "Уведомления"]}
     >
-      <GeneralEventInfo isCreate={modalWindow !== 'eventCreate' ? false : true} event={event} setEvent={setEvent} selectModalPage={selectModalPage}/>
-      <MembersEventInfo isCreate={modalWindow !== 'eventCreate' ? false : true} checked={checked} setChecked={setChecked} users={users} setUsers={setUsers} date={event.beginTime}/>
-      <NotificationsEventInfo isCreate={modalWindow !== 'eventCreate' ? false : true} notifications={notifications} setNotifications={setNotifications} onCreate={onCreate}/>
+      <GeneralEventInfo isCreate={modalWindow !== 'eventCreate' ? false : true} eventID={Number(eventID)} event={event} setEvent={setEvent} selectModalPage={selectModalPage}/>
+      <MembersEventInfo isCreate={modalWindow !== 'eventCreate' ? false : true} eventID={Number(eventID)} checked={checked} setChecked={setChecked} users={users} setUsers={setUsers} date={event.beginTime}/>
+      <NotificationsEventInfo isCreate={modalWindow !== 'eventCreate' ? false : true} eventID={Number(eventID)} notifications={notifications} setNotifications={setNotifications} onCreate={onCreate}/>
     </ModalWindow>
   );
 }

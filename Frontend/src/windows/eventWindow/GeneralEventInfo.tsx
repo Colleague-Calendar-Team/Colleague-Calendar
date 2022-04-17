@@ -12,15 +12,23 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { getHourById } from "../../utils/getWeek";
 import {DEBUG_RENDER} from "../../utils/debug";
 import { GeneralEventInfoState } from "../../types/windows/eventWindow";
+import { useParams } from "react-router";
 
-const GeneralEventInfo: React.FC<GeneralEventInfoState> = ({isCreate, event, setEvent, selectModalPage}) => {
+export interface EventPathState {
+  eventID: string;
+}
+
+const GeneralEventInfo: React.FC<GeneralEventInfoState> = ({isCreate, eventID, event, setEvent, selectModalPage}) => {
   if (DEBUG_RENDER) {
     console.log('render GeneralEventInfo (memo+)');
   }
 
+  const {updateEvent} = useActions();
+  const {token} = useTypedSelector(state=>state.auth.login);
   const classes = useButtonStyles();
 
   function onSave() {
+    updateEvent(token === null ? '' : token, event, Number(eventID));
   }
 
   function Next() {

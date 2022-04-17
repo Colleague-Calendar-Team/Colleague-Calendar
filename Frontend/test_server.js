@@ -50,6 +50,7 @@ function getEvents(firstDate = dayjs()) {
 const server = http.createServer((req, res) => {
   let body = '';
   console.log('request: ' + req.url, " method:", req.method, ' headers:', req.headers, 'body:');
+  const idInPath = req.url.split('/')[2];
   
   res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -116,7 +117,7 @@ const server = http.createServer((req, res) => {
       
       res.end();
       break;
-    case '/user/1/workload':
+    case '/user/' + idInPath + '/workload':
       console.log('HEADERS:', req.headers['x-date']);
       const workloadNew = [{
         beginTime: '00:00',
@@ -163,7 +164,7 @@ const server = http.createServer((req, res) => {
       token = 'token';
       res.end(token);
       break;
-    case '/token':
+    case '/user/token':
       res.writeHead(200, {'Content-Type': 'text/plain', 'Accept': 'text/plain'});
       console.log('token:', token);
       res.end(token);
@@ -172,19 +173,19 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
       res.end('success delete');
       break;
-    case '/events/1/update':
+    case '/events/' + idInPath + '/update':
       res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
       res.end('success update');
       break;
-    case '/events/1/update/participiants':
+    case '/events/' + idInPath + '/update/participiants':
       res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
       res.end('success update');
       break;
-    case '/events/1/update/notifications':
+    case '/events/' + idInPath + '/update/notifications':
       res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
       res.end('success update');
       break;
-    case '/events/1/participiants':
+    case '/events/' + idInPath + '/participiants':
       const participiants = [{
         userID: '1',
         name: 'Петр',

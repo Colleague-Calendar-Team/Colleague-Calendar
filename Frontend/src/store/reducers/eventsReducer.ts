@@ -24,11 +24,26 @@ export const eventsReducer = (state = initialState, action: EventsAction): Event
     case EventsActionTypes.CHANGE_FIRST_DATE:
       return {...state, firstDate: action.payload};
     case EventsActionTypes.ADD_EVENT:
-      return {...state, events: state.events.map((_, id) => {
-        if (id === state.renderWeek) {
-          return state.events[id].concat(action.payload);
+      return {...state, events: state.events.map((_, weekId) => {
+        if (weekId === state.renderWeek) {
+          return state.events[weekId].concat(action.payload);
         } else {
-          return state.events[id];
+          return state.events[weekId];
+        }
+      })};
+    case EventsActionTypes.UPDATE_EVENT:
+      return {...state, events: state.events.map((_, weekId) => {
+        if (weekId === state.renderWeek) {
+          return state.events[weekId].map((event) => {
+            if (event.eventID === action.id) {
+              return { ...event, title: action.payload.title, beginTime: action.payload.beginTime, endTime: action.payload.endTime, 
+                description: action.payload.description, meetingLink: action.payload.meetingLink, isRepeating: action.payload.isRepeating};
+            } else {
+              return event;
+            }
+          });
+        } else {
+          return state.events[weekId];
         }
       })};
     default:

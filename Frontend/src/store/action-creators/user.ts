@@ -60,6 +60,7 @@ export const updateUserProfile = (token: string, userInfo: UserInfoState) => {
     }
 
     const requestParams: RequestParamsState = {
+      body: Object(userInfo),
       headers: new Headers({
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
@@ -93,6 +94,7 @@ export const updateUserPassword = (token: string, passwordInfo: PasswordInfoStat
     }
 
     const requestParams: RequestParamsState = {
+      body: Object(passwordInfo),
       headers: new Headers({
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',

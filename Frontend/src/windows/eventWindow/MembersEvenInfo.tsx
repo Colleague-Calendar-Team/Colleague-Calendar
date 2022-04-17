@@ -16,7 +16,7 @@ import UserElement from './../../components/users/userElement';
 import dayjs from 'dayjs';
 import { getProfilesByUsername } from '../../ajax/requests/profiles';
 
-const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, checked, setChecked, users, setUsers, date}) => {
+const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, eventID, checked, setChecked, users, setUsers, date}) => {
   const classes = useButtonStyles();
   const {selectModalPage} = useActions();
   const [username, setUsername] = useState<string>('');

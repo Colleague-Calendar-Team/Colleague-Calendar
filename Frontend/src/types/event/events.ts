@@ -58,16 +58,19 @@ interface AddEventAction {
 interface UpdateEventAction {
   type: EventsActionTypes.UPDATE_EVENT;
   payload: EventUpdateState;
+  id: number;
 }
 
 interface UpdateParticipiantsAction {
   type: EventsActionTypes.UPDATE_PARTICIPANTS;
   payload: number[];
+  id: number;
 }
 
 interface UpdateNotificationsAction {
   type: EventsActionTypes.UPDATE_NOTIFICATIONS;
   payload: NotificationsState;
+  id: number;
 }
 
 interface DeleteEventAction {
@@ -77,6 +80,7 @@ interface DeleteEventAction {
 interface GetParticipiantsAction {
   type: EventsActionTypes.GET_PARTICIPANTS;
   payload: UserProfileState[];
+  id: number;
 }
 
 export type EventsAction = LoadingEventsAction | LoadingEventsSuccessAction | LoadingEventsErrorAction | ChangeWeekAction  | ChangeFirstDateAction 

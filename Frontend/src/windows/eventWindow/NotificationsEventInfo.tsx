@@ -14,7 +14,7 @@ import { useActions } from "../../hooks/useActions";
 import { NotificationsEventInfoState } from "../../types/windows/eventWindow";
 import { useNavigate } from "react-router-dom";
 
-export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({isCreate, notifications, setNotifications, onCreate}) => {
+export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({isCreate, eventID, notifications, setNotifications, onCreate}) => {
   const {selectModalPage, selectModalWindow} = useActions();
   const navigate = useNavigate();
   const classes = useButtonStyles();

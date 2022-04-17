@@ -62,7 +62,7 @@ class Urls {
   }
 
   getToken() {
-    return this.url + 'token';
+    return this.url + 'user/token';
   }
 }
 
