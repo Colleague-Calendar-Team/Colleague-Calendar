@@ -23,7 +23,7 @@ function App() {
   }
 
   const {getCurrentUserAccount, loadEvents, selectWeek, getToken} = useActions();
-  const {loading, error} = useTypedSelector(state=>state.events);
+  const {loading, error, firstDate} = useTypedSelector(state=>state.events);
   const { token } = useTypedSelector(state=>state.auth.login);
   const {modalWindow, selectedDay, selectedWeek} = useTypedSelector(state=>state.selectElements);
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ function App() {
       setIsLoading(false);
     }
     if (token !== '' && token !== null) {
-      loadEvents(token, dayjs());
+      loadEvents(token, firstDate);
       getCurrentUserAccount(token);
     }
   }, [token]);

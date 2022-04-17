@@ -48,3 +48,9 @@ export const changeWeek = (week: number) => {
       dispatch({type: EventsActionTypes.CHANGE_WEEK, payload: week});
   }
 }
+
+export const changeFirstDate = (newFirstDate: dayjs.Dayjs) => {
+  return (dispatch: Dispatch<EventsAction>) => {
+    dispatch({type: EventsActionTypes.CHANGE_FIRST_DATE, payload: newFirstDate});
+  }
+}

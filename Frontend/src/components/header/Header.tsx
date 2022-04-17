@@ -9,6 +9,7 @@ import UserBlock from './UserBlock';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { DEBUG_RENDER } from '../../utils/debug';
+import { getFirstDayForToday, getNextFirstDay, getPrevFirstDay } from './../../utils/getWeek';
 
 const Header:React.FC<WeekElementState> = ({week}) => {
   if (DEBUG_RENDER) {
@@ -19,23 +20,41 @@ const Header:React.FC<WeekElementState> = ({week}) => {
   // console.log('week:', week)
 
   const classes = useButtonStyles();
-  const {selectDay, changeWeek} = useActions();
+  const {selectDay, changeWeek, loadEvents, changeFirstDate} = useActions();
+  const {token} = useTypedSelector(state=>state.auth.login);
   const {selectedDay} = useTypedSelector(state=>state.selectElements);
-  const {renderWeek} = useTypedSelector(state=>state.events);
-
-  const firstDate = dayjs(new Date(week[0].year(), week[0].month(), week[0].date()));
-  const secondDate = dayjs(new Date(week[6].year(), week[6].month(), week[6].date()));
+  const {renderWeek, firstDate} = useTypedSelector(state=>state.events);
 
   function clickPrevWeek() {
-    selectDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() - 7)));
-    changeWeek(renderWeek - 1);
+    selectDay(week[0].add(-7, 'days'));
+    if (renderWeek === 0) {
+      const newFirstDate = getPrevFirstDay(firstDate);
+      changeFirstDate(newFirstDate);
+      loadEvents(token === null ? '' : token, newFirstDate);
+      changeWeek(4);
+    } else {
+      changeWeek(renderWeek - 1);
+    }
   };
   function clickNextWeek() {
-    selectDay(dayjs(new Date(week[0].year(), week[0].month(), week[0].date() + 7)));
-    changeWeek(renderWeek + 1);
+    selectDay(week[0].add(7, 'days'));
+    if (renderWeek === 4) {
+      const newFirstDate = getNextFirstDay(firstDate);
+      changeFirstDate(newFirstDate);
+      loadEvents(token === null ? '' : token, newFirstDate);
+      changeWeek(0);
+    } else {
+      changeWeek(renderWeek + 1);
+    }
   };
   function clickToday() {
     selectDay(selectedDay === dayjs() ? selectedDay : dayjs());
+    const firstDateForToday = getFirstDayForToday(dayjs());
+    if (firstDateForToday !== firstDate) {
+      changeFirstDate(firstDateForToday);
+      loadEvents(token === null ? '' : token, firstDateForToday);
+    }
+    changeWeek(2);
   };
 
   return (
@@ -50,11 +69,11 @@ const Header:React.FC<WeekElementState> = ({week}) => {
           <ChevronLeftIcon onClick={clickPrevWeek}/>
           <ChevronRightIcon onClick={clickNextWeek}/>
           <Typography variant="h6" component="h2" sx={{m: 1}}>
-            {firstDate.format("MMMM")}
-            {firstDate.year() !== secondDate.year() && firstDate.format(" YYYY")}
-            {firstDate.month() !== secondDate.month() && secondDate.format(" - MMMM")}
-            {secondDate.format(" YYYY ")}
-            {firstDate.date()} - {secondDate.date()}
+            {week[0].format("MMMM")}
+            {week[0].year() !== week[6].year() && week[0].format(" YYYY")}
+            {week[0].month() !== week[6].month() && week[6].format(" - MMMM")}
+            {week[6].format(" YYYY ")}
+            {week[0].date()} - {week[6].date()}
           </Typography>
         </Box>
         <UserBlock/>

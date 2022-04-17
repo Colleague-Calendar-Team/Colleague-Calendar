@@ -24,24 +24,28 @@ const genEvents = [[[0, 2, 7], [5, 4, 7]],
 [[5, 1, 3], [5, 7, 13], [5, 14, 15], [5, 23, 24]]];
 
 let eventID = -1;
-const events = new Array(5).fill(null).map((_, weekId) => new Array(genEvents[weekId].length).fill(null).map((_, id) => {
-  const week = getWeek(dayjs(new Date(dayjs().year(), dayjs().month(), dayjs().date() + 7*(weekId - 2))));
-  eventID++;
-  return {
-    eventID: eventID,
-    title: `Пример события ${eventID}`,
-    beginTime: dayjs(new Date(dayjs(week[genEvents[weekId][id][0]]).year(), dayjs(week[genEvents[weekId][id][0]]).month(), dayjs(week[genEvents[weekId][id][0]]).date(), genEvents[weekId][id][1])).format('YYYY-MM-DDTHH:mm'),
-    endTime: dayjs(new Date(dayjs(week[genEvents[weekId][id][0]]).year(), dayjs(week[genEvents[weekId][id][0]]).month(), dayjs(week[genEvents[weekId][id][0]]).date(), genEvents[weekId][id][2])).format('YYYY-MM-DDTHH:mm'),
-    description: `description ${eventID}`,
-    meetingLink: `meeting link ${eventID}`,
-    isRepeating: false,
-    owner: 'Иван',
-    notificationTime:	10,
-    notificationInTelegram:	false,
-    notificationInEmail: true,
-    notificationInSMS: false,
-  };
-}));
+function getEvents(firstDate = dayjs()) {
+  const events = new Array(5).fill(null).map((_, weekId) => new Array(genEvents[weekId].length).fill(null).map((_, id) => {
+    const week = getWeek(dayjs(new Date(firstDate.year(), firstDate.month(), firstDate.date() + 7*weekId)));
+    eventID++;
+    return {
+      eventID: eventID,
+      title: `Пример события ${eventID}`,
+      beginTime: dayjs(new Date(dayjs(week[genEvents[weekId][id][0]]).year(), dayjs(week[genEvents[weekId][id][0]]).month(), dayjs(week[genEvents[weekId][id][0]]).date(), genEvents[weekId][id][1])).format('YYYY-MM-DDTHH:mm'),
+      endTime: dayjs(new Date(dayjs(week[genEvents[weekId][id][0]]).year(), dayjs(week[genEvents[weekId][id][0]]).month(), dayjs(week[genEvents[weekId][id][0]]).date(), genEvents[weekId][id][2])).format('YYYY-MM-DDTHH:mm'),
+      description: `description ${eventID}`,
+      meetingLink: `meeting link ${eventID}`,
+      isRepeating: false,
+      owner: 'Иван',
+      notificationTime:	10,
+      notificationInTelegram:	false,
+      notificationInEmail: true,
+      notificationInSMS: false,
+    };
+  }));
+
+  return events;
+}
 
 const server = http.createServer((req, res) => {
   let body = '';
@@ -80,8 +84,9 @@ const server = http.createServer((req, res) => {
       });
       break;
     case '/events/weeks':
+      console.log('x-date:', req.headers['x-date']);
       res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(events));
+      res.end(JSON.stringify(getEvents(dayjs(req.headers['x-date']))));
       break;
     case '/user/account':
       res.writeHead(200, {'Content-Type': 'application/json'});

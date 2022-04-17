@@ -16,9 +16,7 @@ const Week: React.FC = () => {
     console.log('selectedWeek render (memo+)');
   }
 
-  // const { selectModalWindow, selectEvent, selectHour } = useActions();
-  const {events, renderWeek} = useTypedSelector(state=>state.events);
-  console.log('events:', events[renderWeek]);
+
   const {selectedWeek} = useTypedSelector(state=>state.selectElements);
   // const [prevEventsParents, setPrevEventsParents] = useState<Set<HTMLElement> | null>(null);
 

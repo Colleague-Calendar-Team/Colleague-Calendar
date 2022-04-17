@@ -1,9 +1,12 @@
+import dayjs from "dayjs";
 import { EventState } from "../../types/event/event";
 import { EventsState, EventsActionTypes, EventsAction } from "../../types/event/events";
+import { getFirstDayForToday } from "../../utils/getWeek";
 
 const initialState: EventsState = {
   events: [],
   renderWeek: 2,
+  firstDate: getFirstDayForToday(dayjs()),
   loading: false,
   error: null,
 }
@@ -18,6 +21,8 @@ export const eventsReducer = (state = initialState, action: EventsAction): Event
       return {...state, error: action.payload, loading: false};
     case EventsActionTypes.CHANGE_WEEK:
       return {...state, renderWeek: action.payload};
+    case EventsActionTypes.CHANGE_FIRST_DATE:
+      return {...state, firstDate: action.payload};
     case EventsActionTypes.ADD_EVENT:
       return {...state, events: state.events.map((_, id) => {
         if (id === state.renderWeek) {
