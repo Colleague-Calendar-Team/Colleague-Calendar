@@ -75,6 +75,7 @@ interface UpdateNotificationsAction {
 
 interface DeleteEventAction {
   type: EventsActionTypes.DELETE_EVENT;
+  id: number;
 }
 
 interface GetParticipiantsAction {

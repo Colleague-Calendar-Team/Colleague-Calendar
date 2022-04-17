@@ -136,7 +136,7 @@ const server = http.createServer((req, res) => {
       res.end(JSON.stringify(workloadNew));
       break;
     case '/user/Ivan/profiles':
-      const searchUsers = [{userID: 3, name: 'Ivan', surname: 'Rodionov'}, {userID: 4, name: 'Ivan', surname: 'Romanov'}];
+      const searchUsers = [{userID: 101, name: 'Ivan', surname: 'Rodionov'}, {userID: 102, name: 'Ivan', surname: 'Romanov'}];
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(searchUsers));
       break;
@@ -169,7 +169,7 @@ const server = http.createServer((req, res) => {
       console.log('token:', token);
       res.end(token);
       break;
-    case '/events/1/delete':
+    case '/events/' + idInPath + '/delete':
       res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
       res.end('success delete');
       break;
@@ -191,16 +191,16 @@ const server = http.createServer((req, res) => {
         name: 'Петр',
         surname: 'Петров',
       }, {
-        userID: '1',
+        userID: '2',
         name: 'Аркадий',
         surname: 'Иванов',
       }, {
-        userID: '1',
+        userID: '3',
         name: 'Екатерина',
         surname: 'Кузнецова',
       }];
       res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(participiants);
+      res.end(JSON.stringify(participiants));
       break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});

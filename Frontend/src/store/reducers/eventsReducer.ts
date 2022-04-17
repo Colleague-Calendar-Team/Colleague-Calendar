@@ -78,6 +78,25 @@ export const eventsReducer = (state = initialState, action: EventsAction): Event
           return state.events[weekId];
         }
       })};
+    case EventsActionTypes.DELETE_EVENT:
+      return {...state, events: state.events.map((_, weekId) => {
+        if (weekId === state.renderWeek) {
+          let idForDelete = -1;
+          state.events[weekId].forEach((event, eventId) => {
+            if (event.eventID === action.id) {
+              idForDelete = eventId;
+            }
+          });
+          console.log('eventID:', action.id, 'idForDelete:', idForDelete, 'events:', state.events[weekId].slice(0, idForDelete).concat(state.events[weekId].slice(idForDelete)));
+          if (idForDelete === -1) {
+            return state.events[weekId];
+          } else {
+            return state.events[weekId].slice(0, idForDelete).concat(state.events[weekId].slice(idForDelete + 1));
+          }
+        } else {
+          return state.events[weekId];
+        }
+      })};
     default:
       return state;
   }

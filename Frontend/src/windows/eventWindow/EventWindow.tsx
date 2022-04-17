@@ -9,10 +9,11 @@ import { EventCreationState } from "../../types/event/event";
 import { getHourById } from "../../utils/getWeek";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
-import { DEBUG_RENDER } from "../../utils/debug";
+import { DEBUG_RENDER, DEBUG_REQUESTS } from "../../utils/debug";
 import { UserProfileState } from "../../types/user";
 import { NotificationsInit, NotificationsState } from "../../types/event/notifications";
 import { EventUpdateInit, EventUpdateState } from "../../types/event/eventGeneral";
+import { getProfilesOfEventParticipants } from "../../store/action-creators/event";
 
 const EventWindow = () => {
   const { selectModalWindow, selectModalPage, addEvent } = useActions();
@@ -54,16 +55,24 @@ const EventWindow = () => {
   }, []);
 
   useEffect(() => {
-    const newUsers = [{userID: 1, name: 'Иван', surname: 'Иванов'}, {userID: 2, name: 'Петр', surname: 'Петров'}];
-    setUsers(newUsers);
-
-    const newChecked = new Set(checked);
-    newUsers.forEach((u) => {
-      if (!checked.has(u.userID)) {
-        newChecked.add(u.userID);
+    const data = getProfilesOfEventParticipants(token === null ? '' : token, Number(eventID));
+    data?.then((response) => {
+      if (DEBUG_REQUESTS) {
+        console.log('RESPONSE WORKLOAD: ');
+        console.log(response.data);
       }
-    })
-    setChecked(newChecked);
+  
+      const newUsers:UserProfileState[] = response.data;
+      
+      setUsers(newUsers);
+      const newChecked = new Set(checked);
+      newUsers.forEach((u) => {
+        if (!checked.has(u.userID)) {
+          newChecked.add(u.userID);
+        }
+      })
+      setChecked(newChecked);
+    });
   }, []);
 
   return (

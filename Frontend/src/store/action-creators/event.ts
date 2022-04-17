@@ -147,6 +147,60 @@ export const updateNotifications = (token: string, notifications: NotificationsS
   }
 }
 
+export const deleteEvent = (token: string, eventID: number) => {
+  return (dispatch: Dispatch<EventsAction>) => {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST deleteEvent');
+    }
+
+    const requestParams: RequestParamsState = {
+      headers: new Headers ({
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      }) as RequestHeadersState,
+    }
+    
+    ajax.patch(urls.deleteEvent(eventID), requestParams).then((response) => {
+      if (DEBUG_REQUESTS) {
+        console.log("RESPONSE deleteEvent");
+        console.log(response);
+      }
+      
+      if (response.status === 200) {
+        dispatch({type: EventsActionTypes.DELETE_EVENT, id: eventID});
+      } else {
+        throw response.data;
+      }   
+    }).catch ((e) => {
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in deleteEvent:', e);
+      }
+    });
+  }
+}
+
+export const getProfilesOfEventParticipants = (token: string, eventID: number) => {
+  try {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST getProfilesOfEventParticipants: ', eventID);
+    }
+
+    const requestParams: RequestParamsState = {
+      headers: new Headers ({
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      }) as RequestHeadersState,
+    }
+
+    return ajax.get(urls.getEventParticipiants(eventID), requestParams);
+  }
+  catch(e) {
+    if (DEBUG_REQUESTS_ERRORS) {
+      console.error('ERROR in getProfilesOfEventParticipants:', e);
+    }
+  }
+}
+
 export const getProfilesByUsername = (username: string) => {
   try {
     if (DEBUG_REQUESTS) {
