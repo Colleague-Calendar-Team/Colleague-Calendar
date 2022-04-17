@@ -1,9 +1,8 @@
 email:
-  login: "smtp.mail.ru:587"
+  login: ""
   pass: ""
-  smtpServerEndpoint: ""
-  smtpServerHost: ""
-  timeout: 40
+  smtpServerEndpoint: "smtp.mail.ru:587"
+  smtpServerHost: "smtp.mail.ru"
 httpServer:
   endpoint: "127.0.0.1:7100"
   writeTimeout: 15
