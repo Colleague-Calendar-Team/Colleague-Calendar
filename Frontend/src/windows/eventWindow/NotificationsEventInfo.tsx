@@ -13,10 +13,11 @@ import theme from "../../styles/theme";
 import { useActions } from "../../hooks/useActions";
 import { NotificationsEventInfoState } from "../../types/windows/eventWindow";
 import { useNavigate } from "react-router-dom";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({isCreate, eventID, notifications, setNotifications, onCreate}) => {
-  const {selectModalPage, selectModalWindow} = useActions();
-  const navigate = useNavigate();
+  const {selectModalPage, selectModalWindow, updateNotifications} = useActions();
+  const {token} = useTypedSelector(state=>state.auth.login);
   const classes = useButtonStyles();
   const timeIntervals = [5, 10, 15];
 
@@ -30,7 +31,7 @@ export const NotificationsEventInfo:React.FC<NotificationsEventInfoState> = ({is
     selectModalPage('Участники');
   }
   function onSubmit() {
-    navigate('/');
+    updateNotifications(token === null ? '' : token, notifications, eventID);
   }
   const handleChange = (event: SelectChangeEvent<number>) => {
     setNotifications({ ...notifications, notificationTime : Number(event.target.value) })

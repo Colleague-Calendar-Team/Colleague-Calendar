@@ -28,7 +28,7 @@ const GeneralEventInfo: React.FC<GeneralEventInfoState> = ({isCreate, eventID, e
   const classes = useButtonStyles();
 
   function onSave() {
-    updateEvent(token === null ? '' : token, event, Number(eventID));
+    updateEvent(token === null ? '' : token, event, eventID);
   }
 
   function Next() {

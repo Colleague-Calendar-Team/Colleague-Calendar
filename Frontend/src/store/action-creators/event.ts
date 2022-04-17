@@ -6,6 +6,7 @@ import ajax from '../../ajax/ajax';
 import { RequestHeadersState, RequestParamsState } from '../../types/ajax';
 import { DEBUG_REQUESTS, DEBUG_REQUESTS_ERRORS} from '../../utils/debug';
 import { EventUpdateState } from '../../types/event/eventGeneral';
+import { NotificationsState } from '../../types/event/notifications';
 
 export const addEvent = (token: string, event: EventCreationState, owner: string) => {
   return (dispatch: Dispatch<EventsAction>) => {
@@ -72,6 +73,74 @@ export const updateEvent = (token: string, event: EventUpdateState, eventID: num
     }).catch ((e) => {
       if (DEBUG_REQUESTS_ERRORS) {
         console.error('ERROR in update event general info:', e);
+      }
+    });
+  }
+}
+
+export const updateParticipants = (token: string, participiants: number[], eventID: number) => {
+  return (dispatch: Dispatch<EventsAction>) => {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST update event participiants:');
+      console.log(participiants);
+    }
+
+    const requestParams: RequestParamsState = {
+      body: Object(participiants),
+      headers: new Headers ({
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      }) as RequestHeadersState,
+    }
+    
+    ajax.patch(urls.updateEventParticipiants(eventID), requestParams).then((response) => {
+      if (DEBUG_REQUESTS) {
+        console.log("EVENT update participiants response:");
+        console.log(response);
+      }
+      
+      if (response.status === 200) {
+        dispatch({type: EventsActionTypes.UPDATE_PARTICIPANTS, payload: participiants, id: eventID});
+      } else {
+        throw response.data;
+      }   
+    }).catch ((e) => {
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in update participiants:', e);
+      }
+    });
+  }
+}
+
+export const updateNotifications = (token: string, notifications: NotificationsState, eventID: number) => {
+  return (dispatch: Dispatch<EventsAction>) => {
+    if (DEBUG_REQUESTS) {
+      console.log('REQUEST update event notifications:');
+      console.log(notifications);
+    }
+
+    const requestParams: RequestParamsState = {
+      body: Object(notifications),
+      headers: new Headers ({
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      }) as RequestHeadersState,
+    }
+    
+    ajax.patch(urls.updateEventNotifications(eventID), requestParams).then((response) => {
+      if (DEBUG_REQUESTS) {
+        console.log("EVENT update notifications response:");
+        console.log(response);
+      }
+      
+      if (response.status === 200) {
+        dispatch({type: EventsActionTypes.UPDATE_NOTIFICATIONS, payload: notifications, id: eventID});
+      } else {
+        throw response.data;
+      }   
+    }).catch ((e) => {
+      if (DEBUG_REQUESTS_ERRORS) {
+        console.error('ERROR in update notifications:', e);
       }
     });
   }

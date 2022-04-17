@@ -46,6 +46,38 @@ export const eventsReducer = (state = initialState, action: EventsAction): Event
           return state.events[weekId];
         }
       })};
+    case EventsActionTypes.UPDATE_PARTICIPANTS:
+      return {...state, events: state.events.map((_, weekId) => {
+        if (weekId === state.renderWeek) {
+          return state.events[weekId].map((event) => {
+            if (event.eventID === action.id) {
+              return { ...event, participiants: action.payload};
+            } else {
+              return event;
+            }
+          });
+        } else {
+          return state.events[weekId];
+        }
+      })};
+    case EventsActionTypes.UPDATE_NOTIFICATIONS:
+      return {...state, events: state.events.map((_, weekId) => {
+        if (weekId === state.renderWeek) {
+          return state.events[weekId].map((event) => {
+            if (event.eventID === action.id) {
+              return { ...event, 
+                notificationTime: action.payload.notificationTime,
+                notificationInTelegram: action.payload.notificationInTelegram,
+                notificationInEmail: action.payload.notificationInEmail,
+                notificationInSMS: action.payload.notificationInSMS};
+            } else {
+              return event;
+            }
+          });
+        } else {
+          return state.events[weekId];
+        }
+      })};
     default:
       return state;
   }

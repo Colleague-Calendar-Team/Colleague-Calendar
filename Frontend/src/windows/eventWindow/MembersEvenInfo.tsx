@@ -15,10 +15,12 @@ import { MembersEventInfoState } from '../../types/windows/eventWindow';
 import UserElement from './../../components/users/userElement';
 import dayjs from 'dayjs';
 import { getProfilesByUsername } from '../../ajax/requests/profiles';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, eventID, checked, setChecked, users, setUsers, date}) => {
   const classes = useButtonStyles();
-  const {selectModalPage} = useActions();
+  const {selectModalPage, updateParticipants} = useActions();
+  const {token} = useTypedSelector(state=>state.auth.login);
   const [username, setUsername] = useState<string>('');
 
   if (DEBUG_RENDER) {
@@ -34,6 +36,7 @@ const MembersEventInfo:React.FC<MembersEventInfoState> = ({isCreate, eventID, ch
   }
 
   function onSubmit() {
+    updateParticipants(token === null ? '' : token, Array.from(checked), eventID);
   }
 
   function searchUsers() {
